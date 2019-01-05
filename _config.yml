@@ -62,8 +62,8 @@ kramdown:
 # Gitalk
 gitalk:
   enable: true    #是否开启Gitalk评论
-  clientID: e4b35c6232c4c1ed1d8f                            #生成的clientID
-  clientSecret: 02620d29fc54cb43ad965a0392fab72f059944e1    #生成的clientSecret
+  clientID: 25b3560bcf30d8286b5d                            #生成的clientID
+  clientSecret: 7163cd3862d5d3ce1335447221c448bf84ced831    #生成的clientSecret
   repo: axiomaster.github.io    #仓库名称
   owner: axiomaster    #github用户名
   admin: axiomaster
