@@ -3,7 +3,7 @@ layout:     post
 title:      Hello World
 subtitle:   我的Github Page开张了
 date:       2019-01-05
-author:     BY
+author:     axiomaster
 header-img: img/post-bg-desk.jpg
 catalog: true
 tags:
