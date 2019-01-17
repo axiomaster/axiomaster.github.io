@@ -1,3 +1,4 @@
+---
 title: Nginx监听著名端口
 link: http://www.axiomaster.com/index.php/2018/03/04/nginxlisten-famous-port/
 author: axiomaster_lism
@@ -9,6 +10,7 @@ comment_status: open
 post_name: nginxlisten-famous-port
 status: publish
 post_type: post
+---
 
 # Nginx监听著名端口
 
