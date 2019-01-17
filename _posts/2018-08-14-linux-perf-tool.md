@@ -10,6 +10,9 @@ comment_status: open
 post_name: linux-perf-tool
 status: publish
 post_type: post
+tags:
+    - OS
+    - linux
 ---
 
 # linux perf tool

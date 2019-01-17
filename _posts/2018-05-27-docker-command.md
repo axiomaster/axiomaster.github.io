@@ -10,6 +10,8 @@ comment_status: open
 post_name: docker-command
 status: publish
 post_type: post
+tags:
+    - docker
 ---
 
 # docker 常用命令

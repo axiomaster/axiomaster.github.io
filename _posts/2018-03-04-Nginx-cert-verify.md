@@ -10,6 +10,9 @@ comment_status: open
 post_name: nginx%e8%af%81%e4%b9%a6%e6%a0%a1%e9%aa%8c
 status: publish
 post_type: post
+tags:
+    - 证书
+    - linux
 ---
 
 # Nginx证书校验

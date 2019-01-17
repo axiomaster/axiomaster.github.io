@@ -10,6 +10,9 @@ comment_status: open
 post_name: nginxlisten-famous-port
 status: publish
 post_type: post
+tags:
+    - nginx
+    - linux
 ---
 
 # Nginx监听著名端口

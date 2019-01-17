@@ -10,6 +10,8 @@ comment_status: open
 post_name: go-get-xxx-failed
 status: publish
 post_type: post
+tags:
+    - 工具
 ---
 
 # go get 网络问题失败

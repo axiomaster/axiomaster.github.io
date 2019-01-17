@@ -10,6 +10,8 @@ comment_status: open
 post_name: nginx-proxy_next_upstream
 status: publish
 post_type: post
+tags:
+    - nginx
 ---
 
 # nginx中proxy_next_upstream问题

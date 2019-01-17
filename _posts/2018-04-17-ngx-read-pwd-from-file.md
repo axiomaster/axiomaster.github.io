@@ -10,6 +10,9 @@ comment_status: open
 post_name: ngx-read-pwd-from-file
 status: publish
 post_type: post
+tags:
+    - 证书
+    - nginx
 ---
 # 修改nginx代码支持从文件读取密文密码
 

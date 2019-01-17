@@ -10,6 +10,9 @@ comment_status: open
 post_name: funny-linux-app
 status: publish
 post_type: post
+tags:
+    - 工具
+    - linux
 ---
 
 # 好玩的linux小应用

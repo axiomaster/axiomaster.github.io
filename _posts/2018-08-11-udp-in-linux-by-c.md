@@ -10,6 +10,9 @@ comment_status: open
 post_name: udp-in-linux-by-c
 status: publish
 post_type: post
+tags:
+    - net
+    - linux
 ---
 
 # udp in linux by c

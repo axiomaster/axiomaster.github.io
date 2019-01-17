@@ -10,6 +10,8 @@ comment_status: open
 post_name: hello-world
 status: publish
 post_type: post
+tags:
+    - 生活
 ---
 
 # Hello world!

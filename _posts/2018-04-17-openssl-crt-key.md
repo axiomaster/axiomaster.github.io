@@ -10,6 +10,8 @@ comment_status: open
 post_name: openssl-crt-key
 status: publish
 post_type: post
+tags:
+    - 证书
 ---
 # 使用openssl进行证书
 

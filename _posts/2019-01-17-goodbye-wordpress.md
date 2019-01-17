@@ -10,6 +10,8 @@ comment_status: open
 post_name: goodbye-wordpress
 status: publish
 post_type: post
+tags:
+    - 日常
 ---
 
 # goodbye wordpress

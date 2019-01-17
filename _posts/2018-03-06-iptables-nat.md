@@ -10,6 +10,9 @@ comment_status: open
 post_name: iptables-nat
 status: publish
 post_type: post
+tags:
+    - net
+    - linux
 ---
 
 # 使用iptables进行转发

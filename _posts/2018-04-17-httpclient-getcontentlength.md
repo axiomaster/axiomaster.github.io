@@ -10,6 +10,8 @@ comment_status: open
 post_name: httpclient-getcontentlength
 status: publish
 post_type: post
+tags:
+    - net
 ---
 
 # HttpClient getContentLength()问题

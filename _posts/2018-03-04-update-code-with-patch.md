@@ -10,6 +10,9 @@ comment_status: open
 post_name: update-code-with-patch
 status: publish
 post_type: post
+tags:
+    - linux
+    - 工具
 ---
 
 # 使用patch更新源代码
