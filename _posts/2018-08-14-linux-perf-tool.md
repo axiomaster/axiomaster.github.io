@@ -1,3 +1,4 @@
+---
 title: linux perf tool
 link: http://www.axiomaster.com/index.php/2018/08/14/linux-perf-tool/
 author: axiomaster_lism
@@ -9,6 +10,7 @@ comment_status: open
 post_name: linux-perf-tool
 status: publish
 post_type: post
+---
 
 # linux perf tool
 

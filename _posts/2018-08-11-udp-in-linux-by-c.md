@@ -1,3 +1,4 @@
+---
 title: udp in linux by c
 link: http://www.axiomaster.com/index.php/2018/08/11/udp-in-linux-by-c/
 author: axiomaster_lism
@@ -9,6 +10,7 @@ comment_status: open
 post_name: udp-in-linux-by-c
 status: publish
 post_type: post
+---
 
 # udp in linux by c
 

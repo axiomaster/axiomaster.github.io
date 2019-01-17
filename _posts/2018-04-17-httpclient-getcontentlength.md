@@ -1,3 +1,4 @@
+---
 title: HttpClient getContentLength()问题
 link: http://www.axiomaster.com/index.php/2018/04/17/httpclient-getcontentlength/
 author: axiomaster_lism
@@ -9,6 +10,7 @@ comment_status: open
 post_name: httpclient-getcontentlength
 status: publish
 post_type: post
+---
 
 # HttpClient getContentLength()问题
 

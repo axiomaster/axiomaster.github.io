@@ -1,3 +1,4 @@
+---
 title: go get 网络问题失败
 link: http://www.axiomaster.com/index.php/2018/05/06/go-get-xxx-failed/
 author: axiomaster_lism
@@ -9,6 +10,7 @@ comment_status: open
 post_name: go-get-xxx-failed
 status: publish
 post_type: post
+---
 
 # go get 网络问题失败
 

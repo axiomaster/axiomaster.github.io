@@ -1,3 +1,4 @@
+---
 title: nginx中proxy_next_upstream问题
 link: http://www.axiomaster.com/index.php/2018/06/04/nginx-proxy_next_upstream/
 author: axiomaster_lism
@@ -9,6 +10,7 @@ comment_status: open
 post_name: nginx-proxy_next_upstream
 status: publish
 post_type: post
+---
 
 # nginx中proxy_next_upstream问题
 

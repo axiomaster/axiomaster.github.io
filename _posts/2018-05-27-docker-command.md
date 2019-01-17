@@ -1,3 +1,4 @@
+---
 title: docker 常用命令
 link: http://www.axiomaster.com/index.php/2018/05/27/docker-command/
 author: axiomaster_lism
@@ -9,6 +10,7 @@ comment_status: open
 post_name: docker-command
 status: publish
 post_type: post
+---
 
 # docker 常用命令
 

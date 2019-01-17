@@ -1,3 +1,4 @@
+---
 title: 使用patch更新源代码
 link: http://www.axiomaster.com/index.php/2018/03/04/update-code-with-patch/
 author: axiomaster_lism
@@ -9,6 +10,7 @@ comment_status: open
 post_name: update-code-with-patch
 status: publish
 post_type: post
+---
 
 # 使用patch更新源代码
 
