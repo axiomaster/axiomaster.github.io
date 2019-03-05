@@ -1,0 +1,89 @@
+@startuml
+
+namespace fly{
+    interface FlyBehavior {
+        fly()
+    }
+    class FlyWithWings{
+        fly() // 用翅膀飞行
+    }
+
+    class FlyNoWay{
+        fly() // do nothing
+    }
+
+    FlyBehavior <|.. FlyWithWings
+    FlyBehavior <|.. FlyNoWay
+}
+
+namespace quack{
+    interface QuackBehavior{
+        quack()
+    }
+    class Quack{
+        quack() //呱呱叫
+    }
+
+    class Squeak{
+        quack() //吱吱叫
+    }
+
+    class MuteQuack{
+        quack() // do nothing
+    }
+
+    QuackBehavior <|.. Quack
+    QuackBehavior <|.. Squeak
+    QuackBehavior <|.. MuteQuack
+}
+
+
+
+
+abstract class Duck{
+    FlyBehavior flyBehavior
+    QuackBehavior quackBehavior
+
+    swim()
+    display()
+    performQuack()
+    performFly()
+    setFlyBehavior()
+    setQuackBehavior()
+}
+
+class MallardDuck{
+    display() // 绿头鸭
+}
+
+class RedheadDuck{
+    display() // 红头鸭
+}
+
+class RubberDuck{
+    display() // 橡皮鸭
+}
+
+class DecoyDuck{
+    display() // 诱饵鸭
+}
+
+
+
+
+Duck <|-- MallardDuck
+Duck <|-- RedheadDuck
+Duck <|-- RubberDuck
+Duck <|-- DecoyDuck
+
+fly.FlyBehavior   <-- Duck
+quack.QuackBehavior <-- Duck
+
+
+
+
+
+
+
+
+@enduml

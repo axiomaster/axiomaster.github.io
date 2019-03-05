@@ -1,0 +1,7 @@
+@startuml
+Alice -> Bob: send cert (with public key)
+Bob -> Bob: encrypt message by public key in cert
+Bob --> Alice: send encrypted message
+Alice --> Alice: decrypt message by private key
+
+@enduml
