@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      策略模式
+title:      策略模式 Strategy Pattern
 subtitle:   设计模式
 date:       2019-03-03
 author:     axiomaster
