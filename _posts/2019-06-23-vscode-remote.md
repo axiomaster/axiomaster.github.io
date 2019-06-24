@@ -7,7 +7,9 @@ author:     axiomaster
 header-img: img/post-bg-desk.jpg
 catalog: true
 tags:
-    - 吐槽
+    - 工具
+    - WSL
+    - VS code
 ---
 
 build 2019 微软发布了wsl2和vscode remote插件。前者使用了真正的linux内核，解决了wsl的很多问题，据说可以直接运行docker。wsl2在20H1的快速预览版18917已经可以使用。VS code remote是vscode的一组插件，包括remote ssh， remote wsl和remote container，VS code升级到1.35.1之后就可以使用了。今天我们尝试一下VS code remote的配置。
