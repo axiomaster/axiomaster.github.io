@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "GCC Inline ASM"
-subtitle:   卷积神经网络CNN
+subtitle:   c内嵌汇编语言
 date:       2021-10-31T21:05:29+08:00
 author:     axiomaster
 header-img: img/post-bg-desk.jpg
