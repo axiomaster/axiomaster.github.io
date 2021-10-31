@@ -7,20 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>404 Page not found | Axiomaster&#39;s Site</title>
-    <meta property="og:title" content="404 Page not found - Axiomaster&#39;s Site">
+    <title>ML | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="ML - Axiomaster&#39;s Site">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="">
-    <meta name="description" content="404 Page not found">
+    <meta name="description" content="ML">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/404.html">
+    <meta property="og:url" content="https://axiomaster.gitee.io/tags/ml/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
+    <link rel="alternate" type="application/rss+xml" href="https://axiomaster.gitee.io/tags/ml/index.xml" title="Axiomaster's Site" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -60,20 +61,124 @@
 
                 <div class="col-8" id="main">
                     
-<div class="body404">
-    <div class="info404">
-        <header id="header404" class="clearfix">
-            <div class="site-name404"><i>404</i></div>
-        </header>
-        <section>
-            <div class="title404">
-                <p>每一个平凡的日常<br />都是连续发生中的奇迹</p>
-            </div>
-            
+<div class="res-cons">
+    
+    <h3 class="archive-title">
+        包含标签
+        <span class="keyword">ML</span>
+        的文章
+    </h3>
+    
 
-            <a rel="nofollow" href="https://axiomaster.gitee.io/" class="index404">回首页看看</a>
-        </section>
-    </div>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/">Tensorflow2.0 笔记（2）</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年9月3日
+        </date>
+        
+        <div class="post-content">
+            六步法  import train, test 网络结构  model=tf.keras.models.Sequential # 搭建网络结构 class MyModel(Model) model = MyModel   model.compile # 配置训练优化器，损失函数 model.fit # 输入特征，batch, epoch model.summary  网络结构 拉直层 tf.keras.layers.Flatten()
+全连接层 tf.keras.layers.Dense(神经元个数, activation=&#34;激活函数&#34;, kernel_regularizer=&#34;正则化&#34;) 卷积层 tf.keras.layers.Conv2D(filters=卷积核个数, kernel_size=卷积核尺寸, strides=卷积步长, padding=&#34;valid&#34; or &#34;same&#34;) LSTM层 tf.keras.layers.LSTM()
+训练方法 model.compile(optimizer=优化器, loss=损失函数, metrics=[&#34;准确率&#34;]) Optimizer  sgd adagrad adadelta adam  loss Metrics 训练过程 model.fit(训练集的输入特征, 训练集的标签, batch_size=, epochs=, validation_data=(测试集的输入特征, 测试集的标签), validation_split=从训练集划分多少比例分给测试集, validation_freq=多少次epoch测试一次) ……
+            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/">Tensorflow2.0 笔记（3）</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年9月3日
+        </date>
+        
+        <div class="post-content">
+            CNN  输入特征图的深度（channel数），决定了当前层卷积核的深度； 当前层卷积核的个数，决定了当前层输出特征图的深度；  tf.keras.layers.Conv2D( kernel_size=卷积核尺寸, strides=滑动补偿, padding=&#34;same&#34; or &#34;valid&#34;, activation=&#34;relu&#34; or &#34;sigmoid&#34; or &#34;tanh&#34; or &#34;softmax&#34;, input_shape=(高, 宽, 通道数) ) 批标准化（Batch Normalization, BN） 池化 池化用于减少特征数据量，最大值池化可提取图片纹理，均值池化可保留背景特征。
+舍弃 Dropout 训练时，一定概率随机舍弃神经元。网络使用时，恢复神经元。
+卷积神经网络结构 卷积：特征提取器，CBAPD(Convolutinoal, BN, Activation, Pooling, Dropout)……
+            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2020-03-01-weakreference/">Weak Reference</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年3月1日
+        </date>
+        
+        <div class="post-content">
+            Weak Reference WeakHashMap ……
+            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-03-01-weakreference/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2020-02-17-camerax/">CameraX</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年2月17日
+        </date>
+        
+        <div class="post-content">
+            Android CameraX库……
+            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-02-17-camerax/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2020-02-16-mediapipe/">mediapipe</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年2月16日
+        </date>
+        
+        <div class="post-content">
+            Google推出的将机器学习/深度学习进行产品化的框架，主要是其中类似tensorflow中图编辑模式。但我们只是看中了人家训练好的手部跟踪的demo。
+使用bazel编译系统，但bazel这坑货又不支持proxy。那就需要搞明白所有的编译规则，然后把包挨个离线下下来，然后使用local_repo的方式进行编译。……
+            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-02-16-mediapipe/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2019-01-21-neural-network/">神经网络</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年1月21日
+        </date>
+        
+        <div class="post-content">
+            感知机 多层感知机 神经网络 ……
+            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-01-21-neural-network/">阅读全文</a></p>
+        </div>
+    </article>
+    
+
+    
+
+
+
+
+
 </div>
 
                     <footer id="footer">

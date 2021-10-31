@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>Making debugger for Golang | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="Making debugger for Golang - Axiomaster&#39;s Site">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-08-11T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-08-11T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="Making debugger for Golang">
+        <meta name="author" content="axiomaster">
+        
+    <meta property="og:url" content="https://axiomaster.gitee.io/post/2019-08-11-debugger-golang3/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://axiomaster.gitee.io/">
+                        Axiomaster&#39;s Site
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://axiomaster.gitee.io/">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">Making debugger for Golang</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月11日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <blockquote>
+<p>转载自 <a href="https://medium.com/golangspec/making-debugger-in-golang-part-iii-5aac8e49f291">Making debugger for Golang (part III)</a></p>
+</blockquote>
+<p>So far we’ve learned how to single-step ptraced process (tracee) and get some debugging info out of binary (read it here if you haven’t done it yet). Now it’s time to set a breakpoint at desired place, wait until reached and then investigate process state.</p>
+<p>Let’s start with assembly code used before:</p>
+<pre tabindex="0"><code class="language-assembly" data-lang="assembly">section .data
+    msg db      &quot;hello, world!&quot;, 0xA
+    len equ     $ - msg
+
+section .text
+    global _start
+
+_start:
+    mov     rax, 1 ; write syscall (https://linux.die.net/man/2/write)
+    mov     rdi, 1 ; stdout
+    mov     rsi, msg
+    mov     rdx, len
+    ; Passing parameters to `syscall` instruction described in
+    ; https://en.wikibooks.org/wiki/X86_Assembly/Interfacing_with_Linux#syscall
+    syscall
+    mov    rax, 60 ; exit syscall (https://linux.die.net/man/2/exit)
+    mov    rdi, 0 ; exit code
+    syscall
+</code></pre><p>The goal set a breakpoint at:</p>
+<pre tabindex="0"><code>mov     rdi, 1
+</code></pre><p>so the trap will be activated before running this instruction. Then we’ll check that RDI register stores 0, run single step and confirm that register stores 1.</p>
+<h2 id="breakpoint">Breakpoint</h2>
+<p>For x86 processors there’s a INT instruction which generates software interrupt. These interrupts are used f.ex. to do syscall on Linux. x86–64 introduced dedicated syscall instruction which is faster this is why I’ve used it above but we could achieve the same with regular int. To set a breakpoint we’ll use <code>int 3</code> which has an opcode <code>0xCC</code>:</p>
+<blockquote>
+<p>The INT 3 instruction generates a special one byte opcode (CC) that is intended for calling the debug exception handler. (This one byte form is valuable because it can be used to replace the first byte of any instruction with a breakpoint, including other one byte instructions, without over-writing other code).</p>
+</blockquote>
+<p><a href="https://software.intel.com/en-us/articles/intel-sdm">(Intel® 64 and IA-32 Architectures Software Developer’s Manual)</a></p>
+<p>We’ll use 0xCC to replace with it instruction at desired spot. Once that place will be reached we will:</p>
+<p>1 investigate process state,</p>
+<p>2 replace 0xCC back with its original value,</p>
+<p>3 decrease program counter by 1,</p>
+<p>4 run a single step.</p>
+<p>The first question is where to put <code>0xCC</code>. We don’t know where exactly in memory instruction <code>mov rdi, 1</code> will be stored. It’ll be the size of mov rax, 1 bytes further than the first instruction of the program since it’s a second instruction. Instruction lengths on x86 vary which makes the whole task more difficult. Location of the first instruction can be checked by stopping the program before processing any instruction (we’ve done that before). The length of the first instruction can be retrieved with a help of objdump program:</p>
+<pre tabindex="0"><code>&gt; nasm -f elf64 -o hello.o src/github.com/mlowicki/hello/hello.asm &amp;&amp; ld -o /go/bin/hello hello.o
+&gt; objdump -d -M intel /go/bin/hello
+/go/bin/hello:     file format elf64-x86-64
+Disassembly of section .text:
+00000000004000b0 &lt;_start&gt;:
+  4000b0:       b8 01 00 00 00          mov    eax,0x1
+  4000b5:       bf 01 00 00 00          mov    edi,0x1
+  4000ba:       48 be d8 00 60 00 00    movabs rsi,0x6000d8
+  4000c1:       00 00 00
+  4000c4:       ba 0e 00 00 00          mov    edx,0xe
+  4000c9:       0f 05                   syscall
+  4000cb:       b8 3c 00 00 00          mov    eax,0x3c
+  4000d0:       bf 00 00 00 00          mov    edi,0x0
+  4000d5:       0f 05                   syscall
+</code></pre><p>From above we see that the size of first instruction is 5 bytes (<code>4000b5 — 4000b0</code>). So for the address of first instruction we need to add 5 bytes and put <code>0xCC</code> there. Let’s see it in action:</p>
+<pre tabindex="0"><code>package main
+
+import (
+    &quot;flag&quot;
+    &quot;log&quot;
+    &quot;os&quot;
+    &quot;os/exec&quot;
+    &quot;syscall&quot;
+)
+
+func step(pid int) {
+    err := syscall.PtraceSingleStep(pid)
+    if err != nil {
+        log.Fatal(err)
+    }
+}
+
+func cont(pid int) {
+    err := syscall.PtraceCont(pid, 0)
+    if err != nil {
+        log.Fatal(err)
+    }
+}
+
+func setPC(pid int, pc uint64) {
+    var regs syscall.PtraceRegs
+    err := syscall.PtraceGetRegs(pid, &amp;regs)
+    if err != nil {
+        log.Fatal(err)
+    }
+    regs.SetPC(pc)
+    err = syscall.PtraceSetRegs(pid, &amp;regs)
+    if err != nil {
+        log.Fatal(err)
+    }
+}
+
+func getPC(pid int) uint64 {
+    var regs syscall.PtraceRegs
+    err := syscall.PtraceGetRegs(pid, &amp;regs)
+    if err != nil {
+        log.Fatal(err)
+    }
+    return regs.PC()
+}
+
+func setBreakpoint(pid int, breakpoint uintptr) []byte {
+    original := make([]byte, 1)
+    _, err := syscall.PtracePeekData(pid, breakpoint, original)
+    if err != nil {
+        log.Fatal(err)
+    }
+    _, err = syscall.PtracePokeData(pid, breakpoint, []byte{0xCC})
+    if err != nil {
+        log.Fatal(err)
+    }
+    return original
+}
+
+func clearBreakpoint(pid int, breakpoint uintptr, original []byte) {
+    _, err := syscall.PtracePokeData(pid, breakpoint, original)
+    if err != nil {
+        log.Fatal(err)
+    }
+}
+
+func printState(pid int) {
+    var regs syscall.PtraceRegs
+    err := syscall.PtraceGetRegs(pid, &amp;regs)
+    if err != nil {
+        log.Fatal(err)
+    }
+    log.Printf(&quot;RAX=%d, RDI=%d\n&quot;, regs.Rax, regs.Rdi)
+}
+
+func main() {
+    flag.Parse()
+    input := flag.Arg(0)
+    cmd := exec.Command(input)
+    cmd.Args = []string{input}
+    cmd.Stdout = os.Stdout
+    cmd.Stderr = os.Stderr
+    cmd.SysProcAttr = &amp;syscall.SysProcAttr{Ptrace: true}
+    err := cmd.Start()
+    if err != nil {
+        log.Fatal(err)
+    }
+    err = cmd.Wait()
+    log.Printf(&quot;State: %v\n&quot;, err)
+    pid := cmd.Process.Pid
+    breakpoint := uintptr(getPC(pid) + 5)
+    original := setBreakpoint(pid, breakpoint)
+    cont(pid)
+    var ws syscall.WaitStatus
+    _, err = syscall.Wait4(pid, &amp;ws, syscall.WALL, nil)
+    clearBreakpoint(pid, breakpoint, original)  
+    printState(pid)
+    setPC(pid, uint64(breakpoint))
+    step(pid)
+    _, err = syscall.Wait4(pid, &amp;ws, syscall.WALL, nil)
+    printState(pid)
+}
+</code></pre><p>Set of helpers are placed at the top. Functions setPC and getPC are there to manipulate program counter. It’s worth to note that PC register holds the next instruction to be executed. If we’re stopping the process before running anything then PC hods an address of memory where program’s first instruction is placed. Functions to manipulate breakpoints (setBreakpoint and clearBreakpoint) are juggling the memory by either inserting 0xCC or removing it respectively. Output is as follows:</p>
+<pre tabindex="0"><code>&gt; go install github.com/mlowicki/breakpoint
+&gt; breakpoint /go/bin/hello
+2017/07/16 21:06:33 State: stop signal: trace/breakpoint trap
+2017/07/16 21:06:33 RAX=1, RDI=0
+2017/07/16 21:06:33 RAX=1, RDI=1
+</code></pre><p>It looks fine. When process reaches trap, RDI register isn’t set (holds 0). After single step (running the 2nd instruction) register RDI has desired value set by instruction:</p>
+<pre tabindex="0"><code>mov     rdi, 1
+</code></pre><p>We’ve accomplished the task defined at the very top of this story. It requires extra work like calculating instructions lengths but we’ll fix that at some point so no worries.</p>
+<h2 id="repl">REPL</h2>
+<p>Now it’s time to create the basic structure of our debugger. It’s a simple program which handles in a loop commands like “set a breakpoint at”, “go single step”.</p>
+<pre tabindex="0"><code>package main
+import (
+    &quot;bufio&quot;
+    &quot;flag&quot;
+    &quot;fmt&quot;
+    &quot;io&quot;
+    &quot;log&quot;
+    &quot;os&quot;
+    &quot;os/exec&quot;
+    &quot;strings&quot;
+    &quot;syscall&quot;
+)
+func initTracee(path string) int {
+    cmd := exec.Command(path)
+    cmd.Args = []string{path}
+    cmd.Stdout = os.Stdout
+    cmd.Stderr = os.Stderr
+    cmd.SysProcAttr = &amp;syscall.SysProcAttr{Ptrace: true}
+    err := cmd.Start()
+    if err != nil {
+        log.Fatal(err)
+    }
+    err = cmd.Wait()
+    // Process should be stopped here because of trace/breakpoint trap
+    if err == nil {
+        log.Fatal(&quot;Program exited&quot;)
+    }
+    return cmd.Process.Pid
+}
+func main() {
+    flag.Parse()
+    _ = initTracee(flag.Arg(0))
+    for {
+        reader := bufio.NewReader(os.Stdin)
+        fmt.Print(&quot;&gt; &quot;)
+        command, err := reader.ReadString('\n')
+        if err != nil {
+            if err == io.EOF {
+                fmt.Println()
+                break
+            }
+            log.Fatal(err)
+        }
+        command = command[:len(command)-1] // get rid of ending newline character
+        if strings.HasPrefix(command, &quot;register &quot;) {
+            fmt.Println(&quot;register...&quot;)
+        } else if strings.HasPrefix(command, &quot;breakpoint &quot;) {
+            fmt.Println(&quot;breakpoint...&quot;)
+        } else if command == &quot;help&quot; {
+            fmt.Println(&quot;help...&quot;)
+        } else if command == &quot;step&quot; {
+            fmt.Println(&quot;step...&quot;)
+        } else if command == &quot;continue&quot; {
+            fmt.Println(&quot;continue&quot;)
+        } else {
+            fmt.Println(&quot;unknown command&quot;)
+        }
+    }
+}
+</code></pre><p>This is the backbone for our debugger. It doesn’t provide too much (yet) but already has the necessary logic to provide elementary REPL environment. We know more or less how to handle step, continue, help and register commands and we’ll implement these gaps soon. The one which isn’t that obvious for Golang is a breakpoint command. It’ll thoroughly explained in the upcoming post why it’s a bit harder than expected and how to overcome that extra complexity.</p>
+<p>Click ❤ below to help others discover this story. Please follow me if you want to get updates about new posts or boost work on future stories.</p>
+
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/2019-08-11-debugger-golang2/">Making debugger for Golang</a></li>
+        
+        <li><a href="/post/2019-08-11-debugger-golang/">Making debugger for Golang</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/debugger'>debugger</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="https://axiomaster.gitee.io/">Axiomaster&#39;s Site By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.gitee.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-03-01-weakreference/" title="Weak Reference">Weak Reference</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-17-camerax/" title="CameraX">CameraX</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-16-bazel-build-system/" title="Bazel build system">Bazel build system</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-16-mediapipe/" title="mediapipe">mediapipe</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-01-x86-register/" title="x86寄存器汇总">x86寄存器汇总</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-01-27-post-to-bootsec/" title="系统启动分析(一)">系统启动分析(一)</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-01-10-android-debug/" title="Android调试">Android调试</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://axiomaster.gitee.io/tags/activity/">activity</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/algorithm/">algorithm</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/android/">android</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/aosp/">aosp</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/bazel/">bazel</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/bug/">bug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/debug/">debug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/debugger/">debugger</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/docker/">docker</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/golang/">golang</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/gradle/">Gradle</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/i/o/">I/O</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/idea%E6%8F%92%E4%BB%B6/">IDEA插件</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/java/">java</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/linux/">linux</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/ml/">ML</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/net/">net</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/nginx/">nginx</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/os/">OS</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/tensorflow/">Tensorflow</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/tool/">tool</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/view/">view</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/vs-code/">VS code</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/window/">window</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/wsl/">WSL</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/zookeeper/">zookeeper</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/zygote/">zygote</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98/">内存</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/">吐槽</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%B7%A5%E5%85%B7/">工具</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%89%8B%E5%B7%A5/">手工</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/">神奇的bug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E8%AF%81%E4%B9%A6/">证书</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E9%93%BE%E6%8E%A5/">链接</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://axiomaster.gitee.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>I/O模型 | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="I/O模型 - Axiomaster&#39;s Site">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2020-01-05T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2020-01-05T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="I/O模型">
+        <meta name="author" content="axiomaster">
+        
+    <meta property="og:url" content="https://axiomaster.gitee.io/post/2020-01-05-io/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://axiomaster.gitee.io/">
+                        Axiomaster&#39;s Site
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://axiomaster.gitee.io/">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">I/O模型</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年1月5日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <h2 id="io处理过程">I/O处理过程</h2>
+<h3 id="系统调用">系统调用</h3>
+<p>操作系统出于安全的考虑，将进程的内存空间划分为用户空间(0~3G)和内核空间(3-4G)。进程在执行用户自己的代码时处于用户态(ring3); 当用户代码需要操作系统资源时, 可以通过调用操作系统提供的标准接口(POSIX)进行访问, 此时进程从用户态切换到内核态. 操作系统提供的这些接口称为系统调用.</p>
+<p>使用<code>top</code>命令时, Cpu后面的<code>us</code>就对应用户态使用的cpu, <code>sy</code>就对应内核态使用的cpu.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">%Cpu<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:  1.2 us,  0.7 sy,  0.0 ni, 98.0 id,  0.1 wa,  0.0 hi,  0.0 si,  0.0 st
+</code></pre></div><p>硬盘, 网卡等等这些设备, 用户代码都是无法直接访问的, 需要通过操作系统提供的标准系统调用进行访问. 对于linux系统, 将所有的设备都抽象成文件, 因此, 对于这些设备的访问都可以归类为IO操作.</p>
+<h3 id="文件读取过程">文件读取过程</h3>
+<p>用户程序读取磁盘或网卡上的数据, 执行read系统调用时可以分为2个过程:</p>
+<ol>
+<li>
+<p>操作系统需要将磁盘或网卡上的数据先拷贝到内核缓冲区</p>
+</li>
+<li>
+<p>操作系统再将内核缓冲区的数据拷贝到用户缓冲区</p>
+</li>
+</ol>
+<h3 id="内核缓冲区">内核缓冲区</h3>
+<p>我们知道, 硬盘等外设因为硬件原因, 读写相对内存来说是要慢几个数量级的. 如果内核一有数据就立即写入磁盘, 就需要频繁的调用驱动的硬件.操作系统为了提高与硬件交互的效率, 并不会一有数据就立即写入, 而是等攒够一些数据之后再批量写入.</p>
+<p>因此, <code>内核缓冲区时为了减少内核与外部硬件交互的次数</code>.</p>
+<h3 id="用户缓冲区">用户缓冲区</h3>
+<p>操作系统进行系统调用是有一定开销的, 而且相对开销很大. 回想读取文件时, 我们都会先申请一个buffer数组, 然后循环每次<code>read</code> len大小的数据, 之后代码对buffer内容进行处理.</p>
+<p>这么做的原因是为了避免频繁的进行系统调用. 关于len为什么取1024或4096, &laquo;UNIX环境高级编程&raquo;中专门有讨论, 这个取值是基于统计分析出来的最佳大小.</p>
+<p>因此, <code>用户缓冲区是为了减少系统调用次数</code>.</p>
+<h2 id="io模型">I/O模型</h2>
+<p>&laquo;UNIX网络编程&raquo;中介绍了UNIX种5种I/O模型:</p>
+<ul>
+<li>阻塞式I/O模型 (blocking)</li>
+<li>非阻塞式I/O模型 (non-blocking)</li>
+<li>I/O复用模型 (I/O multiplexing)</li>
+<li>信号驱动式I/O模型</li>
+<li>异步I/O模型 (asynchronous I/O)</li>
+</ul>
+<p>根据前面的描述可以知道, I/O操作涉及<code>网卡-&gt;内核缓冲区</code>及<code>内核缓冲区-&gt;用户缓冲区</code>两个过程, 下面先按照&laquo;UNIX网络编程&raquo;中的描述介绍各种模型.</p>
+<h3 id="阻塞式io模型-blocking">阻塞式I/O模型 (blocking)</h3>
+<p>阻塞式I/O的操作流程如下:</p>
+<p>
+        <img class="mx-auto" alt="blocking" src="../img/io_blocking.png" />   
+    </p>
+<p>从图中可以看到, 用户执行<code>recvfrom</code>时, 数据处理过程中的两个阶段用户线程都被阻塞. 在linux中，默认情况为阻塞式.</p>
+<h3 id="非阻塞式io模型-non-blocking">非阻塞式I/O模型 (non-blocking)</h3>
+<p>非阻塞式I/O的操作流程如下:</p>
+<p>
+        <img class="mx-auto" alt="non_blocking" src="../img/io_non_blocking.png" />   
+    </p>
+<p>不同于阻塞式, 当内核数据未就绪时, <code>recvfrom</code>会立即返回error, 并不会阻塞用户线程. 但这时就需要用户线程不停重试调用<code>recvfrom</code>, 直到内核数据ready之后, 内核执行第2阶段,将数据拷贝至用户缓冲区.</p>
+<h3 id="io复用模型-io-multiplexing">I/O复用模型 (IO multiplexing)</h3>
+<p>对于阻塞和非阻塞式I/O模型, 我们默认用户代码只处理一个连接. 当存在多个连接时, 最简单的思路就是为每个链接启动一个线程, 这样也可以处理. 另一种思路就是使用一个用户线程监控多个文件描述符, 哪个文件描述符对应的内核缓冲区ready之后, 用户线程就处理哪个文件描述符对应的连接. 第2种思路就是I/O复用.</p>
+<p>
+        <img class="mx-auto" alt="multiplexing" src="../img/io_multiplexing.png" />   
+    </p>
+<p>从图中可以看出, I/O在<code>recvfrom</code>前增加了<code>select</code>用于确定内核中哪个链接对应的文件描述符数据ready了.</p>
+<p>同时因为I/O复用相比阻塞式I/O多增加了一次系统调用, 对于单个连接来说, 开销是变大了的. 但当链接数变多时, 阻塞式I/O需要增加线程; 而I/O复用模型中, 大量的连接复用了同一个线程减少了开销, 同时大量的线程也摊平了增加的<code>select</code>步骤带来的系统调用开销, 因此在大量连接场景, I/O复用模型性能更优.</p>
+<h3 id="信号驱动io">信号驱动I/O</h3>
+<p>
+        <img class="mx-auto" alt="signal" src="../img/io_signal.png" />   
+    </p>
+<p>从图中可以看出, 信号驱动I/O使用信号解决了第1阶段阻塞.</p>
+<h3 id="异步io-asynchronous-io">异步I/O (Asynchronous I/O)</h3>
+<p>异步I/O由POSIX规范定义, 处理流程如下:</p>
+<p>
+        <img class="mx-auto" alt="async" src="../img/io_async.png" />   
+    </p>
+<p>从图中可以看出, 异步I/O在数据处理的两个阶段中, 都不会阻塞用户线程.</p>
+<h2 id="io-模型比较">I/O 模型比较</h2>
+<p>这里<code>阻塞</code>和<code>异步</code>很容易迷惑人, 因为大家很自然的就会认为<code>非阻塞 = 异步</code>, <code>阻塞 = 同步</code>. 但在I/O模型中并不是这样的, 根据POSIX中对异步I/O的定义:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">A synchronous I/O operation causes the requesting process to be blocked <span style="color:#66d9ef">until</span> that I/O operation completes;
+An asynchronous I/O operation does not cause the requesting process to be blocked;
+</code></pre></div><p>数据处理的2个阶段中, 只要任意阶段会阻塞用户线程, 都不属于<code>asynchronous I/O</code>. 从上面介绍可以看出, 5种I/O模型中, 前4种都属于同步I/O.</p>
+<h3 id="io复用">I/O复用</h3>
+<p>I/O多路复用模型在linux上的实现, 经历了<code>select</code>, <code>poll</code>, <code>epoll</code>的发展过程, 每一个实现都是为了解决前面实现的缺陷. 下图是epoll实现时对比poll的测试结果, 可以看到随着横轴连接数的增加, epoll很稳定, 与poll之间的差异越来越大.</p>
+<p>
+        <img class="mx-auto" alt="epoll" src="../img/io_epoll_test.jpg" />   
+    </p>
+<p><a href="http://www.xmailserver.org/linux-patches/nio-improve.html">epoll patch</a></p>
+<p>正是因为epoll突出的性能, 涉及I/O操作的库和基础软件在linux上基本都使用epoll实现. 比如nginx, node, android中的looper, java中的nio等等.</p>
+<h3 id="epoll和异步io">epoll和异步I/O</h3>
+<p>从前面的分析可知, I/O复用只是解决了避免因为第1阶段阻塞从而需要创建大量线程的问题, 而异步I/O则解决了2阶段阻塞问题. 那是否异步I/O相比epoll的性能更加优异呢?</p>
+<p>其实, 异步I/O只是POSIX规范中描述的一种I/O模型, 并非实现. 在linux上, 目前还没有成熟的内核异步I/O实现, glibc提供了一个用户态的异步IO实现, 但据说也有很多bug. 但是在windows上, <code>IOCP</code>是一个成熟的内核态异步IO实现, windows上的很多应用是基于IOCP实现的. 关于这个问题, stackoverflow上有一个回答:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">There is a notify on ready model in Windows as well (select or WSAWaitForMultipleEvents), which you may have looked at before. It can&#39;t scale to large numbers of sockets, so it&#39;s not suitable for high-performance network applications.
+
+Don&#39;t let that put you off - Windows and Linux are completely different operating systems. Something that doesn&#39;t scale well on one system may work very well on the other. This approach actually works very well on Linux, with performance comparable to IOCP on Windows.
+</code></pre></div><h3 id="协程">协程</h3>
+<p>前面定性分析了I/O复用相比阻塞式I/O在大量连接时性能优异的原因, 是因为阻塞式IO需要为每个连接起一个线程, 维护大量的线程涉及大量的线程切换导致系统调度开销很大. 这也是为什么nginx相比Apache性能好的原因.</p>
+<p>但如果将<em>线程</em>的开销降下来了呢？　golang中的server就是这种思路, 每个连接对应一个协程, 使用协程减少线程上下文切换的开销从而提升性能. 当然, 这只是协程使用的一种场景, 这种思路对应阻塞式IO, 编程模型更加简单. 目前还没有看到使用协程开发出的可以匹敌nginx性能的server, 估计也没有动力.</p>
+
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/2018-03-04-java-oom/">Java内存泄漏分析</a></li>
+        
+        <li><a href="/post/2018-08-14-linux-perf-tool/">linux perf tool</a></li>
+        
+        <li><a href="/post/2018-07-01-linux-cpu/">linux-cpu</a></li>
+        
+        <li><a href="/post/2018-09-08-page/">线性地址 -&gt; 物理地址 PAGE</a></li>
+        
+        <li><a href="/post/2018-09-08-gdt-ldt/">逻辑地址-&gt;线性地址 GDT/LDT</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/i/o'>I/O</a></li>
+                
+                <li><a href='/tags/os'>OS</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="https://axiomaster.gitee.io/">Axiomaster&#39;s Site By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.gitee.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-03-01-weakreference/" title="Weak Reference">Weak Reference</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-17-camerax/" title="CameraX">CameraX</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-16-bazel-build-system/" title="Bazel build system">Bazel build system</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-16-mediapipe/" title="mediapipe">mediapipe</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-01-x86-register/" title="x86寄存器汇总">x86寄存器汇总</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-01-27-post-to-bootsec/" title="系统启动分析(一)">系统启动分析(一)</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-01-10-android-debug/" title="Android调试">Android调试</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://axiomaster.gitee.io/tags/activity/">activity</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/algorithm/">algorithm</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/android/">android</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/aosp/">aosp</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/bazel/">bazel</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/bug/">bug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/debug/">debug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/debugger/">debugger</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/docker/">docker</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/golang/">golang</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/gradle/">Gradle</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/i/o/">I/O</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/idea%E6%8F%92%E4%BB%B6/">IDEA插件</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/java/">java</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/linux/">linux</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/ml/">ML</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/net/">net</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/nginx/">nginx</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/os/">OS</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/tensorflow/">Tensorflow</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/tool/">tool</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/view/">view</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/vs-code/">VS code</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/window/">window</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/wsl/">WSL</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/zookeeper/">zookeeper</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/zygote/">zygote</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98/">内存</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/">吐槽</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%B7%A5%E5%85%B7/">工具</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%89%8B%E5%B7%A5/">手工</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/">神奇的bug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E8%AF%81%E4%B9%A6/">证书</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E9%93%BE%E6%8E%A5/">链接</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://axiomaster.gitee.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

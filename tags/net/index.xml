@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>net on Axiomaster&#39;s Site</title>
+    <link>https://axiomaster.gitee.io/tags/net/</link>
+    <description>Recent content in net on Axiomaster&#39;s Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="https://axiomaster.gitee.io/tags/net/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HttpClient getContentLength()问题</title>
+      <link>https://axiomaster.gitee.io/post/2018-04-17-httpclient-getcontentlength/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://axiomaster.gitee.io/post/2018-04-17-httpclient-getcontentlength/</guid>
+      <description>HttpClient getContentLength()问题 java中使用HttpClient的getContentLength方法获取相应体大小时，如果服务端进行了gzip压缩，响应中可能不包含Content-Length字段。该方法无效。</description>
+    </item>
+    
+    <item>
+      <title>TLS协议抓包分析</title>
+      <link>https://axiomaster.gitee.io/post/2018-03-04-tls-tcpdump-analyses/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://axiomaster.gitee.io/post/2018-03-04-tls-tcpdump-analyses/</guid>
+      <description>TLS协议抓包分析 </description>
+    </item>
+    
+    <item>
+      <title>udp in linux by c</title>
+      <link>https://axiomaster.gitee.io/post/2018-08-11-udp-in-linux-by-c/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://axiomaster.gitee.io/post/2018-08-11-udp-in-linux-by-c/</guid>
+      <description>udp in linux by c Linux编程之UDP SOCKET全攻略</description>
+    </item>
+    
+    <item>
+      <title>使用iptables进行转发</title>
+      <link>https://axiomaster.gitee.io/post/2018-03-06-iptables-nat/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://axiomaster.gitee.io/post/2018-03-06-iptables-nat/</guid>
+      <description>使用iptables进行转发 </description>
+    </item>
+    
+  </channel>
+</rss>

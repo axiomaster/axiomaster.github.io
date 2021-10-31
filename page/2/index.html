@@ -65,201 +65,186 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
+                <a href="https://axiomaster.gitee.io/post/2020-01-09-activity/" title="activity、window、view和surface">activity、window、view和surface</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年10月31日
+            2020年1月7日
         </date>
         
         <div class="post-content">
-            GCC 支持在C/C++代码中嵌入汇编代码，这些汇编代码被称作GCC Inline ASM——GCC内联汇编。这是一个非常有用的功能，有利于我们将一些C/C++语法无法表达指令直接潜入C/C++代码中，另外也允许我们直接写 C/C++代码中使用汇编编写简洁高效的代码。
-1.基本内联汇编 GCC中基本的内联汇编非常易懂，我们先来看两个简单的例子：
-__asm__(&#34;movl %esp,%eax&#34;); // 看起来很熟悉吧！ 或者是
-__asm__(&#34;movl $1,%eax // SYS_exitxor %ebx,%ebxint $0x80&#34;); 或
-__asm__(&#34;movl $1,%eax/r/t&#34; /&#34;xor %ebx,%ebx/r/t&#34; /&#34;int $0x80&#34; /); 2.基本内联汇编的格式 __asm__ __volatile__(&#34;Instruction List&#34;); 1、asm __asm__是GCC关键字asm的宏定义：
-#define __asm__ asm __asm__或asm用来声明一个内联汇编表达式，所以任何一个内联汇编表达式都是以它开头的，是必不可少的。
-2、Instruction List Instruction List是汇编指令序列。它可以是空的，比如：__asm__ __volatile__(&quot;&quot;); 或 __asm__ (&quot;&quot;); 都是完全合法的内联汇编表达式，只不过这两条语句没有什么意义。
-但并非所有Instruction List为空的内联汇编表达式都是没有意义的，比如： __asm__ (&quot;&quot;:::&quot;memory&quot;); 就非常有意义，它向GCC声明：“我对内存作了改动”，GCC在编译的时候，会将此因素考虑进去。
-我们看一看下面这个例子：
-$ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc; (*__p) = 9999; //__asm__(&#34;&#34;:::&#34;memory&#34;); if ((*__p) == 9999) { return 5; } return (*__p); } 在这段代码中，那条内联汇编是被注释掉的。在这条内联汇编之前，内存指针__p所指向的内存被赋值为9999，随即在内联汇编之后，一条if语句判断__p 所指向的内存与9999是否相等。很明显，它们是相等的。GCC在优化编译的时候能够很聪明的发现这一点。我们使用下面的命令行对其进行编译：……
+            ……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-01-09-activity/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
+                <a href="https://axiomaster.gitee.io/post/2020-01-07-zygote/" title="Android启动分析">Android启动分析</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年9月3日
+            2020年1月7日
         </date>
         
         <div class="post-content">
-            六步法  import train, test 网络结构  model=tf.keras.models.Sequential # 搭建网络结构 class MyModel(Model) model = MyModel   model.compile # 配置训练优化器，损失函数 model.fit # 输入特征，batch, epoch model.summary  网络结构 拉直层 tf.keras.layers.Flatten()
-全连接层 tf.keras.layers.Dense(神经元个数, activation=&#34;激活函数&#34;, kernel_regularizer=&#34;正则化&#34;) 卷积层 tf.keras.layers.Conv2D(filters=卷积核个数, kernel_size=卷积核尺寸, strides=卷积步长, padding=&#34;valid&#34; or &#34;same&#34;) LSTM层 tf.keras.layers.LSTM()
-训练方法 model.compile(optimizer=优化器, loss=损失函数, metrics=[&#34;准确率&#34;]) Optimizer  sgd adagrad adadelta adam  loss Metrics 训练过程 model.fit(训练集的输入特征, 训练集的标签, batch_size=, epochs=, validation_data=(测试集的输入特征, 测试集的标签), validation_split=从训练集划分多少比例分给测试集, validation_freq=多少次epoch测试一次) ……
+            ……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-01-07-zygote/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
+                <a href="https://axiomaster.gitee.io/post/2020-01-07-aosp/" title="aosp源码编译与阅读">aosp源码编译与阅读</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年9月3日
+            2020年1月7日
         </date>
         
         <div class="post-content">
-            CNN  输入特征图的深度（channel数），决定了当前层卷积核的深度； 当前层卷积核的个数，决定了当前层输出特征图的深度；  tf.keras.layers.Conv2D( kernel_size=卷积核尺寸, strides=滑动补偿, padding=&#34;same&#34; or &#34;valid&#34;, activation=&#34;relu&#34; or &#34;sigmoid&#34; or &#34;tanh&#34; or &#34;softmax&#34;, input_shape=(高, 宽, 通道数) ) 批标准化（Batch Normalization, BN） 池化 池化用于减少特征数据量，最大值池化可提取图片纹理，均值池化可保留背景特征。
-舍弃 Dropout 训练时，一定概率随机舍弃神经元。网络使用时，恢复神经元。
-卷积神经网络结构 卷积：特征提取器，CBAPD(Convolutinoal, BN, Activation, Pooling, Dropout)……
+            下载源码 国内从google下载aosp源码需要翻墙，很不方便。可以使用清华大学开源软件镜像站提供的镜像地址进行下载,同步代码.
+下载,检出代码按照清华镜像站的地址说明一步步操作就可以了.
+可能的错误  初始化包比较大,下载后记得进行md5校验. 使用迅雷中断后续传,发现md5值不匹配,推荐使用uget之类的工具在晚上下载,一次成功.  aosp编译 官方指导
+ 建立编译环境 编译 Android  编译很简单, aosp源码中prebuilts目录下集成了所有编译会用到的工具,包括clang, jdk等,不需要额外下载. 编译脚本只支持python2,环境上安装一下python2就可以了.
+在Ubuntu 18.04上使用如下步骤进行编译:
+设置环境变量等 source build/envsetup.sh 设置编译目标版本 lism@lism-u18:~/android/aosp$ lunch aosp_x86_64-eng ============================================ PLATFORM_VERSION_CODENAME=R PLATFORM_VERSION=R TARGET_PRODUCT=aosp_x86_64 TARGET_BUILD_VARIANT=eng TARGET_BUILD_TYPE=release TARGET_ARCH=x86_64 TARGET_ARCH_VARIANT=x86_64 TARGET_2ND_ARCH=x86 TARGET_2ND_ARCH_VARIANT=x86_64 HOST_ARCH=x86_64 HOST_2ND_ARCH=x86 HOST_OS=linux HOST_OS_EXTRA=Linux-5.0.0-37-generic-x86_64-Ubuntu-18.04.3-LTS HOST_CROSS_OS=windows HOST_CROSS_ARCH=x86 HOST_CROSS_2ND_ARCH=x86_64 HOST_BUILD_TYPE=release BUILD_ID=QD1A.190821.011 OUT_DIR=out ============================================ 如果不清楚需要输入什么版本, 输入lunch后会自动列出支持的版本信息.
+lism@lism-u18:~/android/aosp$ lunch You&#39;re building on Linux Lunch menu... pick a combo: 1. aosp_arm-eng 2. aosp_arm64-eng 3. aosp_blueline-userdebug 4. aosp_bonito-userdebug 5.……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-01-07-aosp/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-03-01-weakreference/" title="Weak Reference">Weak Reference</a>
+                <a href="https://axiomaster.gitee.io/post/2020-01-05-handler/" title="Handler和Looper">Handler和Looper</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年3月1日
+            2020年1月5日
         </date>
         
         <div class="post-content">
-            Weak Reference WeakHashMap ……
+            ……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-03-01-weakreference/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-01-05-handler/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-02-17-camerax/" title="CameraX">CameraX</a>
+                <a href="https://axiomaster.gitee.io/post/2020-01-05-looper/" title="Handler和Looper">Handler和Looper</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年2月17日
+            2020年1月5日
         </date>
         
         <div class="post-content">
-            Android CameraX库……
+            ……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-02-17-camerax/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-01-05-looper/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-02-16-bazel-build-system/" title="Bazel build system">Bazel build system</a>
+                <a href="https://axiomaster.gitee.io/post/2020-01-05-io/" title="I/O模型">I/O模型</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年2月16日
+            2020年1月5日
         </date>
         
         <div class="post-content">
-            这货不支持proxy，也是醉了，这让人咋用啊。……
+            I/O处理过程 系统调用 操作系统出于安全的考虑，将进程的内存空间划分为用户空间(0~3G)和内核空间(3-4G)。进程在执行用户自己的代码时处于用户态(ring3); 当用户代码需要操作系统资源时, 可以通过调用操作系统提供的标准接口(POSIX)进行访问, 此时进程从用户态切换到内核态. 操作系统提供的这些接口称为系统调用.
+使用top命令时, Cpu后面的us就对应用户态使用的cpu, sy就对应内核态使用的cpu.
+%Cpu(s): 1.2 us, 0.7 sy, 0.0 ni, 98.0 id, 0.1 wa, 0.0 hi, 0.0 si, 0.0 st 硬盘, 网卡等等这些设备, 用户代码都是无法直接访问的, 需要通过操作系统提供的标准系统调用进行访问. 对于linux系统, 将所有的设备都抽象成文件, 因此, 对于这些设备的访问都可以归类为IO操作.
+文件读取过程 用户程序读取磁盘或网卡上的数据, 执行read系统调用时可以分为2个过程:
+  操作系统需要将磁盘或网卡上的数据先拷贝到内核缓冲区
+  操作系统再将内核缓冲区的数据拷贝到用户缓冲区
+  内核缓冲区 我们知道, 硬盘等外设因为硬件原因, 读写相对内存来说是要慢几个数量级的. 如果内核一有数据就立即写入磁盘, 就需要频繁的调用驱动的硬件.操作系统为了提高与硬件交互的效率, 并不会一有数据就立即写入, 而是等攒够一些数据之后再批量写入.
+因此, 内核缓冲区时为了减少内核与外部硬件交互的次数.
+用户缓冲区 操作系统进行系统调用是有一定开销的, 而且相对开销很大. 回想读取文件时, 我们都会先申请一个buffer数组, 然后循环每次read len大小的数据, 之后代码对buffer内容进行处理.
+这么做的原因是为了避免频繁的进行系统调用. 关于len为什么取1024或4096, &laquo;UNIX环境高级编程&raquo;中专门有讨论, 这个取值是基于统计分析出来的最佳大小.
+因此, 用户缓冲区是为了减少系统调用次数.……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-02-16-bazel-build-system/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-01-05-io/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-02-16-mediapipe/" title="mediapipe">mediapipe</a>
+                <a href="https://axiomaster.gitee.io/post/2019-12-31-makeup-computer/" title="自己动手组装台式机">自己动手组装台式机</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年2月16日
+            2019年12月31日
         </date>
         
         <div class="post-content">
-            Google推出的将机器学习/深度学习进行产品化的框架，主要是其中类似tensorflow中图编辑模式。但我们只是看中了人家训练好的手部跟踪的demo。
-使用bazel编译系统，但bazel这坑货又不支持proxy。那就需要搞明白所有的编译规则，然后把包挨个离线下下来，然后使用local_repo的方式进行编译。……
+            双十一买了一个34'的21:9超宽屏显示器，回来之后接上笔记本，越来越觉得笔记本有点儿带不动。正好最近学习android需要编译aosp， 然后就研究了一下攒机，预算3000，组一台linux编译机。于是趁着双十二买了一堆零件自己组了一台电脑。
+配置单 先说说最终的配置：
+   配件 型号 价格     CPU ryzen 3700x    主板 MSI B450M mortar max 主板+CPU套装 ￥2514   内存 海盗船 DDR4 3600MHz 16G x 2 ￥1038   固态硬盘 阿斯加特 M.2 NVMe 500G ￥343   显卡 二手铭暄 GTX 960 2G ￥399   电源 酷冷至尊 MWE 550 铜牌 ￥312   机箱 先马 征途 中塔机箱 送5把RGB机箱风扇 ￥164   显示器 小米 34' 曲面显示器 ￥1999   无线网卡 腾达U10 USB无线网卡 ￥59   dp线 绿联 DP 1.……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-02-16-mediapipe/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-12-31-makeup-computer/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-02-01-x86-register/" title="x86寄存器汇总">x86寄存器汇总</a>
+                <a href="https://axiomaster.gitee.io/post/2019-08-11-debugger-golang/" title="Making debugger for Golang">Making debugger for Golang</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年2月1日
+            2019年8月11日
         </date>
         
         <div class="post-content">
-            x86寄存器分类 8个通用寄存器 均为32位。
-  EAX
-累加寄存器(Accumulator Register)。
-  EBX
-基地址寄存器(Base Register)。
-  ECX
-计数寄存器(Count Register)。
-  EDX
-数据寄存器(Data Register)。
-  ESI
-  EDI
-源/目标索引寄存器(Source/Destination Index Register)
-  ESP
-基指针寄存器(Base Pointer Register)
-  EBP
-堆栈指针寄存器(Stack Pointer Register)
-  6个段寄存器 段寄存器均为16位。
-  CS
-指向代码段的段选择符，与EIP寄存器联合构成指令地址。
-  DS
-  ES
-  FS
-  GS
-指向数据段。
-  SS
-指向栈段的段选择符。
-  5个控制寄存器 均为32位。……
+            转载自 Making debugger for Golang (part I)
+ The goal of this series is not to write full-featured debugger for Go programming language. If you’re looking for some then please take a look at Delve. We’ll try to understand here how debuggers work in general and how to implement basic one on Linux which takes into account Golang’s features like goroutines.
+Creating debugger isn’t easy though. We won’t even strive to cover this topic within a single story.……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-02-01-x86-register/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-08-11-debugger-golang/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-01-27-post-to-bootsec/" title="系统启动分析(一)">系统启动分析(一)</a>
+                <a href="https://axiomaster.gitee.io/post/2019-08-11-debugger-golang2/" title="Making debugger for Golang">Making debugger for Golang</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年1月27日
+            2019年8月11日
         </date>
         
         <div class="post-content">
-            dumpsys dumpsys input 获取linux事件 getevent -lr ……
+            转载自 Making debugger for Golang (part II)
+ During the first part we’ve bootstrapped development environment and made a simple program (tracer) which stops child process (tracee) at the very beginning and then continues it execution together with showing its standard output. Now it’s time to extend its basic capabilities.
+Usually debuggers allow to single-step through debugged program. It can be done using ptrace PTRACE_SINGLESTEP request which tells tracee to stop after execution of single instruction:……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-01-27-post-to-bootsec/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-08-11-debugger-golang2/">阅读全文</a></p>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-01-10-android-debug/" title="Android调试">Android调试</a>
+                <a href="https://axiomaster.gitee.io/post/2019-08-11-debugger-golang3/" title="Making debugger for Golang">Making debugger for Golang</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年1月10日
+            2019年8月11日
         </date>
         
         <div class="post-content">
-            dumpsys dumpsys input 获取linux事件 getevent -lr ……
+            转载自 Making debugger for Golang (part III)
+ So far we’ve learned how to single-step ptraced process (tracee) and get some debugging info out of binary (read it here if you haven’t done it yet). Now it’s time to set a breakpoint at desired place, wait until reached and then investigate process state.
+Let’s start with assembly code used before:
+section .data msg db &quot;hello, world!&quot;, 0xA len equ $ - msg section .……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-01-10-android-debug/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-08-11-debugger-golang3/">阅读全文</a></p>
     </article>
     
     
@@ -268,13 +253,17 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
 
 <ol class="page-navigator">
     
+    <li class="prev">
+        <a href="https://axiomaster.gitee.io/">上一页</a>
+    </li>
+    
 
     
-    <li  class="current">
+    <li >
         <a href="https://axiomaster.gitee.io/">1</a>
     </li>
     
-    <li >
+    <li  class="current">
         <a href="https://axiomaster.gitee.io/page/2/">2</a>
     </li>
     
@@ -301,7 +290,7 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
 
     
     <li class="next">
-        <a href="https://axiomaster.gitee.io/page/2/">下一页</a>
+        <a href="https://axiomaster.gitee.io/page/3/">下一页</a>
     </li>
     
 </ol>

@@ -7,20 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>404 Page not found | Axiomaster&#39;s Site</title>
-    <meta property="og:title" content="404 Page not found - Axiomaster&#39;s Site">
+    <title>debugger | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="debugger - Axiomaster&#39;s Site">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="">
-    <meta name="description" content="404 Page not found">
+    <meta name="description" content="debugger">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/404.html">
+    <meta property="og:url" content="https://axiomaster.gitee.io/tags/debugger/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
+    <link rel="alternate" type="application/rss+xml" href="https://axiomaster.gitee.io/tags/debugger/index.xml" title="Axiomaster's Site" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -60,20 +61,78 @@
 
                 <div class="col-8" id="main">
                     
-<div class="body404">
-    <div class="info404">
-        <header id="header404" class="clearfix">
-            <div class="site-name404"><i>404</i></div>
-        </header>
-        <section>
-            <div class="title404">
-                <p>每一个平凡的日常<br />都是连续发生中的奇迹</p>
-            </div>
-            
+<div class="res-cons">
+    
+    <h3 class="archive-title">
+        包含标签
+        <span class="keyword">debugger</span>
+        的文章
+    </h3>
+    
 
-            <a rel="nofollow" href="https://axiomaster.gitee.io/" class="index404">回首页看看</a>
-        </section>
-    </div>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2019-08-11-debugger-golang/">Making debugger for Golang</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月11日
+        </date>
+        
+        <div class="post-content">
+            转载自 Making debugger for Golang (part I)
+ The goal of this series is not to write full-featured debugger for Go programming language. If you’re looking for some then please take a look at Delve. We’ll try to understand here how debuggers work in general and how to implement basic one on Linux which takes into account Golang’s features like goroutines.
+Creating debugger isn’t easy though. We won’t even strive to cover this topic within a single story.……
+            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-08-11-debugger-golang/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2019-08-11-debugger-golang2/">Making debugger for Golang</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月11日
+        </date>
+        
+        <div class="post-content">
+            转载自 Making debugger for Golang (part II)
+ During the first part we’ve bootstrapped development environment and made a simple program (tracer) which stops child process (tracee) at the very beginning and then continues it execution together with showing its standard output. Now it’s time to extend its basic capabilities.
+Usually debuggers allow to single-step through debugged program. It can be done using ptrace PTRACE_SINGLESTEP request which tells tracee to stop after execution of single instruction:……
+            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-08-11-debugger-golang2/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2019-08-11-debugger-golang3/">Making debugger for Golang</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月11日
+        </date>
+        
+        <div class="post-content">
+            转载自 Making debugger for Golang (part III)
+ So far we’ve learned how to single-step ptraced process (tracee) and get some debugging info out of binary (read it here if you haven’t done it yet). Now it’s time to set a breakpoint at desired place, wait until reached and then investigate process state.
+Let’s start with assembly code used before:
+section .data msg db &quot;hello, world!&quot;, 0xA len equ $ - msg section .……
+            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-08-11-debugger-golang3/">阅读全文</a></p>
+        </div>
+    </article>
+    
+
+    
+
+
+
+
+
 </div>
 
                     <footer id="footer">

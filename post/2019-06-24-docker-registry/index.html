@@ -7,16 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>404 Page not found | Axiomaster&#39;s Site</title>
-    <meta property="og:title" content="404 Page not found - Axiomaster&#39;s Site">
+    <title>docker私有镜像仓库 | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="docker私有镜像仓库 - Axiomaster&#39;s Site">
     <meta property="og:type" content="article">
         
+    <meta property="article:published_time" content='2019-06-24T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-06-24T00:00:00&#43;08:00'>
         
     <meta name="Keywords" content="">
-    <meta name="description" content="404 Page not found">
+    <meta name="description" content="docker私有镜像仓库">
+        <meta name="author" content="axiomaster">
         
-    <meta name="author" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/404.html">
+    <meta property="og:url" content="https://axiomaster.gitee.io/post/2019-06-24-docker-registry/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
@@ -46,7 +50,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://axiomaster.gitee.io/">首页</a>
+                    <a class="current" href="https://axiomaster.gitee.io/">首页</a>
                     
                 </nav>
             </div>
@@ -60,20 +64,103 @@
 
                 <div class="col-8" id="main">
                     
-<div class="body404">
-    <div class="info404">
-        <header id="header404" class="clearfix">
-            <div class="site-name404"><i>404</i></div>
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">docker私有镜像仓库</h1>
         </header>
-        <section>
-            <div class="title404">
-                <p>每一个平凡的日常<br />都是连续发生中的奇迹</p>
-            </div>
-            
+        <date class="post-meta meta-date">
+            2019年6月24日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>上一篇<a href="http://www.axiomaster.com/2019/06/23/vscode-remote/">VS code remote</a>提到国内访问docker官方镜像特别慢，可以使用加速器。但对于企业等，都会自建私有镜像地址，也可以解决这个问题。</p>
+<h2 id="docker-registry">docker registry</h2>
+<blockquote>
+<p>Registry是一个无状态的，高可扩展的服务端应用，主要用于存储和分发Docker镜像。</p>
+<p><a href="https://docs.docker.com/registry/">Docker Registry文档</a></p>
+</blockquote>
+<h3 id="下载registry镜像">下载registry镜像</h3>
+<p>1 直接运行registry</p>
+<p>这种方式需要机器能够访问docker.io</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker run -d -p 5000:5000 --name registry registry:2
+</code></pre></div><p>2 保存registry.tar并运行</p>
+<ul>
+<li>
+<p>通过可以访问外网的机器先 <code>docker pull registry</code>放入本地镜像仓库</p>
+</li>
+<li>
+<p>使用<code>docker save</code>保存为tar包</p>
+</li>
+<li>
+<p>将registry.tar拷贝到无法访问外网的机器上</p>
+</li>
+<li>
+<p>使用<code>docker load -i</code>将tar包加载到本地镜像仓库</p>
+</li>
+<li>
+<p>最后<code>docker run</code>运行registry服务</p>
+</li>
+</ul>
+<h3 id="配置私有镜像地址">配置私有镜像地址</h3>
+<p>1 将镜像<code>docker push</code>至私有镜像仓库</p>
+<p>和使用registry.tar运行registry服务类似，思路如下：</p>
+<ul>
+<li>
+<p>将镜像tar包拷贝到机器上</p>
+</li>
+<li>
+<p>使用<code>docker load -i</code>加载到本地镜像</p>
+</li>
+<li>
+<p>使用<code>docker tag</code>为镜像打上私有镜像地址的标签，比如<code>192.168.1.11:5000/ubuntu:least</code></p>
+</li>
+<li>
+<p>使用<code>docker push</code>将镜像推到镜像仓库</p>
+</li>
+</ul>
+<h3 id="使用私有镜像地址">使用私有镜像地址</h3>
+<p>修改<code>daemon.json</code>，添加如下配置：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;insecure-registries&#34;</span>: [<span style="color:#e6db74">&#34;192.168.1.11:5000&#34;</span>]
+}
+</code></pre></div><p>配置之后重启docker服务，就可以在Dockerfile中使用私有镜像仓库中的镜像了。</p>
 
-            <a rel="nofollow" href="https://axiomaster.gitee.io/" class="index404">回首页看看</a>
-        </section>
-    </div>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/2018-05-27-docker-command/">docker 常用命令</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/docker'>docker</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
 </div>
 
                     <footer id="footer">
@@ -96,6 +183,16 @@
 </footer>
 
 
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>

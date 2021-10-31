@@ -7,16 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>404 Page not found | Axiomaster&#39;s Site</title>
-    <meta property="og:title" content="404 Page not found - Axiomaster&#39;s Site">
+    <title>Golang defer导致内存溢出 | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="Golang defer导致内存溢出 - Axiomaster&#39;s Site">
     <meta property="og:type" content="article">
         
+    <meta property="article:published_time" content='2019-03-17T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-03-17T00:00:00&#43;08:00'>
         
     <meta name="Keywords" content="">
-    <meta name="description" content="404 Page not found">
+    <meta name="description" content="Golang defer导致内存溢出">
+        <meta name="author" content="axiomaster">
         
-    <meta name="author" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/404.html">
+    <meta property="og:url" content="https://axiomaster.gitee.io/post/2019-04-14-defer/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
@@ -46,7 +50,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://axiomaster.gitee.io/">首页</a>
+                    <a class="current" href="https://axiomaster.gitee.io/">首页</a>
                     
                 </nav>
             </div>
@@ -60,20 +64,62 @@
 
                 <div class="col-8" id="main">
                     
-<div class="body404">
-    <div class="info404">
-        <header id="header404" class="clearfix">
-            <div class="site-name404"><i>404</i></div>
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">Golang defer导致内存溢出</h1>
         </header>
-        <section>
-            <div class="title404">
-                <p>每一个平凡的日常<br />都是连续发生中的奇迹</p>
-            </div>
-            
+        <date class="post-meta meta-date">
+            2019年3月17日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>Golang中提供了defer关键字，以前可能需要在函数内进行多次判断之后释放资源，现在使用defer一次就搞定了，习惯之后会觉得这个特性非常好用。</p>
+<h2 id="问题代码">问题代码</h2>
+<p>有一句话是<code>软件设计没有银弹</code>，放在这里依然成立。defer这么好用，但也需要注意一些坑。代码逻辑大致如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">for</span> {
+    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">释放资源</span>
 
-            <a rel="nofollow" href="https://axiomaster.gitee.io/" class="index404">回首页看看</a>
-        </section>
-    </div>
+    <span style="color:#75715e">// http request
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 错误码判断
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// sleep 5s重试 或 break退出
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>业务是心跳这样的守护进程，所以直接就用了死循环，请求失败之后进行重试，或满足一定条件时退出循环。使用defer在最后释放资源。</p>
+<p>测试时异常场景也进行了覆盖，功能上没有发现问题。但在一个实例上发现运行一段时间之后内存爆了。</p>
+<h2 id="问题分析">问题分析</h2>
+<p>defer的实现机制是在调用函数栈上再压入defer函数，调用return前调用defer函数。所以调用defer会有一次压栈操作。</p>
+<p>上面的示例中将defer在for循环中，环境恰好没有返回对应的错误码让for循环退出，导致defer一直被执行，重复的压栈导致StackOverflow。</p>
+<h2 id="小结">小结</h2>
+<p>从这里看，将defer放入循环中就是一个不好的习惯；另外，死循环代码也有一丝丝坏味道，看到这样的代码时就应该警惕了。</p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug'>神奇的bug</a></li>
+                
+                <li><a href='/tags/golang'>golang</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
 </div>
 
                     <footer id="footer">
@@ -96,6 +142,16 @@
 </footer>
 
 
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>

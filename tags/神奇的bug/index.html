@@ -7,20 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>404 Page not found | Axiomaster&#39;s Site</title>
-    <meta property="og:title" content="404 Page not found - Axiomaster&#39;s Site">
+    <title>神奇的bug | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="神奇的bug - Axiomaster&#39;s Site">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="">
-    <meta name="description" content="404 Page not found">
+    <meta name="description" content="神奇的bug">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/404.html">
+    <meta property="og:url" content="https://axiomaster.gitee.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
+    <link rel="alternate" type="application/rss+xml" href="https://axiomaster.gitee.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/index.xml" title="Axiomaster's Site" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -60,20 +61,45 @@
 
                 <div class="col-8" id="main">
                     
-<div class="body404">
-    <div class="info404">
-        <header id="header404" class="clearfix">
-            <div class="site-name404"><i>404</i></div>
-        </header>
-        <section>
-            <div class="title404">
-                <p>每一个平凡的日常<br />都是连续发生中的奇迹</p>
-            </div>
-            
+<div class="res-cons">
+    
+    <h3 class="archive-title">
+        包含标签
+        <span class="keyword">神奇的bug</span>
+        的文章
+    </h3>
+    
 
-            <a rel="nofollow" href="https://axiomaster.gitee.io/" class="index404">回首页看看</a>
-        </section>
-    </div>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2019-04-14-defer/">Golang defer导致内存溢出</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年3月17日
+        </date>
+        
+        <div class="post-content">
+            Golang中提供了defer关键字，以前可能需要在函数内进行多次判断之后释放资源，现在使用defer一次就搞定了，习惯之后会觉得这个特性非常好用。
+问题代码 有一句话是软件设计没有银弹，放在这里依然成立。defer这么好用，但也需要注意一些坑。代码逻辑大致如下：
+for { defer 释放资源 // http request  // 错误码判断  // sleep 5s重试 或 break退出 } 业务是心跳这样的守护进程，所以直接就用了死循环，请求失败之后进行重试，或满足一定条件时退出循环。使用defer在最后释放资源。
+测试时异常场景也进行了覆盖，功能上没有发现问题。但在一个实例上发现运行一段时间之后内存爆了。
+问题分析 defer的实现机制是在调用函数栈上再压入defer函数，调用return前调用defer函数。所以调用defer会有一次压栈操作。
+上面的示例中将defer在for循环中，环境恰好没有返回对应的错误码让for循环退出，导致defer一直被执行，重复的压栈导致StackOverflow。
+小结 从这里看，将defer放入循环中就是一个不好的习惯；另外，死循环代码也有一丝丝坏味道，看到这样的代码时就应该警惕了。……
+            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-04-14-defer/">阅读全文</a></p>
+        </div>
+    </article>
+    
+
+    
+
+
+
+
+
 </div>
 
                     <footer id="footer">

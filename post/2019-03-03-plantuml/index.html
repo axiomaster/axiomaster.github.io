@@ -7,16 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>404 Page not found | Axiomaster&#39;s Site</title>
-    <meta property="og:title" content="404 Page not found - Axiomaster&#39;s Site">
+    <title>工具篇 | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="工具篇 - Axiomaster&#39;s Site">
     <meta property="og:type" content="article">
         
+    <meta property="article:published_time" content='2019-03-03T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-03-03T00:00:00&#43;08:00'>
         
     <meta name="Keywords" content="">
-    <meta name="description" content="404 Page not found">
+    <meta name="description" content="工具篇">
+        <meta name="author" content="axiomaster">
         
-    <meta name="author" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/404.html">
+    <meta property="og:url" content="https://axiomaster.gitee.io/post/2019-03-03-plantuml/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
@@ -46,7 +50,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://axiomaster.gitee.io/">首页</a>
+                    <a class="current" href="https://axiomaster.gitee.io/">首页</a>
                     
                 </nav>
             </div>
@@ -60,20 +64,113 @@
 
                 <div class="col-8" id="main">
                     
-<div class="body404">
-    <div class="info404">
-        <header id="header404" class="clearfix">
-            <div class="site-name404"><i>404</i></div>
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">工具篇</h1>
         </header>
-        <section>
-            <div class="title404">
-                <p>每一个平凡的日常<br />都是连续发生中的奇迹</p>
-            </div>
-            
+        <date class="post-meta meta-date">
+            2019年3月3日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>曾经信心满满的立过很多flag，要学习并掌握某一领域或坚持某件事儿，最终都无疾而终，只剩下零星概念和一堆遗憾，原因大都类似：</p>
+<ul>
+<li>计划被其它事情打断，中止了</li>
+<li>进行到一半，发现意义不大</li>
+<li>进行中遇到了困难，放弃了</li>
+<li>当时掌握了，但没有及时总结，后续没有练习，忘记了</li>
+</ul>
+<p>包括不限于协议栈、数据库、JVM、正则表达式、音律、写总结&hellip;&hellip;也包括设计模式。结果一回头，猛然发现时间已经过去了这么久，却什么都没有留下来。</p>
+<p>在此再立一个flag，每周写一篇总结。周积跬步，以致千里。</p>
+<h1 id="uml">UML</h1>
+<blockquote>
+<p>统一建模语言 (<a href="https://baike.baidu.com/item/%E7%BB%9F%E4%B8%80%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/3160571?fromtitle=UML&amp;fromid=446747&amp;fr=aladdin">Unified Modeling Language, UML</a>)</p>
+</blockquote>
+<p>所有介绍设计模式的资料都会用到uml图。之前总以为UML图就是类图，每次都是被继承，实现里面的实线、虚线、箭头等给整懵了。然后就放弃看图，只看代码实现。</p>
+<p>现在才知道，类图只是UML中的一小部分。UML图还包括用例图，时序图等。和SE等大佬交流时，设计文档里全是各种UML图。</p>
+<h1 id="plantuml">PlantUML</h1>
+<p>各种工具都可以画UML图，包括visio，Visual Paradigm等。我们使用PlantUML, 像Markdown一样，通过简单的语句<em>写UML图</em>，使用方便。当然，这一套工具也都是免费的。</p>
+<h2 id="windows安装">windows安装</h2>
+<ul>
+<li>PlantUML</li>
+</ul>
+<p>PlantUML有IntelliJ IDEA的插件版，可以直接在IDEA的plugins中下载安装。我们也使用这个版本。</p>
+<p>
+        <img class="mx-auto" alt="plantuml插件" src="../img/plantuml.png" />   
+    </p>
+<p>插件装好之后，新建puml文件，直接打开就可以看到对应的编辑器了。</p>
+<p>
+        <img class="mx-auto" alt="plantuml插件" src="../img/plantuml-editor.png" />   
+    </p>
+<ul>
+<li>Graphviz</li>
+</ul>
+<p>安装插件之后，也可能无法看到右边的预览图，而是提示报错，这是因为缺少Graphviz环境变量。Graphviz是一个开源的绘图软件，很多开源软件生成可视化图时都使用Graphviz。</p>
+<p><a href="http://www.graphviz.org/download/">下载Graphviz</a>并安装后，配置如下环境变量之后就好了。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">GRAPHVIZ_DOT<span style="color:#f92672">=</span>D:<span style="color:#ae81ff">\P</span>rogram Files <span style="color:#f92672">(</span>x86<span style="color:#f92672">)</span><span style="color:#ae81ff">\G</span>raphviz2.38<span style="color:#ae81ff">\b</span>in<span style="color:#ae81ff">\d</span>ot.exe
+</code></pre></div><h1 id="plantuml基本语法">PlantUML基本语法</h1>
+<blockquote>
+<p><a href="https://yq.aliyun.com/articles/25405">PlantUML类图</a></p>
+</blockquote>
+<ul>
+<li>泛化，Generalization</li>
+<li>关联，Association</li>
+<li>组合，Composition</li>
+<li>聚合，Aggregation</li>
+<li>实现，Realization</li>
+<li>依赖，Dependency</li>
+</ul>
+<pre tabindex="0"><code>@startuml
+Class01 &lt;|-- Class02:泛化
+Class03 &lt;--  Class04:关联
+Class05 *--  Class06:组合
+Class07 o--  Class08:聚合
+Class09 &lt;|.. Class10:实现
+Class11 &lt;..  Class12:依赖
+@enduml
+</code></pre><p>
+        <img class="mx-auto" alt="uml1" src="../img/uml1.png" />   
+    </p>
+<p>
+        <img class="mx-auto" alt="uml1" src="../img/uml2.png" />   
+    </p>
 
-            <a rel="nofollow" href="https://axiomaster.gitee.io/" class="index404">回首页看看</a>
-        </section>
-    </div>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/2019-03-05-strategy-pattern/">策略模式 Strategy Pattern</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F'>设计模式</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
 </div>
 
                     <footer id="footer">
@@ -96,6 +193,16 @@
 </footer>
 
 
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>

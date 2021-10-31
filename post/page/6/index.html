@@ -1,24 +1,27 @@
 <!doctype html>
 <html lang="en-us">
 <head>
-	<meta name="generator" content="Hugo 0.88.1" />
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>Axiomaster&#39;s Site | </title>
-    <meta property="og:title" content="Axiomaster&#39;s Site | ">
-    <meta property="og:type" content="website">
+    <title>Posts | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="Posts - Axiomaster&#39;s Site">
+    <meta property="og:type" content="article">
+        
+        
     <meta name="Keywords" content="">
-    <meta name="description" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/">
+    <meta name="description" content="Posts">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://axiomaster.gitee.io/post/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="https://axiomaster.gitee.io/index.xml" title="Axiomaster's Site" />
+    <link rel="alternate" type="application/rss+xml" href="https://axiomaster.gitee.io/post/index.xml" title="Axiomaster's Site" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -36,11 +39,9 @@
         <div class="col-group">
             <div class="site-name ">
                 
-                    <h1>
-                        <a id="logo" href="https://axiomaster.gitee.io/">
-                            Axiomaster&#39;s Site
-                        </a>
-                    </h1>
+                    <a id="logo" href="https://axiomaster.gitee.io/">
+                        Axiomaster&#39;s Site
+                    </a>
                 
                 
             </div>
@@ -62,205 +63,192 @@
                     
 <div class="res-cons">
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年10月31日
-        </date>
-        
-        <div class="post-content">
-            GCC 支持在C/C++代码中嵌入汇编代码，这些汇编代码被称作GCC Inline ASM——GCC内联汇编。这是一个非常有用的功能，有利于我们将一些C/C++语法无法表达指令直接潜入C/C++代码中，另外也允许我们直接写 C/C++代码中使用汇编编写简洁高效的代码。
-1.基本内联汇编 GCC中基本的内联汇编非常易懂，我们先来看两个简单的例子：
-__asm__(&#34;movl %esp,%eax&#34;); // 看起来很熟悉吧！ 或者是
-__asm__(&#34;movl $1,%eax // SYS_exitxor %ebx,%ebxint $0x80&#34;); 或
-__asm__(&#34;movl $1,%eax/r/t&#34; /&#34;xor %ebx,%ebx/r/t&#34; /&#34;int $0x80&#34; /); 2.基本内联汇编的格式 __asm__ __volatile__(&#34;Instruction List&#34;); 1、asm __asm__是GCC关键字asm的宏定义：
-#define __asm__ asm __asm__或asm用来声明一个内联汇编表达式，所以任何一个内联汇编表达式都是以它开头的，是必不可少的。
-2、Instruction List Instruction List是汇编指令序列。它可以是空的，比如：__asm__ __volatile__(&quot;&quot;); 或 __asm__ (&quot;&quot;); 都是完全合法的内联汇编表达式，只不过这两条语句没有什么意义。
-但并非所有Instruction List为空的内联汇编表达式都是没有意义的，比如： __asm__ (&quot;&quot;:::&quot;memory&quot;); 就非常有意义，它向GCC声明：“我对内存作了改动”，GCC在编译的时候，会将此因素考虑进去。
-我们看一看下面这个例子：
-$ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc; (*__p) = 9999; //__asm__(&#34;&#34;:::&#34;memory&#34;); if ((*__p) == 9999) { return 5; } return (*__p); } 在这段代码中，那条内联汇编是被注释掉的。在这条内联汇编之前，内存指针__p所指向的内存被赋值为9999，随即在内联汇编之后，一条if语句判断__p 所指向的内存与9999是否相等。很明显，它们是相等的。GCC在优化编译的时候能够很聪明的发现这一点。我们使用下面的命令行对其进行编译：……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/">阅读全文</a></p>
-    </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
+                <a href="https://axiomaster.gitee.io/post/2018-08-11-udp-in-linux-by-c/" title="udp in linux by c">udp in linux by c</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年9月3日
+            1年1月1日
         </date>
         
         <div class="post-content">
-            六步法  import train, test 网络结构  model=tf.keras.models.Sequential # 搭建网络结构 class MyModel(Model) model = MyModel   model.compile # 配置训练优化器，损失函数 model.fit # 输入特征，batch, epoch model.summary  网络结构 拉直层 tf.keras.layers.Flatten()
-全连接层 tf.keras.layers.Dense(神经元个数, activation=&#34;激活函数&#34;, kernel_regularizer=&#34;正则化&#34;) 卷积层 tf.keras.layers.Conv2D(filters=卷积核个数, kernel_size=卷积核尺寸, strides=卷积步长, padding=&#34;valid&#34; or &#34;same&#34;) LSTM层 tf.keras.layers.LSTM()
-训练方法 model.compile(optimizer=优化器, loss=损失函数, metrics=[&#34;准确率&#34;]) Optimizer  sgd adagrad adadelta adam  loss Metrics 训练过程 model.fit(训练集的输入特征, 训练集的标签, batch_size=, epochs=, validation_data=(测试集的输入特征, 测试集的标签), validation_split=从训练集划分多少比例分给测试集, validation_freq=多少次epoch测试一次) ……
+            udp in linux by c Linux编程之UDP SOCKET全攻略……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2018-08-11-udp-in-linux-by-c/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
+                <a href="https://axiomaster.gitee.io/post/2018-03-04-tls-tcpdump-analyses/" title="TLS协议抓包分析">TLS协议抓包分析</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年9月3日
+            1年1月1日
         </date>
         
         <div class="post-content">
-            CNN  输入特征图的深度（channel数），决定了当前层卷积核的深度； 当前层卷积核的个数，决定了当前层输出特征图的深度；  tf.keras.layers.Conv2D( kernel_size=卷积核尺寸, strides=滑动补偿, padding=&#34;same&#34; or &#34;valid&#34;, activation=&#34;relu&#34; or &#34;sigmoid&#34; or &#34;tanh&#34; or &#34;softmax&#34;, input_shape=(高, 宽, 通道数) ) 批标准化（Batch Normalization, BN） 池化 池化用于减少特征数据量，最大值池化可提取图片纹理，均值池化可保留背景特征。
-舍弃 Dropout 训练时，一定概率随机舍弃神经元。网络使用时，恢复神经元。
-卷积神经网络结构 卷积：特征提取器，CBAPD(Convolutinoal, BN, Activation, Pooling, Dropout)……
+            TLS协议抓包分析 ……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2018-03-04-tls-tcpdump-analyses/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-03-01-weakreference/" title="Weak Reference">Weak Reference</a>
+                <a href="https://axiomaster.gitee.io/post/2018-03-13-nginx-crl/" title="Nginx配置CRL">Nginx配置CRL</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年3月1日
+            1年1月1日
         </date>
         
         <div class="post-content">
-            Weak Reference WeakHashMap ……
+            Nginx配置CRL Nginx配置crl时，如果使用多级CA构成的证书链，则crl中必须包含每一级CA对应的crl文件，否则nginx使用crl校验会失败。
+Comments John: Hey webmaster……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-03-01-weakreference/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2018-03-13-nginx-crl/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-02-17-camerax/" title="CameraX">CameraX</a>
+                <a href="https://axiomaster.gitee.io/post/2018-03-04-nginx-cert-verify/" title="Nginx证书校验">Nginx证书校验</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年2月17日
+            1年1月1日
         </date>
         
         <div class="post-content">
-            Android CameraX库……
+            Nginx证书校验 ……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-02-17-camerax/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2018-03-04-nginx-cert-verify/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-02-16-bazel-build-system/" title="Bazel build system">Bazel build system</a>
+                <a href="https://axiomaster.gitee.io/post/2018-03-04-nginxlisten-famous-port/" title="Nginx监听著名端口">Nginx监听著名端口</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年2月16日
+            1年1月1日
         </date>
         
         <div class="post-content">
-            这货不支持proxy，也是醉了，这让人咋用啊。……
+            Nginx监听著名端口 Nginx监听著名端口……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-02-16-bazel-build-system/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2018-03-04-nginxlisten-famous-port/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-02-16-mediapipe/" title="mediapipe">mediapipe</a>
+                <a href="https://axiomaster.gitee.io/post/2018-06-04-nginx-proxy_next_upstream/" title="nginx中proxy_next_upstream问题">nginx中proxy_next_upstream问题</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年2月16日
+            1年1月1日
         </date>
         
         <div class="post-content">
-            Google推出的将机器学习/深度学习进行产品化的框架，主要是其中类似tensorflow中图编辑模式。但我们只是看中了人家训练好的手部跟踪的demo。
-使用bazel编译系统，但bazel这坑货又不支持proxy。那就需要搞明白所有的编译规则，然后把包挨个离线下下来，然后使用local_repo的方式进行编译。……
+            nginx中proxy_next_upstream问题 nginx提供了proxy_next_upstream命令，当转发给一个后端失败时，配置proxy_next_upstream可以转发给下一个后端。下面是完整的描述。
+Comments axiomaster_lism: 简直无力吐槽这个markdown编辑器出来的效果
+Auwneviosy: online gambling casino gsn casino games slots for real money | https://casinorealmoney2018.us.org/ - casino online
+PneuseShienidiz: online car insurance quotes cheap car insurance cheap car insurance quotes aaa car insurance | https://wecarinsurance.us.com/ - aarp car insurance https://wecarinsurance.us.com/ - car insurance quotes
+Loans Online: loans with bad credit payday loans bad credit ace cash loans
+Spotloan: loans loans loan with bad credit loans
+Quick Loan: loans online payday loans no faxing loans loan for bad credit……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-02-16-mediapipe/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2018-06-04-nginx-proxy_next_upstream/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-02-01-x86-register/" title="x86寄存器汇总">x86寄存器汇总</a>
+                <a href="https://axiomaster.gitee.io/post/2018-03-11-n-sum/" title="n-sum问题">n-sum问题</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年2月1日
+            1年1月1日
         </date>
         
         <div class="post-content">
-            x86寄存器分类 8个通用寄存器 均为32位。
-  EAX
-累加寄存器(Accumulator Register)。
-  EBX
-基地址寄存器(Base Register)。
-  ECX
-计数寄存器(Count Register)。
-  EDX
-数据寄存器(Data Register)。
-  ESI
-  EDI
-源/目标索引寄存器(Source/Destination Index Register)
-  ESP
-基指针寄存器(Base Pointer Register)
-  EBP
-堆栈指针寄存器(Stack Pointer Register)
-  6个段寄存器 段寄存器均为16位。
-  CS
-指向代码段的段选择符，与EIP寄存器联合构成指令地址。
-  DS
-  ES
-  FS
-  GS
-指向数据段。
-  SS
-指向栈段的段选择符。
-  5个控制寄存器 均为32位。……
+            n-sum问题 n-sum问题是指在一列数nums中，对给定target，寻找n个数相加之和为target。n-sum问题最简单的形式就是2-sum问题。……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-02-01-x86-register/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2018-03-11-n-sum/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-01-27-post-to-bootsec/" title="系统启动分析(一)">系统启动分析(一)</a>
+                <a href="https://axiomaster.gitee.io/post/2018-07-01-linux-cpu/" title="linux-cpu">linux-cpu</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年1月27日
+            1年1月1日
         </date>
         
         <div class="post-content">
-            dumpsys dumpsys input 获取linux事件 getevent -lr ……
+            linux-cpu Linux CPU使用率……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-01-27-post-to-bootsec/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2018-07-01-linux-cpu/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-01-10-android-debug/" title="Android调试">Android调试</a>
+                <a href="https://axiomaster.gitee.io/post/2018-08-14-linux-perf-tool/" title="linux perf tool">linux perf tool</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年1月10日
+            1年1月1日
         </date>
         
         <div class="post-content">
-            dumpsys dumpsys input 获取linux事件 getevent -lr ……
+            linux perf tool  ……
         </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-01-10-android-debug/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2018-08-14-linux-perf-tool/">阅读全文</a></p>
     </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2018-03-04-java-oom/" title="Java内存泄漏分析">Java内存泄漏分析</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            1年1月1日
+        </date>
+        
+        <div class="post-content">
+            Java内存泄漏分析 Java内存泄漏分析……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2018-03-04-java-oom/">阅读全文</a></p>
+    </article>
+    
     
     
 
@@ -268,40 +256,44 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
 
 <ol class="page-navigator">
     
+    <li class="prev">
+        <a href="https://axiomaster.gitee.io/post/page/5/">上一页</a>
+    </li>
+    
 
     
+    <li >
+        <a href="https://axiomaster.gitee.io/post/">1</a>
+    </li>
+    
+    <li >
+        <a href="https://axiomaster.gitee.io/post/page/2/">2</a>
+    </li>
+    
+    <li >
+        <a href="https://axiomaster.gitee.io/post/page/3/">3</a>
+    </li>
+    
+    <li >
+        <a href="https://axiomaster.gitee.io/post/page/4/">4</a>
+    </li>
+    
+    <li >
+        <a href="https://axiomaster.gitee.io/post/page/5/">5</a>
+    </li>
+    
     <li  class="current">
-        <a href="https://axiomaster.gitee.io/">1</a>
+        <a href="https://axiomaster.gitee.io/post/page/6/">6</a>
     </li>
     
     <li >
-        <a href="https://axiomaster.gitee.io/page/2/">2</a>
-    </li>
-    
-    <li >
-        <a href="https://axiomaster.gitee.io/page/3/">3</a>
-    </li>
-    
-    <li >
-        <a href="https://axiomaster.gitee.io/page/4/">4</a>
-    </li>
-    
-    <li >
-        <a href="https://axiomaster.gitee.io/page/5/">5</a>
-    </li>
-    
-    <li >
-        <a href="https://axiomaster.gitee.io/page/6/">6</a>
-    </li>
-    
-    <li >
-        <a href="https://axiomaster.gitee.io/page/7/">7</a>
+        <a href="https://axiomaster.gitee.io/post/page/7/">7</a>
     </li>
     
 
     
     <li class="next">
-        <a href="https://axiomaster.gitee.io/page/2/">下一页</a>
+        <a href="https://axiomaster.gitee.io/post/page/7/">下一页</a>
     </li>
     
 </ol>

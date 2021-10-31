@@ -7,16 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>404 Page not found | Axiomaster&#39;s Site</title>
-    <meta property="og:title" content="404 Page not found - Axiomaster&#39;s Site">
+    <title>x86寄存器汇总 | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="x86寄存器汇总 - Axiomaster&#39;s Site">
     <meta property="og:type" content="article">
         
+    <meta property="article:published_time" content='2020-02-01T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2020-02-01T00:00:00&#43;08:00'>
         
     <meta name="Keywords" content="">
-    <meta name="description" content="404 Page not found">
+    <meta name="description" content="x86寄存器汇总">
+        <meta name="author" content="axiomaster">
         
-    <meta name="author" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/404.html">
+    <meta property="og:url" content="https://axiomaster.gitee.io/post/2020-02-01-x86-register/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
@@ -46,7 +50,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://axiomaster.gitee.io/">首页</a>
+                    <a class="current" href="https://axiomaster.gitee.io/">首页</a>
                     
                 </nav>
             </div>
@@ -60,20 +64,199 @@
 
                 <div class="col-8" id="main">
                     
-<div class="body404">
-    <div class="info404">
-        <header id="header404" class="clearfix">
-            <div class="site-name404"><i>404</i></div>
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">x86寄存器汇总</h1>
         </header>
-        <section>
-            <div class="title404">
-                <p>每一个平凡的日常<br />都是连续发生中的奇迹</p>
-            </div>
-            
+        <date class="post-meta meta-date">
+            2020年2月1日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <h2 id="x86寄存器分类">x86寄存器分类</h2>
+<h3 id="8个通用寄存器">8个通用寄存器</h3>
+<p><em>均为32位。</em></p>
+<ul>
+<li>
+<p>EAX</p>
+<p>累加寄存器(Accumulator Register)。</p>
+</li>
+<li>
+<p>EBX</p>
+<p>基地址寄存器(Base Register)。</p>
+</li>
+<li>
+<p>ECX</p>
+<p>计数寄存器(Count Register)。</p>
+</li>
+<li>
+<p>EDX</p>
+<p>数据寄存器(Data Register)。</p>
+</li>
+<li>
+<p>ESI</p>
+</li>
+<li>
+<p>EDI</p>
+<p>源/目标索引寄存器(Source/Destination Index Register)</p>
+</li>
+<li>
+<p>ESP</p>
+<p>基指针寄存器(Base Pointer Register)</p>
+</li>
+<li>
+<p>EBP</p>
+<p>堆栈指针寄存器(Stack Pointer Register)</p>
+</li>
+</ul>
+<h3 id="6个段寄存器">6个段寄存器</h3>
+<p><em>段寄存器均为16位。</em></p>
+<ul>
+<li>
+<p>CS</p>
+<p>指向代码段的段选择符，与EIP寄存器联合构成指令地址。</p>
+</li>
+<li>
+<p>DS</p>
+</li>
+<li>
+<p>ES</p>
+</li>
+<li>
+<p>FS</p>
+</li>
+<li>
+<p>GS</p>
+<p>指向数据段。</p>
+</li>
+<li>
+<p>SS</p>
+<p>指向栈段的段选择符。</p>
+</li>
+</ul>
+<h3 id="5个控制寄存器">5个控制寄存器</h3>
+<p><em>均为32位。</em></p>
+<ul>
+<li>CR0</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li>
+<p>CR1</p>
+<p>未启用。</p>
+</li>
+<li>
+<p>CR2</p>
+<p>页故障线性地址寄存器。</p>
+</li>
+<li>
+<p>CR3</p>
+<p>存储<code>页目录表</code>物理内存基地址，也被称为<code>PDBR(Page-Directory Base address Register)</code>。</p>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<h3 id="1个标志寄存器">1个标志寄存器</h3>
+<ul>
+<li>EFLAGS</li>
+</ul>
+<!-- raw HTML omitted -->
+<h3 id="4个系统地址寄存器">4个系统地址寄存器</h3>
+<ul>
+<li>GDTR</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li>
+<p>LDTR</p>
+<p>局部描述符表寄存器。</p>
+</li>
+<li>
+<p>IDTR</p>
+<p>中断描述符表寄存器。</p>
+</li>
+<li>
+<p>TR</p>
+<p>任务状态段寄存器。</p>
+</li>
+</ul>
+<h3 id="8个调试寄存器">8个调试寄存器</h3>
+<ul>
+<li>DR0</li>
+<li>DR1</li>
+<li>DR2</li>
+<li>DR3</li>
+<li>DR4</li>
+<li>DR5</li>
+<li>DR6</li>
+<li>DR7</li>
+</ul>
+<h3 id="其他寄存器">其他寄存器</h3>
+<ul>
+<li>
+<p>EIP</p>
+</li>
+<li>
+<p>TSC</p>
+<p>时间戳寄存器。</p>
+</li>
+<li>
+<p>浮点寄存器</p>
+</li>
+</ul>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="https://www.cnblogs.com/FrankChen831X/p/10482718.html">x86寄存器总结</a></li>
+<li>Orange&rsquo;s 一个操作系统的实现</li>
+<li>30天自制操作系统</li>
+<li>Linux内核设计的艺术 第2版</li>
+</ul>
 
-            <a rel="nofollow" href="https://axiomaster.gitee.io/" class="index404">回首页看看</a>
-        </section>
-    </div>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/2020-01-27-post-to-bootsec/">系统启动分析(一)</a></li>
+        
+        <li><a href="/post/2020-01-10-android-debug/">Android调试</a></li>
+        
+        <li><a href="/post/2020-01-07-zygote/">Android启动分析</a></li>
+        
+        <li><a href="/post/2020-01-09-activity/">activity、window、view和surface</a></li>
+        
+        <li><a href="/post/2020-01-07-aosp/">aosp源码编译与阅读</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/android'>android</a></li>
+                
+                <li><a href='/tags/debug'>debug</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
 </div>
 
                     <footer id="footer">
@@ -96,6 +279,16 @@
 </footer>
 
 
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>

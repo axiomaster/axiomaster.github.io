@@ -7,20 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>404 Page not found | Axiomaster&#39;s Site</title>
-    <meta property="og:title" content="404 Page not found - Axiomaster&#39;s Site">
+    <title>并发 | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="并发 - Axiomaster&#39;s Site">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="">
-    <meta name="description" content="404 Page not found">
+    <meta name="description" content="并发">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/404.html">
+    <meta property="og:url" content="https://axiomaster.gitee.io/tags/%E5%B9%B6%E5%8F%91/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
+    <link rel="alternate" type="application/rss+xml" href="https://axiomaster.gitee.io/tags/%E5%B9%B6%E5%8F%91/index.xml" title="Axiomaster's Site" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -60,20 +61,56 @@
 
                 <div class="col-8" id="main">
                     
-<div class="body404">
-    <div class="info404">
-        <header id="header404" class="clearfix">
-            <div class="site-name404"><i>404</i></div>
-        </header>
-        <section>
-            <div class="title404">
-                <p>每一个平凡的日常<br />都是连续发生中的奇迹</p>
-            </div>
-            
+<div class="res-cons">
+    
+    <h3 class="archive-title">
+        包含标签
+        <span class="keyword">并发</span>
+        的文章
+    </h3>
+    
 
-            <a rel="nofollow" href="https://axiomaster.gitee.io/" class="index404">回首页看看</a>
-        </section>
-    </div>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2019-04-27-java-concurrent/">Java并发编程</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年4月27日
+        </date>
+        
+        <div class="post-content">
+            缓存一致性与并发问题 我们今天使用的计算机体系结构都属于存储程序型（冯·诺伊曼结构），运行时所有的数据都存储在内存中；指令执行时，数据从内存读入寄存器，运算结束后再写回内存。
+// i == 0 i = i + 1 // i == 1 以上面代码为例，计算机先将i加载到寄存器中，再寄存器中+1后再将i写回内存。
+可以认为运算中，寄存器中的数据是内存的一份缓存。但是，有缓存，就有缓存不一致的问题。
+我们只考虑多CPU时的并发问题。单线程执行时，以上执行顺序不存在问题；但并发场景下，假设2个线程A、B同时执行，A读入寄存器的值均为0, 计算后都为1，在A写入内存前，B此时读取到的值为0，最终写入内存的i为1，显然存在问题。
+解决缓存不一致问题，通常有2种方法：
+ 在总线加锁； 使用缓存一致性协议；  总线加锁 CPU通过总线读取内存，通过在总线加锁，锁未释放前，CPU只能再次读取i所在内存，直到锁释放。早期CPU采用这种方式，这样可以解决不一致问题，但这等于同一块内存锁释放前无法访问。
+缓存一致性协议 Intel的MESI协议，提供了如下机制：CPU写数据时，如果发现变量是共享变量，会发信号通知其它CPU将该变量的缓存置为无效状态。其它CPU操作时发现缓存失效了，就会重新从内存读取。
+并发编程中的概念 原子性 提到原子性时都会以银行转账为例：用户A向用户B转账100元。
+转账事务请求中，银行会进行2项操作：A账户减少100元；B账户增加100元。
+不管银行按什么顺序执行，如果2项操作进行到一半时失败了，银行都需要先进行回滚，否则就会出现错误（银行损失或用户A损失）。
+换句话说，银行需要保障转账的原子性：这项请求要么成功，要么失败，不能出现任何中间状态（2个操作一个成功，一个失败）。
+对应到计算机运行中，一些操作是原子性的，另一些操作是由若干原子性操作组合而成。
+比如根据上面分析，i=i+1不是原子操作；那i=9是原子操作吗？如果计算机分别对i的高低16位先后赋值，那就不是原子操作。
+可见性 可见性是指多个线程访问同一个变量时，一个线程修改了这个变量的值，其他线程能够立即看得到修改的值。
+比如：
+// 线程A int i = 0 i = 5 // 线程B j = i 如果线程A执行完i = 5但尚未写入内存时，线程B从内存看到的i = 0，无法看到线程A缓存中i的值已经发生变化。
+有序性 以下代码示例来自《七周七并发》
+public class Puzzle { static boolean answerReady = false; static int answer = 0; static Thread t1 = new Thread() { @Override public void run() { answer = 42; answerReady = true; } }; static Thread t2 = new Thread() { @Override public void run() { if (answerReady) { System.……
+            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-04-27-java-concurrent/">阅读全文</a></p>
+        </div>
+    </article>
+    
+
+    
+
+
+
+
+
 </div>
 
                     <footer id="footer">

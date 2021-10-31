@@ -7,20 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>404 Page not found | Axiomaster&#39;s Site</title>
-    <meta property="og:title" content="404 Page not found - Axiomaster&#39;s Site">
+    <title>I/O | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="I/O - Axiomaster&#39;s Site">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="">
-    <meta name="description" content="404 Page not found">
+    <meta name="description" content="I/O">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/404.html">
+    <meta property="og:url" content="https://axiomaster.gitee.io/tags/i/o/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
+    <link rel="alternate" type="application/rss+xml" href="https://axiomaster.gitee.io/tags/i/o/index.xml" title="Axiomaster's Site" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -60,20 +61,49 @@
 
                 <div class="col-8" id="main">
                     
-<div class="body404">
-    <div class="info404">
-        <header id="header404" class="clearfix">
-            <div class="site-name404"><i>404</i></div>
-        </header>
-        <section>
-            <div class="title404">
-                <p>每一个平凡的日常<br />都是连续发生中的奇迹</p>
-            </div>
-            
+<div class="res-cons">
+    
+    <h3 class="archive-title">
+        包含标签
+        <span class="keyword">I/O</span>
+        的文章
+    </h3>
+    
 
-            <a rel="nofollow" href="https://axiomaster.gitee.io/" class="index404">回首页看看</a>
-        </section>
-    </div>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2020-01-05-io/">I/O模型</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年1月5日
+        </date>
+        
+        <div class="post-content">
+            I/O处理过程 系统调用 操作系统出于安全的考虑，将进程的内存空间划分为用户空间(0~3G)和内核空间(3-4G)。进程在执行用户自己的代码时处于用户态(ring3); 当用户代码需要操作系统资源时, 可以通过调用操作系统提供的标准接口(POSIX)进行访问, 此时进程从用户态切换到内核态. 操作系统提供的这些接口称为系统调用.
+使用top命令时, Cpu后面的us就对应用户态使用的cpu, sy就对应内核态使用的cpu.
+%Cpu(s): 1.2 us, 0.7 sy, 0.0 ni, 98.0 id, 0.1 wa, 0.0 hi, 0.0 si, 0.0 st 硬盘, 网卡等等这些设备, 用户代码都是无法直接访问的, 需要通过操作系统提供的标准系统调用进行访问. 对于linux系统, 将所有的设备都抽象成文件, 因此, 对于这些设备的访问都可以归类为IO操作.
+文件读取过程 用户程序读取磁盘或网卡上的数据, 执行read系统调用时可以分为2个过程:
+  操作系统需要将磁盘或网卡上的数据先拷贝到内核缓冲区
+  操作系统再将内核缓冲区的数据拷贝到用户缓冲区
+  内核缓冲区 我们知道, 硬盘等外设因为硬件原因, 读写相对内存来说是要慢几个数量级的. 如果内核一有数据就立即写入磁盘, 就需要频繁的调用驱动的硬件.操作系统为了提高与硬件交互的效率, 并不会一有数据就立即写入, 而是等攒够一些数据之后再批量写入.
+因此, 内核缓冲区时为了减少内核与外部硬件交互的次数.
+用户缓冲区 操作系统进行系统调用是有一定开销的, 而且相对开销很大. 回想读取文件时, 我们都会先申请一个buffer数组, 然后循环每次read len大小的数据, 之后代码对buffer内容进行处理.
+这么做的原因是为了避免频繁的进行系统调用. 关于len为什么取1024或4096, &laquo;UNIX环境高级编程&raquo;中专门有讨论, 这个取值是基于统计分析出来的最佳大小.
+因此, 用户缓冲区是为了减少系统调用次数.……
+            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-01-05-io/">阅读全文</a></p>
+        </div>
+    </article>
+    
+
+    
+
+
+
+
+
 </div>
 
                     <footer id="footer">

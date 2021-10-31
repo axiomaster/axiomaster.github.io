@@ -7,16 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>404 Page not found | Axiomaster&#39;s Site</title>
-    <meta property="og:title" content="404 Page not found - Axiomaster&#39;s Site">
+    <title>Tensorflow2.0 笔记（2） | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="Tensorflow2.0 笔记（2） - Axiomaster&#39;s Site">
     <meta property="og:type" content="article">
         
+    <meta property="article:published_time" content='2020-09-03T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2020-09-03T00:00:00&#43;08:00'>
         
     <meta name="Keywords" content="">
-    <meta name="description" content="404 Page not found">
+    <meta name="description" content="Tensorflow2.0 笔记（2）">
+        <meta name="author" content="axiomaster">
         
-    <meta name="author" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/404.html">
+    <meta property="og:url" content="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
@@ -46,7 +50,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://axiomaster.gitee.io/">首页</a>
+                    <a class="current" href="https://axiomaster.gitee.io/">首页</a>
                     
                 </nav>
             </div>
@@ -60,20 +64,110 @@
 
                 <div class="col-8" id="main">
                     
-<div class="body404">
-    <div class="info404">
-        <header id="header404" class="clearfix">
-            <div class="site-name404"><i>404</i></div>
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">Tensorflow2.0 笔记（2）</h1>
         </header>
-        <section>
-            <div class="title404">
-                <p>每一个平凡的日常<br />都是连续发生中的奇迹</p>
-            </div>
-            
+        <date class="post-meta meta-date">
+            2020年9月3日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <h2 id="六步法">六步法</h2>
+<ul>
+<li>import</li>
+<li>train, test</li>
+<li>网络结构
+<ul>
+<li>model=tf.keras.models.Sequential # 搭建网络结构</li>
+<li>class MyModel(Model) model = MyModel</li>
+</ul>
+</li>
+<li>model.compile  # 配置训练优化器，损失函数</li>
+<li>model.fit      # 输入特征，batch, epoch</li>
+<li>model.summary</li>
+</ul>
+<h2 id="网络结构">网络结构</h2>
+<h3 id="拉直层">拉直层</h3>
+<p>tf.keras.layers.Flatten()</p>
+<h3 id="全连接层">全连接层</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>layers<span style="color:#f92672">.</span>Dense(神经元个数, 
+                      activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;激活函数&#34;</span>, 
+                      kernel_regularizer<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;正则化&#34;</span>)
+</code></pre></div><h3 id="卷积层">卷积层</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>layers<span style="color:#f92672">.</span>Conv2D(filters<span style="color:#f92672">=</span>卷积核个数, 
+                       kernel_size<span style="color:#f92672">=</span>卷积核尺寸, 
+                       strides<span style="color:#f92672">=</span>卷积步长, 
+                       padding<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;valid&#34;</span> <span style="color:#f92672">or</span> <span style="color:#e6db74">&#34;same&#34;</span>)
+</code></pre></div><h3 id="lstm层">LSTM层</h3>
+<p>tf.keras.layers.LSTM()</p>
+<h2 id="训练方法">训练方法</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">model<span style="color:#f92672">.</span>compile(optimizer<span style="color:#f92672">=</span>优化器, 
+              loss<span style="color:#f92672">=</span>损失函数, 
+              metrics<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;准确率&#34;</span>])
+</code></pre></div><h3 id="optimizer">Optimizer</h3>
+<ul>
+<li>sgd</li>
+<li>adagrad</li>
+<li>adadelta</li>
+<li>adam</li>
+</ul>
+<h3 id="loss">loss</h3>
+<h3 id="metrics">Metrics</h3>
+<h2 id="训练过程">训练过程</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">model<span style="color:#f92672">.</span>fit(训练集的输入特征, 训练集的标签, 
+          batch_size<span style="color:#f92672">=</span>, 
+          epochs<span style="color:#f92672">=</span>, 
+          validation_data<span style="color:#f92672">=</span>(测试集的输入特征, 测试集的标签), 
+          validation_split<span style="color:#f92672">=</span>从训练集划分多少比例分给测试集, 
+          validation_freq<span style="color:#f92672">=</span>多少次epoch测试一次)
+</code></pre></div>
+        </div>
 
-            <a rel="nofollow" href="https://axiomaster.gitee.io/" class="index404">回首页看看</a>
-        </section>
-    </div>
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/2020-09-07-tensorflow2_3/">Tensorflow2.0 笔记（3）</a></li>
+        
+        <li><a href="/post/2020-03-01-weakreference/">Weak Reference</a></li>
+        
+        <li><a href="/post/2020-02-17-camerax/">CameraX</a></li>
+        
+        <li><a href="/post/2020-02-16-mediapipe/">mediapipe</a></li>
+        
+        <li><a href="/post/2019-01-21-neural-network/">神经网络</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/ml'>ML</a></li>
+                
+                <li><a href='/tags/tensorflow'>Tensorflow</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
 </div>
 
                     <footer id="footer">
@@ -96,6 +190,16 @@
 </footer>
 
 
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>

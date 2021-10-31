@@ -7,20 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>404 Page not found | Axiomaster&#39;s Site</title>
-    <meta property="og:title" content="404 Page not found - Axiomaster&#39;s Site">
+    <title>aosp | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="aosp - Axiomaster&#39;s Site">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="">
-    <meta name="description" content="404 Page not found">
+    <meta name="description" content="aosp">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/404.html">
+    <meta property="og:url" content="https://axiomaster.gitee.io/tags/aosp/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
+    <link rel="alternate" type="application/rss+xml" href="https://axiomaster.gitee.io/tags/aosp/index.xml" title="Axiomaster's Site" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -60,20 +61,45 @@
 
                 <div class="col-8" id="main">
                     
-<div class="body404">
-    <div class="info404">
-        <header id="header404" class="clearfix">
-            <div class="site-name404"><i>404</i></div>
-        </header>
-        <section>
-            <div class="title404">
-                <p>每一个平凡的日常<br />都是连续发生中的奇迹</p>
-            </div>
-            
+<div class="res-cons">
+    
+    <h3 class="archive-title">
+        包含标签
+        <span class="keyword">aosp</span>
+        的文章
+    </h3>
+    
 
-            <a rel="nofollow" href="https://axiomaster.gitee.io/" class="index404">回首页看看</a>
-        </section>
-    </div>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2020-01-07-aosp/">aosp源码编译与阅读</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年1月7日
+        </date>
+        
+        <div class="post-content">
+            下载源码 国内从google下载aosp源码需要翻墙，很不方便。可以使用清华大学开源软件镜像站提供的镜像地址进行下载,同步代码.
+下载,检出代码按照清华镜像站的地址说明一步步操作就可以了.
+可能的错误  初始化包比较大,下载后记得进行md5校验. 使用迅雷中断后续传,发现md5值不匹配,推荐使用uget之类的工具在晚上下载,一次成功.  aosp编译 官方指导
+ 建立编译环境 编译 Android  编译很简单, aosp源码中prebuilts目录下集成了所有编译会用到的工具,包括clang, jdk等,不需要额外下载. 编译脚本只支持python2,环境上安装一下python2就可以了.
+在Ubuntu 18.04上使用如下步骤进行编译:
+设置环境变量等 source build/envsetup.sh 设置编译目标版本 lism@lism-u18:~/android/aosp$ lunch aosp_x86_64-eng ============================================ PLATFORM_VERSION_CODENAME=R PLATFORM_VERSION=R TARGET_PRODUCT=aosp_x86_64 TARGET_BUILD_VARIANT=eng TARGET_BUILD_TYPE=release TARGET_ARCH=x86_64 TARGET_ARCH_VARIANT=x86_64 TARGET_2ND_ARCH=x86 TARGET_2ND_ARCH_VARIANT=x86_64 HOST_ARCH=x86_64 HOST_2ND_ARCH=x86 HOST_OS=linux HOST_OS_EXTRA=Linux-5.0.0-37-generic-x86_64-Ubuntu-18.04.3-LTS HOST_CROSS_OS=windows HOST_CROSS_ARCH=x86 HOST_CROSS_2ND_ARCH=x86_64 HOST_BUILD_TYPE=release BUILD_ID=QD1A.190821.011 OUT_DIR=out ============================================ 如果不清楚需要输入什么版本, 输入lunch后会自动列出支持的版本信息.
+lism@lism-u18:~/android/aosp$ lunch You&#39;re building on Linux Lunch menu... pick a combo: 1. aosp_arm-eng 2. aosp_arm64-eng 3. aosp_blueline-userdebug 4. aosp_bonito-userdebug 5.……
+            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-01-07-aosp/">阅读全文</a></p>
+        </div>
+    </article>
+    
+
+    
+
+
+
+
+
 </div>
 
                     <footer id="footer">

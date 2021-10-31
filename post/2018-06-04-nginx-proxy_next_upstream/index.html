@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>nginx中proxy_next_upstream问题 | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="nginx中proxy_next_upstream问题 - Axiomaster&#39;s Site">
+    <meta property="og:type" content="article">
+        
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="nginx中proxy_next_upstream问题">
+        <meta name="author" content="axiomaster_lism">
+        
+    <meta property="og:url" content="https://axiomaster.gitee.io/post/2018-06-04-nginx-proxy_next_upstream/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://axiomaster.gitee.io/">
+                        Axiomaster&#39;s Site
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://axiomaster.gitee.io/">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">nginx中proxy_next_upstream问题</h1>
+        </header>
+        <date class="post-meta meta-date">
+            1年1月1日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <h1 id="nginx中proxy_next_upstream问题">nginx中proxy_next_upstream问题</h1>
+<p>nginx提供了proxy_next_upstream命令，当转发给一个后端失败时，配置proxy_next_upstream可以转发给下一个后端。下面是完整的描述。</p>
+<h2 id="comments">Comments</h2>
+<p><strong><a href="#11" title="2018-06-04 14:08:50">axiomaster_lism</a>:</strong> 简直无力吐槽这个markdown编辑器出来的效果</p>
+<p><strong><a href="#17" title="2018-06-23 21:18:13">Auwneviosy</a>:</strong> online gambling casino <a href="https://casinorealmoney2018.us.org/">gsn casino games</a> slots for real money | <a href="https://casinorealmoney2018.us.org/">https://casinorealmoney2018.us.org/</a> - casino online</p>
+<p><strong><a href="#30" title="2018-07-29 00:03:23">PneuseShienidiz</a>:</strong> online car insurance quotes <a href="https://wecarinsurance.us.com/">cheap car insurance</a> cheap car insurance quotes <a href="https://wecarinsurance.us.com/">aaa car insurance</a> | <a href="https://wecarinsurance.us.com/">https://wecarinsurance.us.com/</a> - aarp car insurance <a href="https://wecarinsurance.us.com/">https://wecarinsurance.us.com/</a> - car insurance quotes</p>
+<p><strong><a href="#31" title="2018-07-29 00:12:30">Loans Online</a>:</strong> loans with bad credit <a href="http://directlending.cars">payday loans bad credit</a> ace cash <a href="http://directlending.cars">loans</a></p>
+<p><strong><a href="#32" title="2018-07-29 11:09:32">Spotloan</a>:</strong> loans <a href="http://directlending.cars">loans</a> loan with bad credit <a href="http://directlending.cars">loans</a></p>
+<p><strong><a href="#33" title="2018-07-29 13:14:39">Quick Loan</a>:</strong> loans <a href="http://directlending.cars">online payday loans no faxing</a> loans <a href="http://directlending.cars">loan for bad credit</a></p>
+<p><strong><a href="#34" title="2018-07-29 14:34:49">Loans Online</a>:</strong> loans <a href="http://directlending.cars">loans for people with bad credit</a> loans <a href="http://directlending.cars">credit loans no credit</a></p>
+<p><strong><a href="#35" title="2018-07-29 17:28:11">Money Loan</a>:</strong> what is a bank loan <a href="http://directlending.cars">rise loans online</a> loan with bad credit <a href="http://directlending.cars">payday loans for bad credit</a></p>
+<p><strong><a href="#36" title="2018-07-30 09:01:14">Pay Day Loan</a>:</strong> bad credit installment loan <a href="http://directlending.cars">legit payday loans</a> legit payday loans <a href="http://directlending.cars">fast personal loans</a></p>
+<p><strong><a href="#37" title="2018-07-30 13:21:48">Speedycash</a>:</strong> loans <a href="http://directlending.cars">best cash advance loans online</a> loans for bad credit <a href="http://directlending.cars">loans for people with bad credit</a></p>
+<p><strong><a href="#38" title="2018-07-30 14:22:18">Loan</a>:</strong> loans for bad credit <a href="http://directlending.cars">a loan with bad credit</a> loans <a href="http://directlending.cars">payday loan application</a></p>
+<p><strong><a href="#39" title="2018-07-30 23:05:21">Cash Advance</a>:</strong> bad credit payday loans <a href="http://directlending.cars">loans for people with bad credit</a> loan bad credit <a href="http://directlending.cars">loans for bad credit</a></p>
+<p><strong><a href="#40" title="2018-07-31 08:03:24">Online Payday Loan</a>:</strong> how does debt consolidation work <a href="http://directlending.cars">loan for bad credit</a> loans <a href="http://directlending.cars">online loans for bad credit</a></p>
+<p><strong><a href="#41" title="2018-08-01 17:44:23">Best Payday Loan</a>:</strong> payday loans bad credit <a href="http://directlending.cars">cash america payday advance</a> direct loan <a href="http://directlending.cars">payday loans for bad credit</a></p>
+<p><strong><a href="#43" title="2018-08-01 22:46:20">Loans Online</a>:</strong> loans <a href="http://directlending.cars">payday loans bad credit</a> online loans bad credit <a href="http://directlending.cars">quickenloans</a></p>
+<p><strong><a href="#44" title="2018-08-02 02:09:47">Best Online Loans</a>:</strong> loans <a href="http://directlending.cars">payday loan application</a> loans <a href="http://directlending.cars">loans</a></p>
+<p><strong><a href="#45" title="2018-08-02 02:25:01">Payday Loan Online</a>:</strong> apply online <a href="http://directlending.cars">loans</a> loans <a href="http://directlending.cars">loans bad credit</a></p>
+<p><strong><a href="#46" title="2018-08-02 05:41:00">Quick Loans</a>:</strong> loans <a href="http://directlending.cars">loan bad credit</a> loans for people with bad credit <a href="http://directlending.cars">direct lender installment loans</a></p>
+<p><strong><a href="#47" title="2018-08-02 06:36:21">Quick Loan</a>:</strong> bad credit loans <a href="http://directlending.cars">bad credit installment loan</a> free money loan <a href="http://directlending.cars">loan for bad credit</a></p>
+<p><strong><a href="#48" title="2018-08-05 02:35:34">Instant Online Loans</a>:</strong> loans <a href="http://directlending.cars">loans</a> loans <a href="http://directlending.cars">personal unsecured loans</a></p>
+<p><strong><a href="#49" title="2018-08-05 04:20:40">Online Loans</a>:</strong> bad credit loans <a href="http://directlending.cars">lend money</a> loan with bad credit <a href="http://directlending.cars">loans</a></p>
+<p><strong><a href="#50" title="2018-08-05 06:14:54">Loans For Bad Credit</a>:</strong> easy installment loans online <a href="http://directlending.cars">loans</a> loans <a href="http://directlending.cars">online loans bad credit</a></p>
+<p><strong><a href="#51" title="2018-08-05 09:30:31">Fastest Payday Loan</a>:</strong> paydayloan <a href="http://directlending.cars">1 hour loan</a> loans <a href="http://directlending.cars">online loans for bad credit</a></p>
+<p><strong><a href="#52" title="2018-08-05 23:45:30">Best Online Loans</a>:</strong> loans <a href="http://directlending.cars">loans</a> cash america payday advance <a href="http://directlending.cars">free money loan</a></p>
+<p><strong><a href="#53" title="2018-08-06 04:41:09">Best Payday Loan</a>:</strong> online loans for bad credit <a href="http://directlending.cars">loans</a> bad credit loans <a href="http://directlending.cars">loan bad credit</a></p>
+<p><strong><a href="#54" title="2018-08-06 04:58:48">Online Loan</a>:</strong> loan bad credit <a href="http://directlending.cars">loans</a> loans <a href="http://directlending.cars">cash loan fast</a></p>
+<p><strong><a href="#55" title="2018-08-06 13:49:41">Online Loan</a>:</strong> bad credit loan <a href="http://directlending.cars">loans</a> loans <a href="http://directlending.cars">online payday loan direct lenders</a></p>
+<p><strong><a href="#56" title="2018-08-06 23:26:57">Pay Day Loans</a>:</strong> loans with bad credit <a href="http://directlending.cars">loans</a> cash loans with monthly payments <a href="http://directlending.cars">bad credit loan</a></p>
+<p><strong><a href="#57" title="2018-08-07 08:46:18">Direct Lender Loans</a>:</strong> need a loan with bad credit <a href="http://directlending.cars">guaranteed approval</a> loan for bad credit <a href="http://directlending.cars">online loans for bad credit</a></p>
+<p><strong><a href="#58" title="2018-08-07 12:38:51">Payday Loan</a>:</strong> loan for bad credit <a href="http://directlending.cars">payday loan express</a> easy loans no credit <a href="http://directlending.cars">loans for people with bad credit</a></p>
+<p><strong><a href="#59" title="2018-08-07 17:23:29">Payday</a>:</strong> loans <a href="http://directlending.cars">loans</a> loans <a href="http://directlending.cars">best loans for bad credit</a></p>
+<p><strong><a href="#60" title="2018-08-07 18:43:29">Online Loans</a>:</strong> loans <a href="http://directlending.cars">loan with bad credit</a> loans <a href="http://directlending.cars">small payday loan</a></p>
+<p><strong><a href="#61" title="2018-08-07 22:03:14">Quick Loans</a>:</strong> cash america payday advance <a href="http://directlending.cars">loans for people with bad credit</a> loans <a href="http://directlending.cars">loan online payday</a></p>
+<p><strong><a href="#62" title="2018-08-08 20:05:17">Payday Loans</a>:</strong> loan with bad credit <a href="http://directlending.cars">loans houston</a> money fast online <a href="http://directlending.cars">loans</a></p>
+<p><strong><a href="#63" title="2018-08-09 10:41:28">A Payday Loan</a>:</strong> get a loan today <a href="http://directlending.cars">no credit check lenders</a> online loans bad credit <a href="http://directlending.cars">loans</a></p>
+<p><strong><a href="#64" title="2018-08-09 14:59:27">Payday Loans Online</a>:</strong> bad credit loan <a href="http://directlending.cars">bad credit loan</a> loans <a href="http://directlending.cars">usa payday</a></p>
+<p><strong><a href="#65" title="2018-08-10 10:29:19">Cash Advance</a>:</strong> loans <a href="http://directlending.cars">loans</a> loans <a href="http://directlending.cars">loans</a></p>
+<p><strong><a href="#132" title="2018-10-09 18:48:37">Loan</a>:</strong> poor credit loans <a href="https://creditloansguaranteedapproval.com">loan for poor credit</a> bad credit loans guaranteed approval <a href="https://creditloansguaranteedapproval.com">bad credit money loans</a></p>
+<p><strong><a href="#153" title="2018-10-13 00:11:52">Loans For Bad Credit</a>:</strong> bad credit loans direct lenders <a href="https://creditloansguaranteedapproval.com">tribal loans online</a> bad credit loans guaranteed approval <a href="https://creditloansguaranteedapproval.com">credit loans guaranteed approval</a></p>
+<p><strong><a href="#181" title="2018-10-17 02:04:13">Personal Loans</a>:</strong> credit loans guaranteed approval <a href="https://creditloansguaranteedapproval.com/">payday loans no debit card</a> fast cash loans no credit check <a href="https://creditloansguaranteedapproval.com/">credit loans guaranteed approval</a></p>
+<p><strong><a href="#198" title="2018-10-19 16:47:28">Payday Express</a>:</strong> credit loans guaranteed approval <a href="https://creditloansguaranteedapproval.com/">bad credit loans</a> personal bank loans <a href="https://creditloansguaranteedapproval.com/">credit loans guaranteed approval</a></p>
+<p><strong><a href="#1204" title="2019-01-03 13:48:14">KelTwebra</a>:</strong> Where To Buy Xenical In Singapore Nexium Online Canada Viagra Pills Legal Sites <a href="http://hxdrugs.com">viagra vs cialis</a> Propecia 3 Months 1 Mg History Of Tadalis Sx Soft Non Prescription Lithium Amoxicilline Angleterre Cialis &hellip; Cheap&hellip;. 40mg <a href="http://buycheapciall.com">cialis for sale</a> Veterinary Keflex Alli 120 Refill Pack Propecia With Minoxidil Nisim Viagra Rezeptfrei Packstation <a href="http://lowpricecial.com">generic 5mg cialis best price</a> Order Kamagra Ireland Propecia Frontaler Haarausfall Viagra Effetti Collaterali Cuore Levitra Generique Medicament <a href="http://deantxi.com">cialis price</a> Lagerung Levitra Tomar Cialis Y Alcohol Farmacias Viagra Propecia Online Lasix Buy Stendra Order Now Legally On Line Without Prescription <a href="http://cpsmeds.com">cialis 40 mg</a> Propecia Und Testosteron Donde Puedo Comprar Redustat Orlistat</p>
+<p><strong><a href="#1452" title="2019-01-13 17:02:37">Elloxycle</a>:</strong> Propecia Wo Bestellen No Prescription Buy Propecia Online Mebendazole  Kamagra Prices Bentyl With Free Shipping Luton</p>
+
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/2018-03-04-nginxlisten-famous-port/">Nginx监听著名端口</a></li>
+        
+        <li><a href="/post/2018-03-13-nginx-crl/">Nginx配置CRL</a></li>
+        
+        <li><a href="/post/2018-04-17-ngx-read-pwd-from-file/">修改nginx代码支持从文件读取密文密码</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/nginx'>nginx</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="https://axiomaster.gitee.io/">Axiomaster&#39;s Site By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.gitee.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-03-01-weakreference/" title="Weak Reference">Weak Reference</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-17-camerax/" title="CameraX">CameraX</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-16-bazel-build-system/" title="Bazel build system">Bazel build system</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-16-mediapipe/" title="mediapipe">mediapipe</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-01-x86-register/" title="x86寄存器汇总">x86寄存器汇总</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-01-27-post-to-bootsec/" title="系统启动分析(一)">系统启动分析(一)</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-01-10-android-debug/" title="Android调试">Android调试</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://axiomaster.gitee.io/tags/activity/">activity</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/algorithm/">algorithm</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/android/">android</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/aosp/">aosp</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/bazel/">bazel</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/bug/">bug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/debug/">debug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/debugger/">debugger</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/docker/">docker</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/golang/">golang</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/gradle/">Gradle</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/i/o/">I/O</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/idea%E6%8F%92%E4%BB%B6/">IDEA插件</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/java/">java</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/linux/">linux</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/ml/">ML</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/net/">net</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/nginx/">nginx</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/os/">OS</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/tensorflow/">Tensorflow</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/tool/">tool</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/view/">view</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/vs-code/">VS code</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/window/">window</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/wsl/">WSL</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/zookeeper/">zookeeper</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/zygote/">zygote</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98/">内存</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/">吐槽</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%B7%A5%E5%85%B7/">工具</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%89%8B%E5%B7%A5/">手工</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/">神奇的bug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E8%AF%81%E4%B9%A6/">证书</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E9%93%BE%E6%8E%A5/">链接</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://axiomaster.gitee.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

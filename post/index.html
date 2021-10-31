@@ -1,24 +1,27 @@
 <!doctype html>
 <html lang="en-us">
 <head>
-	<meta name="generator" content="Hugo 0.88.1" />
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>Axiomaster&#39;s Site | </title>
-    <meta property="og:title" content="Axiomaster&#39;s Site | ">
-    <meta property="og:type" content="website">
+    <title>Posts | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="Posts - Axiomaster&#39;s Site">
+    <meta property="og:type" content="article">
+        
+        
     <meta name="Keywords" content="">
-    <meta name="description" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/">
+    <meta name="description" content="Posts">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://axiomaster.gitee.io/post/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="https://axiomaster.gitee.io/index.xml" title="Axiomaster's Site" />
+    <link rel="alternate" type="application/rss+xml" href="https://axiomaster.gitee.io/post/index.xml" title="Axiomaster's Site" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -36,11 +39,9 @@
         <div class="col-group">
             <div class="site-name ">
                 
-                    <h1>
-                        <a id="logo" href="https://axiomaster.gitee.io/">
-                            Axiomaster&#39;s Site
-                        </a>
-                    </h1>
+                    <a id="logo" href="https://axiomaster.gitee.io/">
+                        Axiomaster&#39;s Site
+                    </a>
                 
                 
             </div>
@@ -61,6 +62,7 @@
                 <div class="col-8" id="main">
                     
 <div class="res-cons">
+    
     
     <article class="post">
         <header>
@@ -87,23 +89,7 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
         <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/">阅读全文</a></p>
     </article>
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年9月3日
-        </date>
-        
-        <div class="post-content">
-            六步法  import train, test 网络结构  model=tf.keras.models.Sequential # 搭建网络结构 class MyModel(Model) model = MyModel   model.compile # 配置训练优化器，损失函数 model.fit # 输入特征，batch, epoch model.summary  网络结构 拉直层 tf.keras.layers.Flatten()
-全连接层 tf.keras.layers.Dense(神经元个数, activation=&#34;激活函数&#34;, kernel_regularizer=&#34;正则化&#34;) 卷积层 tf.keras.layers.Conv2D(filters=卷积核个数, kernel_size=卷积核尺寸, strides=卷积步长, padding=&#34;valid&#34; or &#34;same&#34;) LSTM层 tf.keras.layers.LSTM()
-训练方法 model.compile(optimizer=优化器, loss=损失函数, metrics=[&#34;准确率&#34;]) Optimizer  sgd adagrad adadelta adam  loss Metrics 训练过程 model.fit(训练集的输入特征, 训练集的标签, batch_size=, epochs=, validation_data=(测试集的输入特征, 测试集的标签), validation_split=从训练集划分多少比例分给测试集, validation_freq=多少次epoch测试一次) ……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/">阅读全文</a></p>
-    </article>
+    
     
     <article class="post">
         <header>
@@ -123,6 +109,28 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
         <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/">阅读全文</a></p>
     </article>
     
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年9月3日
+        </date>
+        
+        <div class="post-content">
+            六步法  import train, test 网络结构  model=tf.keras.models.Sequential # 搭建网络结构 class MyModel(Model) model = MyModel   model.compile # 配置训练优化器，损失函数 model.fit # 输入特征，batch, epoch model.summary  网络结构 拉直层 tf.keras.layers.Flatten()
+全连接层 tf.keras.layers.Dense(神经元个数, activation=&#34;激活函数&#34;, kernel_regularizer=&#34;正则化&#34;) 卷积层 tf.keras.layers.Conv2D(filters=卷积核个数, kernel_size=卷积核尺寸, strides=卷积步长, padding=&#34;valid&#34; or &#34;same&#34;) LSTM层 tf.keras.layers.LSTM()
+训练方法 model.compile(optimizer=优化器, loss=损失函数, metrics=[&#34;准确率&#34;]) Optimizer  sgd adagrad adadelta adam  loss Metrics 训练过程 model.fit(训练集的输入特征, 训练集的标签, batch_size=, epochs=, validation_data=(测试集的输入特征, 测试集的标签), validation_split=从训练集划分多少比例分给测试集, validation_freq=多少次epoch测试一次) ……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/">阅读全文</a></p>
+    </article>
+    
+    
+    
     <article class="post">
         <header>
             <h1 class="post-title">
@@ -138,6 +146,8 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
         </div>
         <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-03-01-weakreference/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
@@ -155,21 +165,7 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
         <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-02-17-camerax/">阅读全文</a></p>
     </article>
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-02-16-bazel-build-system/" title="Bazel build system">Bazel build system</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年2月16日
-        </date>
-        
-        <div class="post-content">
-            这货不支持proxy，也是醉了，这让人咋用啊。……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-02-16-bazel-build-system/">阅读全文</a></p>
-    </article>
+    
     
     <article class="post">
         <header>
@@ -187,6 +183,26 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
         </div>
         <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-02-16-mediapipe/">阅读全文</a></p>
     </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2020-02-16-bazel-build-system/" title="Bazel build system">Bazel build system</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年2月16日
+        </date>
+        
+        <div class="post-content">
+            这货不支持proxy，也是醉了，这让人咋用啊。……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-02-16-bazel-build-system/">阅读全文</a></p>
+    </article>
+    
+    
     
     <article class="post">
         <header>
@@ -230,6 +246,8 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
         <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-02-01-x86-register/">阅读全文</a></p>
     </article>
     
+    
+    
     <article class="post">
         <header>
             <h1 class="post-title">
@@ -245,6 +263,8 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
         </div>
         <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-01-27-post-to-bootsec/">阅读全文</a></p>
     </article>
+    
+    
     
     <article class="post">
         <header>
@@ -263,6 +283,7 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
     </article>
     
     
+    
 
 
 
@@ -271,37 +292,37 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
 
     
     <li  class="current">
-        <a href="https://axiomaster.gitee.io/">1</a>
+        <a href="https://axiomaster.gitee.io/post/">1</a>
     </li>
     
     <li >
-        <a href="https://axiomaster.gitee.io/page/2/">2</a>
+        <a href="https://axiomaster.gitee.io/post/page/2/">2</a>
     </li>
     
     <li >
-        <a href="https://axiomaster.gitee.io/page/3/">3</a>
+        <a href="https://axiomaster.gitee.io/post/page/3/">3</a>
     </li>
     
     <li >
-        <a href="https://axiomaster.gitee.io/page/4/">4</a>
+        <a href="https://axiomaster.gitee.io/post/page/4/">4</a>
     </li>
     
     <li >
-        <a href="https://axiomaster.gitee.io/page/5/">5</a>
+        <a href="https://axiomaster.gitee.io/post/page/5/">5</a>
     </li>
     
     <li >
-        <a href="https://axiomaster.gitee.io/page/6/">6</a>
+        <a href="https://axiomaster.gitee.io/post/page/6/">6</a>
     </li>
     
     <li >
-        <a href="https://axiomaster.gitee.io/page/7/">7</a>
+        <a href="https://axiomaster.gitee.io/post/page/7/">7</a>
     </li>
     
 
     
     <li class="next">
-        <a href="https://axiomaster.gitee.io/page/2/">下一页</a>
+        <a href="https://axiomaster.gitee.io/post/page/2/">下一页</a>
     </li>
     
 </ol>

@@ -7,16 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>404 Page not found | Axiomaster&#39;s Site</title>
-    <meta property="og:title" content="404 Page not found - Axiomaster&#39;s Site">
+    <title>状态模式 State Pattern | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="状态模式 State Pattern - Axiomaster&#39;s Site">
     <meta property="og:type" content="article">
         
+    <meta property="article:published_time" content='2019-03-17T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-03-17T00:00:00&#43;08:00'>
         
     <meta name="Keywords" content="">
-    <meta name="description" content="404 Page not found">
+    <meta name="description" content="状态模式 State Pattern">
+        <meta name="author" content="axiomaster">
         
-    <meta name="author" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/404.html">
+    <meta property="og:url" content="https://axiomaster.gitee.io/post/2019-03-17-state-pattern/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
@@ -46,7 +50,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://axiomaster.gitee.io/">首页</a>
+                    <a class="current" href="https://axiomaster.gitee.io/">首页</a>
                     
                 </nav>
             </div>
@@ -60,20 +64,72 @@
 
                 <div class="col-8" id="main">
                     
-<div class="body404">
-    <div class="info404">
-        <header id="header404" class="clearfix">
-            <div class="site-name404"><i>404</i></div>
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">状态模式 State Pattern</h1>
         </header>
-        <section>
-            <div class="title404">
-                <p>每一个平凡的日常<br />都是连续发生中的奇迹</p>
-            </div>
-            
+        <date class="post-meta meta-date">
+            2019年3月17日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <blockquote>
+<p>状态模式允许对象在内部状态改变时改变它的行为，对象看起来好像修改了它的类。</p>
+</blockquote>
+<p>工作中经常会遇到各种状态机，使用流程控制的方式虽然也可以实现，但后续的维护变动就变得很困难。在实际中我们现在就遇到了一个这样子的问题，整个状态机的代码有一千多行，代码完成的还算工整，但要看懂现在就只能对比状态图了，因为状态实在太多了。我曾经增改过两次，每次改动都伴随着一大堆的问题单。</p>
+<p>这时候就真真切切体会到状态模式的好处了。</p>
+<h1 id="类图">类图</h1>
+<p>
+        <img class="mx-auto" alt="plantuml插件" src="../img/pattern/state.svg" />   
+    </p>
+<h1 id="状态模式-vs-策略模式">状态模式 vs 策略模式</h1>
+<p>如果与策略模式的类图对比的话，会发现图结构几乎一模一样。虽然如此，这俩模式还是有比较明显的区别。</p>
+<p>策略模式中，最后的每一个业务类只包含了一组算法中的一个实现；或者说每一种算法的组合形成了一个业务类。</p>
+<p>但在状态模式中，业务类中继承了算法的所有实现，并且在运行态切换算法为不同的实现，从而让自己拥有不同的行为（表现为不同的状态）。</p>
+<p>我觉得类比之前策略模式中不同种类鸭子的实现，状态模式只存在一只百变鸭，但这只鸭子根据外界输入一会将自己变成红头鸭吱吱叫，一会儿变成绿头鸭呱呱叫。</p>
+<h1 id="代码">代码</h1>
+<p>略</p>
 
-            <a rel="nofollow" href="https://axiomaster.gitee.io/" class="index404">回首页看看</a>
-        </section>
-    </div>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/2019-03-31-factory-pattern/">工厂模式 Factory Pattern</a></li>
+        
+        <li><a href="/post/2019-03-03-plantuml/">工具篇</a></li>
+        
+        <li><a href="/post/2019-03-05-strategy-pattern/">策略模式 Strategy Pattern</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F'>设计模式</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
 </div>
 
                     <footer id="footer">
@@ -96,6 +152,16 @@
 </footer>
 
 
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>

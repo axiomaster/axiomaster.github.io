@@ -7,20 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>404 Page not found | Axiomaster&#39;s Site</title>
-    <meta property="og:title" content="404 Page not found - Axiomaster&#39;s Site">
+    <title>吐槽 | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="吐槽 - Axiomaster&#39;s Site">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="">
-    <meta name="description" content="404 Page not found">
+    <meta name="description" content="吐槽">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/404.html">
+    <meta property="og:url" content="https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
+    <link rel="alternate" type="application/rss+xml" href="https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/index.xml" title="Axiomaster's Site" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -60,20 +61,54 @@
 
                 <div class="col-8" id="main">
                     
-<div class="body404">
-    <div class="info404">
-        <header id="header404" class="clearfix">
-            <div class="site-name404"><i>404</i></div>
-        </header>
-        <section>
-            <div class="title404">
-                <p>每一个平凡的日常<br />都是连续发生中的奇迹</p>
-            </div>
-            
+<div class="res-cons">
+    
+    <h3 class="archive-title">
+        包含标签
+        <span class="keyword">吐槽</span>
+        的文章
+    </h3>
+    
 
-            <a rel="nofollow" href="https://axiomaster.gitee.io/" class="index404">回首页看看</a>
-        </section>
-    </div>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2019-06-15-dont-be-evil/">Don&#39;t be evil</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年6月15日
+        </date>
+        
+        <div class="post-content">
+            上周和一个久未见面的朋友聊天，后来发现聊天的大部分内容都是吐槽工作。晚上又失眠了，脑袋里全是最近上班的事，吐槽一波~
+一、问题指责定界
+这两天问题攻关（版本release前消灭问题单），我负责的Java通信框架部分很有意思，14张单下来没改一行代码。对面人说看你最近打电话多了很多，一直在扯皮。其中有几个问题很有代表性。
+1 业务失败了，定位邮件转了一圈之后发现a服务调用b服务，a未收到响应。a截图发邮件给另一个部门的b，b回截图显示a调用发起1min左右响应了。a自己分析发现调用走Nginx，默认断链时间30s。但是a因其它原因配置了全局6min的超时时间，并未超时失败。 有意思的是a组大佬回复，框架定位响应1min问题，然后框架定位超时吃一单。 很老的问题单，日志早丢了（吐槽日志系统）。拉了一圈人电话了解业务情况，还原场景。问到a大佬时原话：“背景我也不了解，我看问题没人跟了，就让框架看一下”。 release点前都不愿接单，开始扯皮上升。再升一级se，说有2个问题，通信1min问题和失败问题bulabul&hellip;&hellip;
+可是大哥，分布式系统里请求时长都是基于0.5/0.99分度只有统计意义的，你让我定位单次请求1min的问题，而且还是一个被各种开发，各种可靠性测试蹂躏的一个测试环境，wtf。而且问题已经很明确，1min请求时长正好暴露了a的接口容错机制明显有问题，不论是改超时时间，还是去改Nginx时长，或者接口同步机制&hellip;&hellip; 扯到最后，多谢a的大佬和se怜悯我们300多缺陷单，同时新版本a接口已下线，同意接单。 吐槽一下我们测试问题定界机制，问题邮件发出来之后启动24h超时定时器，击鼓传花一样最后落在谁手里谁吃单。定位期间测试也不关注定位逻辑是否合理，很多不需要业务背景，只要前后语义分析就能发现有明显逻辑漏洞的定位结论直接就回复了。这就导致定位倾向于找一个任意异常日志贴上去然后转给下一跳，反正下一跳也不知道我业务是什么。系统里的失败必然伴随着服务间调用失败，框架就很吃亏。接口人跟我诉苦，自己调休一天，30多个定位邮件&hellip;&hellip;上班还要各种会议挂着，也难怪会超时提单了。
+2 业务失败，定位进展为f服务的sdk调用f服务，调用抛异常了，没有完整日志只有异常截图，而且多次出现。找到f，人很赞，业务背景有问必答，最后还很nice的提示我f服务使用了自定义lb策略，可能是这里的问题。 我就下sdk代码，背景服务d代码，f服务端代码，看了半天发现。咦，根据日志抛出的异常推断这只能是你们自己实现的自定义lb选路失败了导致的。只是框架定义了lb接口以及lb异常机制，所以异常栈里全是框架信息。 f很爽快，定位清楚后就接单了。不过他们也很痛苦，自定义lb里都没有打日志&hellip;&hellip;
+类似上面，邮件内容为yb看一下为啥异常，然后超时提单。
+3 m内存超规格了，m接口人没有看内存信息，而是从日志里翻出来调我们g失败了。一个资源问题就神奇的转变为调用g失败的问题了，性能测试也很神奇的认可了这个结论。 可是我们可靠性se可是说，a依赖b，b挂掉后a是要惯性运行的啊。m好不惯性啊！ 然后就开始了漫长的扯皮，最后m撂下话，单肯定是不能接的，最多只同意复制一张，各自管各自的问题。
+哎，提单是测试的绩效。可是好多单提出后就没有焦点了，想要跟踪的问题也说不清楚。问题不分主次，一打一大片。
+二、跨组驱动
+我们搞了一个特性，需要别人适配。当时开发好急哦（好像所有特性都这样），5月31号发出来催别人赶紧适配，要赶7号版本。后来赶不上了，再赶15号最终版本。群里说，邮件推，但其他组都没动静。等到14号测试介入要提单了所有人都慌了。一下午我电话被打爆了。 所有人都有怨言。原来我之前已经在4月多搞了一个止血方案，5月初又搞了一个针对Java的方案，现在我搞得是全语言版的最终方案，以前的都是临时方案。 2周前适配发了邮件，但没有用需求推动。小组长只管需求列表，问题单列表，其他组一个小开发的适配邮件谁鸟你，所以看不见。不得不说还是测试牛逼，说要提单所有人都紧张了。 大家跑来吐槽我为啥这时间点发适配，为啥这么频繁的改适配方案，我很懵逼，很慌。同是开发，同在消单，相煎何急。 自己想一下，很内疚。驱动别人去适配，别人也算客户吧。以客户为中心难道忘了吗？为啥方案变更这么频繁，客户体验太差了吧！驱动不好，时间点卡的这么赶，简直是在犯罪啊。毕竟兄弟们都已经两班倒，24h在岗了。
+以前我不太懂dont be evil是啥意思，我们不应该是be kind，be nice，be cool吗？现在想想，工作中能做到dont be evil就很不错了，很多时候不自觉的就对外作恶了。
+包括不限于不在代码中留下一坨屎。昨天我们组的女前辈在群里发了一张屎一样的代码截图，最后git记录显示是我合入的。但是我很肯定这代码不是我写的，大致背景我也记得，但git记录没法辩驳，而且我提交时确实没看内容。
+工作前就是刷leetcode之类，只关注是否work。说实话软件工程能力或者说对好代码的辨别力，如何写出好代码的能力很缺失。细节处有很多盲区。 入行也2年了，期间被那位女前辈，还有其他前辈像上面那样吊打，多次按在地上摩擦。 被别人指正String类型的不可变性是源自内部实现的final char[]；for循环的作用域区间是整个循环过程而非单次循环&hellip;&hellip; 认识到错误时都很感激，自己很惶恐，也在反思，总结哪种好，哪种不好，提升自己对细节的把控和品鉴力。
+但也发现很多代码更糟糕，很多问题定位太随意，一些事情像上面适配那样的驱动方式太简单粗暴，一些低效内耗行为明显与有效产出方向不一致，更遑论一些宣称很有价值，很nice，很cool的事情深入之后发现是豆腐渣，没有任何意义&hellip;&hellip;
+能说什么呢，天也亮了，希望工作生活中大家都能dont be evil，把自己这一跳的事情努力尽责做好，提升自己能力，之后再说be kind，be nice，be cool吧~……
+            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-06-15-dont-be-evil/">阅读全文</a></p>
+        </div>
+    </article>
+    
+
+    
+
+
+
+
+
 </div>
 
                     <footer id="footer">

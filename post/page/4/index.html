@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>Posts | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="Posts - Axiomaster&#39;s Site">
+    <meta property="og:type" content="article">
+        
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="Posts">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://axiomaster.gitee.io/post/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <link rel="alternate" type="application/rss+xml" href="https://axiomaster.gitee.io/post/index.xml" title="Axiomaster's Site" />
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://axiomaster.gitee.io/">
+                        Axiomaster&#39;s Site
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://axiomaster.gitee.io/">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2019-03-22-simple/" title="一道数学题">一道数学题</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年3月17日
+        </date>
+        
+        <div class="post-content">
+            我女朋友从中学时数学就不咋样，高中时理科太差就只能读文科，读了文科数学依然最差。大学数学还需要补考才能毕业，考研时因为不考数学才读的现在的专业。我略好一些，高中时借着给她补习数学才走到一起。
+这是背景。
+前一阵子和女朋友去买鞋，商场满减，400减100，700减200，900减300。我们选中了一双700多一点儿的鞋，刚好凑够满减。付钱的时候，收银台有个大姐，选了一条裤子200多，要和我们一起凑单。
+我想都没想就说可以啊。这时候我女朋友突然问，那怎么凑？她这么突兀的一问，我还没反应过来。大姐也呆住了，就说你们减200，我们减100啊。我女朋友就有点儿吞吞吐吐了，我们已经够减200了之类的。大姐见势不妙，就让一步说那你们减220，自己减80。听到这里我都有点儿不好意思了，刚好收银员也扫好了码催付款。我赶紧付了钱，收了大姐的余额就往出走。大姐的丈夫过来后了解清楚了，就在背后说互利互惠什么的。
+走出门的时候，我总觉得自己占了人家20块钱的便宜，心理有点儿内疚。我女朋友却说，她本想着我们减250，他们减50。看我一脸震惊，就跟我开始算起了帐。我们700多，不需要他们也能优惠200；他们没我们，啥优惠也没有；加一起之后，多优惠了100，那这100按比例我们应该70，他们30，至少也得平分。
+至此我才突然转过弯儿来，从头至尾我不仅没占人家便宜，还被别人占了便宜。……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-03-22-simple/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2019-04-14-defer/" title="Golang defer导致内存溢出">Golang defer导致内存溢出</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年3月17日
+        </date>
+        
+        <div class="post-content">
+            Golang中提供了defer关键字，以前可能需要在函数内进行多次判断之后释放资源，现在使用defer一次就搞定了，习惯之后会觉得这个特性非常好用。
+问题代码 有一句话是软件设计没有银弹，放在这里依然成立。defer这么好用，但也需要注意一些坑。代码逻辑大致如下：
+for { defer 释放资源 // http request  // 错误码判断  // sleep 5s重试 或 break退出 } 业务是心跳这样的守护进程，所以直接就用了死循环，请求失败之后进行重试，或满足一定条件时退出循环。使用defer在最后释放资源。
+测试时异常场景也进行了覆盖，功能上没有发现问题。但在一个实例上发现运行一段时间之后内存爆了。
+问题分析 defer的实现机制是在调用函数栈上再压入defer函数，调用return前调用defer函数。所以调用defer会有一次压栈操作。
+上面的示例中将defer在for循环中，环境恰好没有返回对应的错误码让for循环退出，导致defer一直被执行，重复的压栈导致StackOverflow。
+小结 从这里看，将defer放入循环中就是一个不好的习惯；另外，死循环代码也有一丝丝坏味道，看到这样的代码时就应该警惕了。……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-04-14-defer/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2019-03-05-strategy-pattern/" title="策略模式 Strategy Pattern">策略模式 Strategy Pattern</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年3月3日
+        </date>
+        
+        <div class="post-content">
+            策略模式定义了算法族，分别封装起来，让它们之间可以相互替换，此模式让算法的变化独立于使用算法的客户。
+ 类图  继承 vs 组合 上面的描述有些抽象。策略模式想要表达的是，如果一个类需要某种行为，不要通过继承来实现（is-a），可以使用组合（has-a）来实现。这样做更加灵活，当业务类（duck）的行为（fly）需要改变时，只需要注入不同的算法实现类即可。
+这也就是 鸭子继承， 如果一个类通过组合获取了鸭子的行为，那它就可以当作鸭子使用，不需要关注它是否继承自鸭子基类，是否真正的是一只鸭子。
+Java中Spring的依赖注入（DI）也是这种思路。Golang中甚至取消了继承，从语法层面避免继承所带来的耦合。这里甚至可以推测，OOP在提出之初，只是基于对真实世界中对象建模的思路，提出了继承，实现等概念。但后续工程实践发现继承并没有组合好用。
+很多协议设计也是这样，基于最初的构想设计了很多特性，结果后续使用中发现一部分设计很鸡肋或很容易出错。于是又通过各种约定，最佳实践，框架等来解决这些问题。
+代码 public interface FlyBehavior { void fly(); } class FlyWithWings implements FlyBehavior { @Override public void fly() { // todo  } } class FlyNoWay implements FlyBehavior { @Override public void fly() { // do nothing  } } public interface QuackBehavior { void quack(); } class Quack implements QuackBehavior { @Override public void quack() { // todo  } } class Squeak implements QuackBehavior { @Override public void quack() { // todo  } } class MuteQuack implements QuackBehavior { @Override public void quack() { // todo  } } public abstract class Duck { FlyBehavior flyBehavior; QuackBehavior quackBehavior; abstract void display(); void performFly() { flyBehavior.……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-03-05-strategy-pattern/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2019-03-03-plantuml/" title="工具篇">工具篇</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年3月3日
+        </date>
+        
+        <div class="post-content">
+            曾经信心满满的立过很多flag，要学习并掌握某一领域或坚持某件事儿，最终都无疾而终，只剩下零星概念和一堆遗憾，原因大都类似：
+ 计划被其它事情打断，中止了 进行到一半，发现意义不大 进行中遇到了困难，放弃了 当时掌握了，但没有及时总结，后续没有练习，忘记了  包括不限于协议栈、数据库、JVM、正则表达式、音律、写总结&hellip;&hellip;也包括设计模式。结果一回头，猛然发现时间已经过去了这么久，却什么都没有留下来。
+在此再立一个flag，每周写一篇总结。周积跬步，以致千里。
+UML  统一建模语言 (Unified Modeling Language, UML)
+ 所有介绍设计模式的资料都会用到uml图。之前总以为UML图就是类图，每次都是被继承，实现里面的实线、虚线、箭头等给整懵了。然后就放弃看图，只看代码实现。
+现在才知道，类图只是UML中的一小部分。UML图还包括用例图，时序图等。和SE等大佬交流时，设计文档里全是各种UML图。
+PlantUML 各种工具都可以画UML图，包括visio，Visual Paradigm等。我们使用PlantUML, 像Markdown一样，通过简单的语句写UML图，使用方便。当然，这一套工具也都是免费的。
+windows安装  PlantUML  PlantUML有IntelliJ IDEA的插件版，可以直接在IDEA的plugins中下载安装。我们也使用这个版本。
+ 插件装好之后，新建puml文件，直接打开就可以看到对应的编辑器了。
+  Graphviz  安装插件之后，也可能无法看到右边的预览图，而是提示报错，这是因为缺少Graphviz环境变量。Graphviz是一个开源的绘图软件，很多开源软件生成可视化图时都使用Graphviz。
+下载Graphviz并安装后，配置如下环境变量之后就好了。
+GRAPHVIZ_DOT=D:\Program Files (x86)\Graphviz2.38\bin\dot.exe PlantUML基本语法  PlantUML类图
+  泛化，Generalization 关联，Association 组合，Composition 聚合，Aggregation 实现，Realization 依赖，Dependency  @startuml Class01 &lt;|-- Class02:泛化 Class03 &lt;-- Class04:关联 Class05 *-- Class06:组合 Class07 o-- Class08:聚合 Class09 &lt;|.. Class10:实现 Class11 &lt;.. Class12:依赖 @enduml   ……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-03-03-plantuml/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2019-02-27-programer-romantic/" title="程序员的浪漫">程序员的浪漫</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年2月27日
+        </date>
+        
+        <div class="post-content">
+            程序员的浪漫 之前学习TLS时向一个做安全的朋友请教，过程中他给我讲了下面一个故事。听完后甚是感动，分享给大家。
+为了方便描述，以我朋友的视角进行描述。
+背景 公司开发的产品涉及安全时都要求使用TLS通信，TLS通信时需要使用证书。申请证书时需要预先制作好私钥，私钥与证书里的公钥形成密钥对。非对称加密可以粗略的理解为，通信前将你的证书发给对端，对端使用你证书中的公钥进行加密。加密后的密文只有对应的私钥才可以解密。只要私钥不泄密，就可以保证安全。
+ 但通信时是需要使用私钥进行解密的，所以私钥也需要存储在服务器上。如果服务器被攻破，私钥被窃取，这样也很危险。所以使用openssl制作私钥时一般都要求提供一个密码来保护私钥。一般支持TLS的工具都支持加载加密后的私钥和密码来进行通信。
+但是密码也是需要存储的，密码泄露也存在安全风险。更近一步的方法就是使用对称加密将私钥密码也进行加密，解密只能使用特定的工具进行。工具被编译成二进制文件，解密直接在内存进行，解密后的密码和私钥不存储，直接使用。
+私钥 希望看完上面一段背景之后你还没有晕。
+从上面我们可以看出，实际使用中一般开发人员是没机会接触到私钥密码的，大家直接使用加密后的私钥和密码就可以了。实际中也是这样。产品开发中都使用预置的证书、私钥，交付后由客户替换为商用证书就可以了。开发人员也不会关注预置证书是哪里来的，怎么生成的。
+一次我们启动新项目，特殊原因要求我们更新一份新的证书。但替换后出了岔子，小部分业务无法相互通信，我被要求定位清楚问题出在哪里。为了确认是证书误用还是业务处理的问题，我需要把加密后的私钥解密，然后和公钥校验。折腾了小半天，拿到校验结果之后，我终于说服其他开发是他们的业务处理的问题。这个问题也就结束了。
+私钥密码 解密私钥时，我需要先把私钥密码解密出来。搞定了问题之后，我又回想起那个私钥密码。那个密码很特殊，明显是人名全拼+数字组成的，这激起了我的好奇心。我本以为这数字是一个工号，查了一下并没有，难道已经离职了？又查了一下人名全拼，这次倒是查到了几位，挨个看了之后感觉都不太可能。
+这时我的八卦之魂已经熊熊燃烧，停不下来了。那就最简单的方法，查一下这个文件的修改记录。这一下就锁定了第一次添加这个文件的哥们。然后我就试探性的发了个消息确认了下，至此真相大白了。
+程序员的浪漫 私钥密码是这个开发人员女朋友的名字+生日组成的。创建的时候，他认为反正也不会有人用到密码，就决定埋这么一个彩蛋。
+但他女朋友不是我们公司的，我不清楚他有没有告诉她。甚至，我都怀疑即使他告诉她这个浪漫的故事，她是否在完全听懂前就被前面那一大堆概念整懵了。
+试想一下，服务器间每次建链时都要相互确认一下身份，都需要正确喊出她的名字才能通行。全球各地千万个机房里风扇轰鸣，机架上服务器网口灯快速闪烁着，这巨大的比特洪流都在默念着她的名字，不分昼夜。……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-02-27-programer-romantic/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2019-01-21-neural-network/" title="神经网络">神经网络</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年1月21日
+        </date>
+        
+        <div class="post-content">
+            感知机 多层感知机 神经网络 ……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-01-21-neural-network/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2019-01-05-hello-world/" title="Hello World">Hello World</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年1月5日
+        </date>
+        
+        <div class="post-content">
+            我的Github Page开张了 突然发现github提供了page功能，简直太赞了。纯静态，使用markdown编写，支持绑定域名，不需要网络主机。。。这么多好处怎能拒绝呢？
+有了page，还有什么理由不好好写博客，不好好记笔记呢？
+现在开始，把之前博客上的零碎都搬过来，然后开始好好写博客。
+致谢 本博客使用了柏荧(BY)的模板，在此向他致谢。……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-01-05-hello-world/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2018-09-08-gdt-ldt/" title="逻辑地址-&gt;线性地址 GDT/LDT">逻辑地址-&gt;线性地址 GDT/LDT</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            1年1月1日
+        </date>
+        
+        <div class="post-content">
+            逻辑地址-  ……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2018-09-08-gdt-ldt/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2018-09-08-page/" title="线性地址 -&gt; 物理地址 PAGE">线性地址 -&gt; 物理地址 PAGE</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            1年1月1日
+        </date>
+        
+        <div class="post-content">
+            线性地址 -  ……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2018-09-08-page/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2018-05-01-tucao/" title="每日吐槽">每日吐槽</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            1年1月1日
+        </date>
+        
+        <div class="post-content">
+            每日吐槽 我坐在电脑前看书，我妈在边上不停的跟我说，xxx又结婚了，xxx家又生小孩了，xxx和xxx还真厉害，都生了双胞胎，还都是龙凤胎。。。……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2018-05-01-tucao/">阅读全文</a></p>
+    </article>
+    
+    
+    
+
+
+
+<ol class="page-navigator">
+    
+    <li class="prev">
+        <a href="https://axiomaster.gitee.io/post/page/3/">上一页</a>
+    </li>
+    
+
+    
+    <li >
+        <a href="https://axiomaster.gitee.io/post/">1</a>
+    </li>
+    
+    <li >
+        <a href="https://axiomaster.gitee.io/post/page/2/">2</a>
+    </li>
+    
+    <li >
+        <a href="https://axiomaster.gitee.io/post/page/3/">3</a>
+    </li>
+    
+    <li  class="current">
+        <a href="https://axiomaster.gitee.io/post/page/4/">4</a>
+    </li>
+    
+    <li >
+        <a href="https://axiomaster.gitee.io/post/page/5/">5</a>
+    </li>
+    
+    <li >
+        <a href="https://axiomaster.gitee.io/post/page/6/">6</a>
+    </li>
+    
+    <li >
+        <a href="https://axiomaster.gitee.io/post/page/7/">7</a>
+    </li>
+    
+
+    
+    <li class="next">
+        <a href="https://axiomaster.gitee.io/post/page/5/">下一页</a>
+    </li>
+    
+</ol>
+
+
+
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="https://axiomaster.gitee.io/">Axiomaster&#39;s Site By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.gitee.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-03-01-weakreference/" title="Weak Reference">Weak Reference</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-17-camerax/" title="CameraX">CameraX</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-16-bazel-build-system/" title="Bazel build system">Bazel build system</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-16-mediapipe/" title="mediapipe">mediapipe</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-01-x86-register/" title="x86寄存器汇总">x86寄存器汇总</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-01-27-post-to-bootsec/" title="系统启动分析(一)">系统启动分析(一)</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-01-10-android-debug/" title="Android调试">Android调试</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://axiomaster.gitee.io/tags/activity/">activity</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/algorithm/">algorithm</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/android/">android</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/aosp/">aosp</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/bazel/">bazel</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/bug/">bug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/debug/">debug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/debugger/">debugger</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/docker/">docker</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/golang/">golang</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/gradle/">Gradle</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/i/o/">I/O</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/idea%E6%8F%92%E4%BB%B6/">IDEA插件</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/java/">java</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/linux/">linux</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/ml/">ML</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/net/">net</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/nginx/">nginx</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/os/">OS</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/tensorflow/">Tensorflow</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/tool/">tool</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/view/">view</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/vs-code/">VS code</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/window/">window</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/wsl/">WSL</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/zookeeper/">zookeeper</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/zygote/">zygote</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98/">内存</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/">吐槽</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%B7%A5%E5%85%B7/">工具</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%89%8B%E5%B7%A5/">手工</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/">神奇的bug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E8%AF%81%E4%B9%A6/">证书</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E9%93%BE%E6%8E%A5/">链接</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://axiomaster.gitee.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

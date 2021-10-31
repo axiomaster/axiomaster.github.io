@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>Making debugger for Golang | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="Making debugger for Golang - Axiomaster&#39;s Site">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-08-11T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-08-11T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="Making debugger for Golang">
+        <meta name="author" content="axiomaster">
+        
+    <meta property="og:url" content="https://axiomaster.gitee.io/post/2019-08-11-debugger-golang2/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://axiomaster.gitee.io/">
+                        Axiomaster&#39;s Site
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://axiomaster.gitee.io/">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">Making debugger for Golang</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月11日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <blockquote>
+<p>转载自 <a href="https://medium.com/golangspec/making-debugger-in-golang-part-ii-d2b8eb2f19e0">Making debugger for Golang (part II)</a></p>
+</blockquote>
+<p>During the first part we’ve bootstrapped development environment and made a simple program (tracer) which stops child process (tracee) at the very beginning and then continues it execution together with showing its standard output. Now it’s time to extend its basic capabilities.</p>
+<p>Usually debuggers allow to single-step through debugged program. It can be done using ptrace <em>PTRACE_SINGLESTEP</em> request which tells tracee to stop after execution of single instruction:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;flag&#34;</span>
+    <span style="color:#e6db74">&#34;log&#34;</span>
+    <span style="color:#e6db74">&#34;os&#34;</span>
+    <span style="color:#e6db74">&#34;os/exec&#34;</span>
+    <span style="color:#e6db74">&#34;syscall&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Parse</span>()
+    <span style="color:#a6e22e">input</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Arg</span>(<span style="color:#ae81ff">0</span>)
+    <span style="color:#a6e22e">cmd</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">exec</span>.<span style="color:#a6e22e">Command</span>(<span style="color:#a6e22e">input</span>)
+    <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Args</span> = []<span style="color:#66d9ef">string</span>{<span style="color:#a6e22e">input</span>}
+    <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Stdout</span> = <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdout</span>
+    <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Stderr</span> = <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stderr</span>
+    <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">SysProcAttr</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">syscall</span>.<span style="color:#a6e22e">SysProcAttr</span>{<span style="color:#a6e22e">Ptrace</span>: <span style="color:#66d9ef">true</span>}
+    <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Start</span>()
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+    }
+    <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Wait</span>()
+    <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;State: %v\n&#34;</span>, <span style="color:#a6e22e">err</span>)
+    <span style="color:#a6e22e">wpid</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Process</span>.<span style="color:#a6e22e">Pid</span>
+    <span style="color:#a6e22e">pgid</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">syscall</span>.<span style="color:#a6e22e">Getpgid</span>(<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Process</span>.<span style="color:#a6e22e">Pid</span>)
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Panic</span>(<span style="color:#a6e22e">err</span>)
+    }
+    <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">syscall</span>.<span style="color:#a6e22e">PtraceSetOptions</span>(<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Process</span>.<span style="color:#a6e22e">Pid</span>, <span style="color:#a6e22e">syscall</span>.<span style="color:#a6e22e">PTRACE_O_TRACECLONE</span>)
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+    }
+    <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">syscall</span>.<span style="color:#a6e22e">PtraceSingleStep</span>(<span style="color:#a6e22e">wpid</span>)
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+    }
+
+    <span style="color:#a6e22e">steps</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
+    <span style="color:#66d9ef">for</span> {
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">ws</span> <span style="color:#a6e22e">syscall</span>.<span style="color:#a6e22e">WaitStatus</span>
+        <span style="color:#a6e22e">wpid</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">syscall</span>.<span style="color:#a6e22e">Wait4</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">*</span><span style="color:#a6e22e">pgid</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ws</span>, <span style="color:#a6e22e">syscall</span>.<span style="color:#a6e22e">WALL</span>, <span style="color:#66d9ef">nil</span>)
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">wpid</span> <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> {
+            <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+        }
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">wpid</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Process</span>.<span style="color:#a6e22e">Pid</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">ws</span>.<span style="color:#a6e22e">Exited</span>() {
+            <span style="color:#66d9ef">break</span>
+        }
+        <span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">ws</span>.<span style="color:#a6e22e">Exited</span>() {
+            <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">syscall</span>.<span style="color:#a6e22e">PtraceSingleStep</span>(<span style="color:#a6e22e">wpid</span>)
+            <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+                <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+            }
+            <span style="color:#a6e22e">steps</span> <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+        }
+    }
+    <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Steps: %d\n&#34;</span>, <span style="color:#a6e22e">steps</span>)
+}
+</code></pre></div><p>Building and output looks like this (number of steps can vary between each calls):</p>
+<pre tabindex="0"><code>&gt; go install -gcflags=&quot;-N -l&quot; github.com/mlowicki/hello
+&gt; go install github.com/mlowicki/debugger
+&gt; debugger /go/bin/hello
+2017/06/09 19:54:42 State: stop signal: trace/breakpoint trap
+hello world
+2017/06/09 19:54:49 Steps: 297583
+</code></pre><p>First part is the same as in our initial program from previous post. What is new is the use of syscall.PtraceSingleStep. It stops tracee (hello in our case) after execution of single instruction.</p>
+<p>Option <code>PTRACE_O_TRACECLONE</code> has been also set:</p>
+<pre tabindex="0"><code>PTRACE_O_TRACECLONE (since Linux 2.5.46)
+Stop the tracee at the next clone(2) and automatically start tracing the newly cloned process...
+</code></pre><p>(<a href="http://man7.org/linux/man-pages/man2/ptrace.2.html">http://man7.org/linux/man-pages/man2/ptrace.2.html</a>)</p>
+<p>Thanks to that our debugger knows when new thread has been started and can step through it as well so the number of steps at the very end is a sum of executed instructions across all processes.</p>
+<p>Number of instructions may seem pretty huge but it contains among others initialization of the whole Golang runtime (libc initialization should be known to those with C experience). We can prepare very simple program to check that our counting works fine. Let’s create <em>src/github.com/mlowicki/hello/hello.asm:</em></p>
+<pre tabindex="0"><code class="language-assembly" data-lang="assembly">section .data
+    msg db &quot;hello, world!&quot;, 0xA
+    len equ $ — msg
+
+section .text
+    global _start
+
+_start:
+    mov rax, 1 ; write syscall (https://linux.die.net/man/2/write)
+    mov rdi, 1 ; stdout
+    mov rsi, msg
+    mov rdx, len
+    ; Passing parameters to `syscall` instruction described in
+    ; https://en.wikibooks.org/wiki/X86_Assembly/Interfacing_with_Linux#syscall
+    syscall
+    mov rax, 60 ; exit syscall (https://linux.die.net/man/2/exit)
+    mov rdi, 0 ; exit code
+    syscall
+</code></pre><p>Inside the container let’s build our “hello world” program and see how many instructions we’ll count there:</p>
+<pre tabindex="0"><code>&gt; pwd
+/go
+&gt; apt-get install nasm
+&gt; nasm -f elf64 -o hello.o src/github.com/mlowicki/hello/hello.asm &amp;&amp; ld -o hello hello.o
+&gt; ./hello
+hello, world!
+&gt; debugger ./hello
+2017/06/17 17:58:43 State: stop signal: trace/breakpoint trap
+hello, world!
+2017/06/17 17:58:43 Steps: 8
+</code></pre><p>It looks good since we get the exact number of instructions inside hello.asm.</p>
+<p>So far we’ve learned how to stop the program at the very beginning, step through it instruction by instruction and track its processes / threads. Now it’s time to set trap at desired place and inspect state of the process like variable values.</p>
+<p>Let’s start with some basics. We have a function main from our hello.go:</p>
+<pre tabindex="0"><code>package main
+import &quot;fmt&quot;
+func main() {
+    fmt.Println(&quot;hello world&quot;)
+}
+</code></pre><p>How to set a trap at the beginning of this function? Ultimately our program after compilation and linking is a set of machine instructions. How to express that we want to set a breakpoint at particular place in the source code having only cooked binary (stuffed with instructions only CPUs understand)?</p>
+<h2 id="linetable">LineTable</h2>
+<p>Golang has built-in support to access debug information contained in Go binaries. The struct which maps program counter (PC) to line number and vice versa is called LineTable. Let’s see it in action:</p>
+<pre tabindex="0"><code>package main
+
+import (
+    &quot;debug/elf&quot;
+    &quot;debug/gosym&quot;
+    &quot;flag&quot;
+    &quot;log&quot;
+)
+
+func main() {
+    flag.Parse()
+    path := flag.Arg(0)
+    exe, err := elf.Open(path)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    var pclndat []byte
+    if sec := exe.Section(&quot;.gopclntab&quot;); sec != nil {
+        pclndat, err = sec.Data()
+        if err != nil {
+            log.Fatalf(&quot;Cannot read .gopclntab section: %v&quot;, err)
+        }
+    }
+
+    sec := exe.Section(&quot;.gosymtab&quot;)
+    symTabRaw, err := sec.Data()
+    pcln := gosym.NewLineTable(pclndat, exe.Section(&quot;.text&quot;).Addr)
+    symTab, err := gosym.NewTable(symTabRaw, pcln)
+    if err != nil {
+        log.Fatal(&quot;Cannot create symbol table: %v&quot;, err)
+    }
+
+    sym := symTab.LookupFunc(&quot;main.main&quot;)
+    filename, lineno, _ := symTab.PCToLine(sym.Entry)
+    log.Printf(&quot;filename: %v\n&quot;, filename)
+    log.Printf(&quot;lineno: %v\n&quot;, lineno)
+}
+</code></pre><p>If we pass as an argument to above program something like:</p>
+<pre tabindex="0"><code>1 package main
+2
+3 import &quot;fmt&quot;
+4
+5 func main() {
+6     fmt.Println(&quot;hello world&quot;)
+7 }
+</code></pre><p>then it gives expected result:</p>
+<pre tabindex="0"><code>&gt; go install github.com/mlowicki/linetable
+&gt; go install — gcflags=”-N -l” github.com/mlowicki/hello
+&gt; linetable /go/bin/hello
+2017/06/30 18:47:38 filename: /go/src/github.com/mlowicki/hello/hello.go
+2017/06/30 18:47:38 lineno: 5
+</code></pre><p>ELF stands for Executable and Linkable Format. It’s among others a format of executables:</p>
+<pre tabindex="0"><code>&gt; apt-get install file
+&gt; file /go/bin/hello
+/go/bin/hello: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, not stripped
+</code></pre><p>ELF file consists of sections and we’re using three of them: .text, .gopclntab and .gosymtab. The first one contains machine instructions, 2nd one maps instruction counter to source code lines and the last one is a symbol table.</p>
+<p>In following story we’ll learn how to set a trap at desired place to make more practical use of LineTable and will see how to inspect program’s state.</p>
+<p>Click ❤ below to help others discover this story. Please follow me if you want to get updates about new posts or boost work on future stories.</p>
+
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/2019-08-11-debugger-golang/">Making debugger for Golang</a></li>
+        
+        <li><a href="/post/2019-08-11-debugger-golang3/">Making debugger for Golang</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/debugger'>debugger</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="https://axiomaster.gitee.io/">Axiomaster&#39;s Site By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.gitee.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-03-01-weakreference/" title="Weak Reference">Weak Reference</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-17-camerax/" title="CameraX">CameraX</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-16-bazel-build-system/" title="Bazel build system">Bazel build system</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-16-mediapipe/" title="mediapipe">mediapipe</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-01-x86-register/" title="x86寄存器汇总">x86寄存器汇总</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-01-27-post-to-bootsec/" title="系统启动分析(一)">系统启动分析(一)</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-01-10-android-debug/" title="Android调试">Android调试</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://axiomaster.gitee.io/tags/activity/">activity</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/algorithm/">algorithm</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/android/">android</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/aosp/">aosp</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/bazel/">bazel</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/bug/">bug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/debug/">debug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/debugger/">debugger</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/docker/">docker</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/golang/">golang</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/gradle/">Gradle</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/i/o/">I/O</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/idea%E6%8F%92%E4%BB%B6/">IDEA插件</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/java/">java</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/linux/">linux</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/ml/">ML</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/net/">net</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/nginx/">nginx</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/os/">OS</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/tensorflow/">Tensorflow</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/tool/">tool</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/view/">view</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/vs-code/">VS code</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/window/">window</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/wsl/">WSL</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/zookeeper/">zookeeper</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/zygote/">zygote</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98/">内存</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/">吐槽</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%B7%A5%E5%85%B7/">工具</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%89%8B%E5%B7%A5/">手工</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/">神奇的bug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E8%AF%81%E4%B9%A6/">证书</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E9%93%BE%E6%8E%A5/">链接</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://axiomaster.gitee.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>Making debugger for Golang | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="Making debugger for Golang - Axiomaster&#39;s Site">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-08-11T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-08-11T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="Making debugger for Golang">
+        <meta name="author" content="axiomaster">
+        
+    <meta property="og:url" content="https://axiomaster.gitee.io/post/2019-08-11-debugger-golang/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://axiomaster.gitee.io/">
+                        Axiomaster&#39;s Site
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://axiomaster.gitee.io/">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">Making debugger for Golang</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月11日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <blockquote>
+<p>转载自 <a href="https://medium.com/golangspec/making-debugger-for-golang-part-i-53124284b7c8">Making debugger for Golang (part I)</a></p>
+</blockquote>
+<p>The goal of this series is not to write full-featured debugger for Go programming language. If you’re looking for some then please take a look at Delve. We’ll try to understand here how debuggers work in general and how to implement basic one on Linux which takes into account Golang’s features like goroutines.</p>
+<p>Creating debugger isn’t easy though. We won’t even strive to cover this topic within a single story. Instead, this post starts a series with ultimate goal to have working solution handling most common scenarios. Along the way we’ll discuss topics like ELF, DWARF and will touch some architecture-specific issues.</p>
+<h2 id="environment">Environment</h2>
+<p>Throughout this series we’ll use Docker to get repeatable playground environment based on Debian Jessie. I’m using x86–64 and this come into play at some point when we’ll move to low-level discussions. Project’s layout is like this:</p>
+<pre tabindex="0"><code>&gt; tree
+.
+├── Dockerfile
+└── src
+    └── github.com
+        └── mlowicki
+            ├── debugger
+            │   └── debugger.go
+            └── hello
+                └── hello.go
+</code></pre><p>The main file of upcoming debugger is debugger.go and file hello.go holds source code of sample program being debugged while our journey. For now you can put there absolute minimum:
+package main</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+}
+</code></pre></div><p>Let’s start with very simple Dockerfile:</p>
+<pre tabindex="0"><code>FROM golang:1.8.1
+RUN apt-get update &amp;&amp; apt-get install -y tree
+</code></pre><p>To build Docker image, go to the top-level directory (where Dockerfile sits) and run:</p>
+<pre tabindex="0"><code>&gt; docker build -t godebugger .
+</code></pre><p>To spin the container up execute:</p>
+<pre tabindex="0"><code>&gt; docker run --rm -it -v &quot;$PWD&quot;/src:/go/src --security-opt seccomp=unconfined godebugger
+</code></pre><p>Secure computing mode (<em>seccomp</em>) is described here. Now what is left is to compile both programs inside the container. First one can be done using:</p>
+<pre tabindex="0"><code>&gt; go install --gcflags=&quot;-N -l&quot; github.com/mlowicki/hello
+</code></pre><p>Flag <code>—-gcflag</code> has been used to disable function inlining (<code>-l</code>) and compiler optimizations (<code>-N</code>) to make debugging easier. Debugger can be built using:</p>
+<pre tabindex="0"><code>&gt; go install github.com/mlowicki/debugger
+</code></pre><p>Inside the container <code>PATH</code> environment variable contains <code>/go/bin</code> so to run any of just prepared programs type either hello or debugger without full path.</p>
+<h2 id="first-step">First step</h2>
+<p>Our first task will be simple. Let’s stop the program before executing any instruction and then start it again, until it terminates (either voluntarily or caused by error). This is how you start working with most debuggers. You set some traps (breakpoints) and then run something like <code>continue</code> to actually launch till it’ll stopped at one of desired places. Let’s see how it works with Delve:</p>
+<pre tabindex="0"><code>&gt; cat hello.go
+
+package main
+
+import &quot;fmt&quot;
+
+func f() int {
+    var n int
+    n = 1
+    n = 2
+    return n
+}
+
+func main() {
+    fmt.Println(f())
+}
+
+&gt; dlv debug
+break Type ‘help’ for list of commands.
+(dlv) break main.f
+Breakpoint 1 set at 0x1087050 for main.f() ./hello.go:5
+(dlv) continue
+&gt; main.f() ./hello.go:5 (hits goroutine(1):1 total:1) (PC: 0x1087050)
+     1: package main
+     2:
+     3: import &quot;fmt&quot;
+     4:
+=&gt;   5: func f() int {
+     6:     var n int
+     7:     n = 1
+     8:     n = 2
+     9:     return n
+    10: }
+(dlv) next
+&gt; main.f() ./hello.go:6 (PC: 0x1087067)
+     1: package main
+     2:
+     3: import &quot;fmt&quot;
+     4:
+     5: func f() int {
+=&gt;   6:     var n int
+     7:     n = 1
+     8:     n = 2
+     9:     return n
+    10: }
+    11:
+(dlv) print n
+842350461344
+(dlv) next
+&gt; main.f() ./hello.go:7 (PC: 0x108706f)
+     2:
+     3: import &quot;fmt&quot;
+     4:
+     5: func f() int {
+     6:     var n int
+=&gt;   7:     n = 1
+     8:     n = 2
+     9:     return n
+    10: }
+    11:
+    12: func main() {
+(dlv) print n
+0
+(dlv) next
+&gt; main.f() ./hello.go:8 (PC: 0x1087077)
+     3: import &quot;fmt&quot;
+     4:
+     5: func f() int {
+     6:     var n int
+     7:     n = 1
+=&gt;   8:     n = 2
+     9:     return n
+    10: }
+    11:
+    12: func main() {
+    13:     fmt.Println(f())
+(dlv) print n
+1
+</code></pre><p>Let’s see how to implement it on our own.</p>
+<p>The first step is to have a mechanism for a process (our debugger) to control other process (program being debugged). Luckily on Linux we’ve something in place — ptrace. It’s not the last good news. Golang’s syscall package provides an interface to it like PtraceCont to restart traced process. So it covers the 2nd part but to have a chance to f.ex. set breakpoints before program starts its execution we need something more. While creating new process we can specify its behaviour through set of attributes— SysProcAttr. One of them is Ptrace which enables tracking and process will stop and send SIGSTOP signal to its parent before start. Let’s put everything we’ve just learned into a working machinery…</p>
+<pre tabindex="0"><code>&gt; cat src/github.com/mlowicki/hello/hello.go
+
+package main
+
+import &quot;fmt&quot;
+
+func main() {
+    fmt.Println(&quot;hello world&quot;)
+}
+
+&gt; cat src/github.com/mlowicki/debugger/debugger.go
+
+package main
+
+import (
+    &quot;flag&quot;
+    &quot;log&quot;
+    &quot;os&quot;
+    &quot;os/exec&quot;
+    &quot;syscall&quot;
+)
+
+func main() {
+    flag.Parse()
+    input := flag.Arg(0)
+    cmd := exec.Command(input)
+    cmd.Args = []string{input}
+    cmd.Stdout = os.Stdout
+    cmd.Stderr = os.Stderr
+    cmd.SysProcAttr = &amp;syscall.SysProcAttr{Ptrace: true}
+    err := cmd.Start()
+    if err != nil {
+        log.Fatal(err)
+    }
+    err = cmd.Wait()
+    log.Printf(&quot;State: %v\n&quot;, err)
+    log.Println(&quot;Restarting...&quot;)
+    err = syscall.PtraceCont(cmd.Process.Pid, 0)
+    if err != nil {
+        log.Panic(err)
+    }
+    var ws syscall.WaitStatus
+    _, err = syscall.Wait4(cmd.Process.Pid, &amp;ws, syscall.WALL, nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+    log.Printf(&quot;Exited: %v\n&quot;, ws.Exited())
+    log.Printf(&quot;Exit status: %v\n&quot;, ws.ExitStatus())
+}
+
+&gt; go install -gcflags=&quot;-N -l&quot; github.com/mlowicki/hello
+&gt; go install github.com/mlowicki/debugger
+&gt; debugger /go/bin/hello
+2017/05/05 20:09:38 State: stop signal: trace/breakpoint trap
+2017/05/05 20:09:38 Restarting...
+hello world
+2017/05/05 20:09:38 Exited: true
+2017/05/05 20:09:38 Exit status: 0
+</code></pre><p>One first version of debugger works in a very simple way. It start new process which is traced so it stops before executing first instruction and sends signal to the parent process. Parent process waits for such signal and issues logs like <code>log.Printf(&quot;State: %v\n&quot;, err)</code>. Afterwards process is restarted and parent waits for its termination. Such behaviour will give as an opportunity to f.ex. set breakpoints, start process and while reaching certain trap, inspect program’s state like current values of variables placed on stack or inside registers.</p>
+<p>Even knowing so little we can do some pretty powerful things. It’ll lay the foundations for future enhancements and experiments (more soon).</p>
+<p>Click ❤ below to help others discover this story. Please follow me if you want to get updates about new posts or boost work on future stories.</p>
+
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/2019-08-11-debugger-golang3/">Making debugger for Golang</a></li>
+        
+        <li><a href="/post/2019-08-11-debugger-golang2/">Making debugger for Golang</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/debugger'>debugger</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="https://axiomaster.gitee.io/">Axiomaster&#39;s Site By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.gitee.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-03-01-weakreference/" title="Weak Reference">Weak Reference</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-17-camerax/" title="CameraX">CameraX</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-16-bazel-build-system/" title="Bazel build system">Bazel build system</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-16-mediapipe/" title="mediapipe">mediapipe</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-02-01-x86-register/" title="x86寄存器汇总">x86寄存器汇总</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-01-27-post-to-bootsec/" title="系统启动分析(一)">系统启动分析(一)</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.gitee.io/post/2020-01-10-android-debug/" title="Android调试">Android调试</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://axiomaster.gitee.io/tags/activity/">activity</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/algorithm/">algorithm</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/android/">android</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/aosp/">aosp</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/bazel/">bazel</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/bug/">bug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/debug/">debug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/debugger/">debugger</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/docker/">docker</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/golang/">golang</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/gradle/">Gradle</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/i/o/">I/O</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/idea%E6%8F%92%E4%BB%B6/">IDEA插件</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/java/">java</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/linux/">linux</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/ml/">ML</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/net/">net</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/nginx/">nginx</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/os/">OS</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/tensorflow/">Tensorflow</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/tool/">tool</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/view/">view</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/vs-code/">VS code</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/window/">window</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/wsl/">WSL</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/zookeeper/">zookeeper</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/zygote/">zygote</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98/">内存</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/">吐槽</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%B7%A5%E5%85%B7/">工具</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%89%8B%E5%B7%A5/">手工</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E6%B1%87%E7%BC%96/">汇编</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/">神奇的bug</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E8%AF%81%E4%B9%A6/">证书</a>
+    
+    <a href="https://axiomaster.gitee.io/tags/%E9%93%BE%E6%8E%A5/">链接</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://axiomaster.gitee.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

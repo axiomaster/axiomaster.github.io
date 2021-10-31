@@ -7,20 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>404 Page not found | Axiomaster&#39;s Site</title>
-    <meta property="og:title" content="404 Page not found - Axiomaster&#39;s Site">
+    <title>Gradle | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="Gradle - Axiomaster&#39;s Site">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="">
-    <meta name="description" content="404 Page not found">
+    <meta name="description" content="Gradle">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/404.html">
+    <meta property="og:url" content="https://axiomaster.gitee.io/tags/gradle/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
+    <link rel="alternate" type="application/rss+xml" href="https://axiomaster.gitee.io/tags/gradle/index.xml" title="Axiomaster's Site" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -60,20 +61,46 @@
 
                 <div class="col-8" id="main">
                     
-<div class="body404">
-    <div class="info404">
-        <header id="header404" class="clearfix">
-            <div class="site-name404"><i>404</i></div>
-        </header>
-        <section>
-            <div class="title404">
-                <p>每一个平凡的日常<br />都是连续发生中的奇迹</p>
-            </div>
-            
+<div class="res-cons">
+    
+    <h3 class="archive-title">
+        包含标签
+        <span class="keyword">Gradle</span>
+        的文章
+    </h3>
+    
 
-            <a rel="nofollow" href="https://axiomaster.gitee.io/" class="index404">回首页看看</a>
-        </section>
-    </div>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2019-04-21-gradle-proxy/">使用Gradle开发IDEA插件</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年3月17日
+        </date>
+        
+        <div class="post-content">
+            最近想试着开发一个IDEA的插件，官方指导 中有两种方式:
+ 使用Gradle 使用DevKit  而且官方推荐Gradle的方式，称DevKit的工作流已经过时了。但百度出来的全都是DevKit的方式。而且Android Studio也是gradle，那就试试gradle的方式开发一个插件。
+Gradle配置 使用gradle创建工程之后，需要下载一些文件，因为GWF的原因这一步会特别慢，不使用VPN基本都失败了。网上找了使用aliyun源的方式，搞定了这一步。
+单个工程修改 将工程下build.gradle中的repositories替换为如下内容
+repositories { maven { url &#39;https://maven.aliyun.com/repository/public/&#39; } maven { url &#39;https://maven.aliyun.com/repository/google/&#39; } maven { url &#39;https://maven.aliyun.com/repository/jcenter&#39; } } 具体替换地址可以看aliyun官网的地址，网上大多数配置都没有更新，使用的还是旧地址。
+全局配置 以上方式只修改单个工程的，每次新建工程都要修改，很麻烦。下面这个方法可以修改全局的配置。
+在 C:\Users\用户名\.gradle目录下创建init.gradle文件，内容如下：
+allprojects { repositories { maven { url &#39;https://maven.aliyun.com/repository/public/&#39; } maven { url &#39;https://maven.aliyun.com/repository/google/&#39; } maven { url &#39;https://maven.aliyun.com/repository/jcenter&#39; } all { ArtifactRepository repo -&gt; if (repo instanceof MavenArtifactRepository) { def url = repo.url.toString() if (url.startsWith(&#39;https://repo.maven.apache.org/maven2/&#39;) || url.……
+            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-04-21-gradle-proxy/">阅读全文</a></p>
+        </div>
+    </article>
+    
+
+    
+
+
+
+
+
 </div>
 
                     <footer id="footer">

@@ -7,16 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>404 Page not found | Axiomaster&#39;s Site</title>
-    <meta property="og:title" content="404 Page not found - Axiomaster&#39;s Site">
+    <title>神奇的bug | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="神奇的bug - Axiomaster&#39;s Site">
     <meta property="og:type" content="article">
         
+    <meta property="article:published_time" content='2019-07-30T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-07-30T00:00:00&#43;08:00'>
         
     <meta name="Keywords" content="">
-    <meta name="description" content="404 Page not found">
+    <meta name="description" content="神奇的bug">
+        <meta name="author" content="axiomaster">
         
-    <meta name="author" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/404.html">
+    <meta property="og:url" content="https://axiomaster.gitee.io/post/2019-07-30-bug/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
@@ -46,7 +50,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://axiomaster.gitee.io/">首页</a>
+                    <a class="current" href="https://axiomaster.gitee.io/">首页</a>
                     
                 </nav>
             </div>
@@ -60,20 +64,58 @@
 
                 <div class="col-8" id="main">
                     
-<div class="body404">
-    <div class="info404">
-        <header id="header404" class="clearfix">
-            <div class="site-name404"><i>404</i></div>
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">神奇的bug</h1>
         </header>
-        <section>
-            <div class="title404">
-                <p>每一个平凡的日常<br />都是连续发生中的奇迹</p>
-            </div>
-            
+        <date class="post-meta meta-date">
+            2019年7月30日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <p>最近在编译一个node相关的工程，配置好编译环境，设置好代理，昨天一切都进展的挺顺利，很快就得到了结果。但后来发现编译的版本稍微有点儿差异，校验不通过。就把源码切到特定的<code>tag</code>上重来一次。然后就发现了一个神奇的bug。</p>
+<p>使用<code>yarn</code>编译，中间一步依赖的一个包在编译时需要去<code>api.github.com</code>上下载特定版本的软件包。但是目标版本使用的软件包版本号类似于<code>v1.2.3-2</code>，在小版本号之后还有<code>-2</code>进行区分，然后这个软件包总是下载失败，导致编译失败。</p>
+<p>验证了好久之后确认，代理设置没有问题，其它依赖包可以下载成功，但这个就是不行。后来在issue列表中确认，在特定proxy环境下，这个包会下载失败。失败原因是node中下载使用的<code>request</code>包在经过部分proxy时，对<code>-</code>这样的字符无法正确处理，url错误导致下载失败。</p>
+<p>而且搜索后发现这个问题很普遍，不只是vscode的issue列表中报过多，其他很多使用node的开源软件都报过。而且因为是request的问题，一般的解决方法就是回退或更新第3方依赖的软件包，确保软件包的url中不包含<code>-</code>这样的版本号。</p>
 
-            <a rel="nofollow" href="https://axiomaster.gitee.io/" class="index404">回首页看看</a>
-        </section>
-    </div>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/2019-06-24-docker-registry/">docker私有镜像仓库</a></li>
+        
+        <li><a href="/post/2018-05-27-docker-command/">docker 常用命令</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/docker'>docker</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
 </div>
 
                     <footer id="footer">
@@ -96,6 +138,16 @@
 </footer>
 
 
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>

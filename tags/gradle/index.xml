@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gradle on Axiomaster&#39;s Site</title>
+    <link>https://axiomaster.gitee.io/tags/gradle/</link>
+    <description>Recent content in Gradle on Axiomaster&#39;s Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 17 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://axiomaster.gitee.io/tags/gradle/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用Gradle开发IDEA插件</title>
+      <link>https://axiomaster.gitee.io/post/2019-04-21-gradle-proxy/</link>
+      <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://axiomaster.gitee.io/post/2019-04-21-gradle-proxy/</guid>
+      <description>最近想试着开发一个IDEA的插件，官方指导 中有两种方式:
+ 使用Gradle 使用DevKit  而且官方推荐Gradle的方式，称DevKit的工作流已经过时了。但百度出来的全都是DevKit的方式。而且Android Studio也是gradle，那就试试gradle的方式开发一个插件。
+Gradle配置 使用gradle创建工程之后，需要下载一些文件，因为GWF的原因这一步会特别慢，不使用VPN基本都失败了。网上找了使用aliyun源的方式，搞定了这一步。
+单个工程修改 将工程下build.gradle中的repositories替换为如下内容
+repositories { maven { url &amp;#39;https://maven.aliyun.com/repository/public/&amp;#39; } maven { url &amp;#39;https://maven.aliyun.com/repository/google/&amp;#39; } maven { url &amp;#39;https://maven.aliyun.com/repository/jcenter&amp;#39; } } 具体替换地址可以看aliyun官网的地址，网上大多数配置都没有更新，使用的还是旧地址。
+全局配置 以上方式只修改单个工程的，每次新建工程都要修改，很麻烦。下面这个方法可以修改全局的配置。
+在 C:\Users\用户名\.gradle目录下创建init.gradle文件，内容如下：
+allprojects { repositories { maven { url &amp;#39;https://maven.aliyun.com/repository/public/&amp;#39; } maven { url &amp;#39;https://maven.aliyun.com/repository/google/&amp;#39; } maven { url &amp;#39;https://maven.aliyun.com/repository/jcenter&amp;#39; } all { ArtifactRepository repo -&amp;gt; if (repo instanceof MavenArtifactRepository) { def url = repo.url.toString() if (url.startsWith(&amp;#39;https://repo.maven.apache.org/maven2/&amp;#39;) || url.</description>
+    </item>
+    
+  </channel>
+</rss>
