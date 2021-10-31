@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>汇编 on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.gitee.io/tags/%E6%B1%87%E7%BC%96/</link>
+    <link>https://axiomaster.github.io/tags/%E6%B1%87%E7%BC%96/</link>
     <description>Recent content in 汇编 on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 31 Oct 2021 21:05:29 +0800</lastBuildDate><atom:link href="https://axiomaster.gitee.io/tags/%E6%B1%87%E7%BC%96/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 31 Oct 2021 21:05:29 +0800</lastBuildDate><atom:link href="https://axiomaster.github.io/tags/%E6%B1%87%E7%BC%96/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>GCC Inline ASM</title>
-      <link>https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/</link>
+      <link>https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/</link>
       <pubDate>Sun, 31 Oct 2021 21:05:29 +0800</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/</guid>
+      <guid>https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/</guid>
       <description>GCC 支持在C/C++代码中嵌入汇编代码，这些汇编代码被称作GCC Inline ASM——GCC内联汇编。这是一个非常有用的功能，有利于我们将一些C/C++语法无法表达指令直接潜入C/C++代码中，另外也允许我们直接写 C/C++代码中使用汇编编写简洁高效的代码。
 1.基本内联汇编 GCC中基本的内联汇编非常易懂，我们先来看两个简单的例子：
 __asm__(&amp;#34;movl %esp,%eax&amp;#34;); // 看起来很熟悉吧！ 或者是

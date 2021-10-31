@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>吐槽 on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/</link>
+    <link>https://axiomaster.github.io/tags/%E5%90%90%E6%A7%BD/</link>
     <description>Recent content in 吐槽 on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 15 Jun 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 15 Jun 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://axiomaster.github.io/tags/%E5%90%90%E6%A7%BD/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Don&#39;t be evil</title>
-      <link>https://axiomaster.gitee.io/post/2019-06-15-dont-be-evil/</link>
+      <link>https://axiomaster.github.io/post/2019-06-15-dont-be-evil/</link>
       <pubDate>Sat, 15 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2019-06-15-dont-be-evil/</guid>
+      <guid>https://axiomaster.github.io/post/2019-06-15-dont-be-evil/</guid>
       <description>上周和一个久未见面的朋友聊天，后来发现聊天的大部分内容都是吐槽工作。晚上又失眠了，脑袋里全是最近上班的事，吐槽一波~
 一、问题指责定界
 这两天问题攻关（版本release前消灭问题单），我负责的Java通信框架部分很有意思，14张单下来没改一行代码。对面人说看你最近打电话多了很多，一直在扯皮。其中有几个问题很有代表性。

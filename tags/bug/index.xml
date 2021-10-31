@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>bug on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.gitee.io/tags/bug/</link>
+    <link>https://axiomaster.github.io/tags/bug/</link>
     <description>Recent content in bug on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 17 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://axiomaster.gitee.io/tags/bug/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 17 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://axiomaster.github.io/tags/bug/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>神奇的bug</title>
-      <link>https://axiomaster.gitee.io/post/2019-03-23-bugs/</link>
+      <link>https://axiomaster.github.io/post/2019-03-23-bugs/</link>
       <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2019-03-23-bugs/</guid>
+      <guid>https://axiomaster.github.io/post/2019-03-23-bugs/</guid>
       <description> 状态模式允许对象在内部状态改变时改变它的行为，对象看起来好像修改了它的类。
    Etcd启动失败
   数字排序问题

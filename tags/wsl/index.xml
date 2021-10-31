@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>WSL on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.gitee.io/tags/wsl/</link>
+    <link>https://axiomaster.github.io/tags/wsl/</link>
     <description>Recent content in WSL on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 23 Jun 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://axiomaster.gitee.io/tags/wsl/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 Jun 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://axiomaster.github.io/tags/wsl/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>VS code remote</title>
-      <link>https://axiomaster.gitee.io/post/2019-06-23-vscode-remote/</link>
+      <link>https://axiomaster.github.io/post/2019-06-23-vscode-remote/</link>
       <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2019-06-23-vscode-remote/</guid>
+      <guid>https://axiomaster.github.io/post/2019-06-23-vscode-remote/</guid>
       <description>build 2019 微软发布了wsl2和vscode remote插件。前者使用了真正的linux内核，解决了wsl的很多问题，据说可以直接运行docker。wsl2在20H1的快速预览版18917已经可以使用。VS code remote是vscode的一组插件，包括remote ssh， remote wsl和remote container，VS code升级到1.35.1之后就可以使用了。今天我们尝试一下VS code remote的配置。
 首先在VS code的Extensions中安装所有的remote插件。然后按照下方官方说明进行安装配置，这里就不多说了。
 VS Code Remote Development

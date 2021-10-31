@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>日常 on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.gitee.io/tags/%E6%97%A5%E5%B8%B8/</link>
+    <link>https://axiomaster.github.io/tags/%E6%97%A5%E5%B8%B8/</link>
     <description>Recent content in 日常 on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 05 Jan 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://axiomaster.gitee.io/tags/%E6%97%A5%E5%B8%B8/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 05 Jan 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://axiomaster.github.io/tags/%E6%97%A5%E5%B8%B8/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hello World</title>
-      <link>https://axiomaster.gitee.io/post/2019-01-05-hello-world/</link>
+      <link>https://axiomaster.github.io/post/2019-01-05-hello-world/</link>
       <pubDate>Sat, 05 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2019-01-05-hello-world/</guid>
+      <guid>https://axiomaster.github.io/post/2019-01-05-hello-world/</guid>
       <description>我的Github Page开张了 突然发现github提供了page功能，简直太赞了。纯静态，使用markdown编写，支持绑定域名，不需要网络主机。。。这么多好处怎能拒绝呢？
 有了page，还有什么理由不好好写博客，不好好记笔记呢？
 现在开始，把之前博客上的零碎都搬过来，然后开始好好写博客。
@@ -21,10 +21,10 @@
     
     <item>
       <title>goodbye wordpress</title>
-      <link>https://axiomaster.gitee.io/post/2019-01-17-goodbye-wordpress/</link>
+      <link>https://axiomaster.github.io/post/2019-01-17-goodbye-wordpress/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2019-01-17-goodbye-wordpress/</guid>
+      <guid>https://axiomaster.github.io/post/2019-01-17-goodbye-wordpress/</guid>
       <description>goodbye wordpress 就要把blog迁移到github pages上去了，</description>
     </item>
     
