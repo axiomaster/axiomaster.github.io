@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>从上电到引导扇区 | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="从上电到引导扇区 - Axiomaster&#39;s Site">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2021-11-17T21:05:29&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2021-11-17T21:05:29&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="从上电到引导扇区">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://axiomaster.github.io/post/2021-11-17-os-boot/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://axiomaster.github.io/">
+                        Axiomaster&#39;s Site
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://axiomaster.github.io/">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">从上电到引导扇区</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2021年11月17日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <ul>
+<li><a href="https://axiomaster.gitee.io/post/2021-11-17-os-boot/">1-1 从上电到引导扇区</a></li>
+<li><a href="https://axiomaster.gitee.io/post/2021-11-21-os-boot-addition/">1-2 启动补充说明</a></li>
+</ul>
+<h2 id="上电">上电</h2>
+<p>我们知道，现在使用的计算机都是<em>存储程序计算机（冯·诺依曼计算机）</em>。计算机运行时一边从内存中读取指令，一边执行指令。进一步，可能也知道对于8086 CPU，<em>段寄存器 CS</em>、<em>指令寄存器 IP</em>共同构成的地址<code>[CS:IP]</code>指向当前执行的指令。</p>
+<p>但计算机上电开机之后，CS与IP中内容均为空，其它寄存器、内存的内容也为空。类似牛顿力学体系中的第一推动力一样，计算机上电后第一步该如何开始呢？牛顿给的答案是上帝提供了第一推动力。类似的，计算机启动第一步也只能通过体系外的某种方式解决。</p>
+<p>上电后执行软件前只能靠硬件。CPU的硬件设计为上电后默认将<strong>CS置为0xF000, IP置为0xFFF0</strong>，即上电后默认执行的第一条指令位于<code>[CS:IP]=0xFFFF0</code>处的。而这个地址处存储的是BIOS。</p>
+<h3 id="bios">BIOS</h3>
+<p>我们都知道计算机启动后会运行BIOS(basic input output system)，进一步可能也知道BIOS存储在ROM中，当然也知道相对RAM，ROM掉电后信息不会丢失。计算机上电后，硬件将指令地址置为BIOS所在的<code>0xFFFF0</code>处，开始执行BIOS内容。</p>
+<p>BIOS会先进行加电自检（POST, Power-On Self-Test），测试各项硬件是否正常等。</p>
+<h3 id="加电自检小插曲">加电自检小插曲</h3>
+<pre><code>我前一阵（2019年底）组装了一台AMD的电脑（AMD, YES!!!）。不考虑打游戏，只用来沉迷于学习，所以预算里没有考虑显卡。等所有零件到了之后迫不及待装好之后上电，然后显示器黑屏，主板上有一个标有VGA的LED红灯常亮。
+
+想了一小会立即意识到，现在Intel的CPU基本都带了核显（大多数人觉得很鸡肋），但AMD的CPU并没有。BIOS加电自检挂这里过不去了。
+
+后来没办法，买了一张二手的GTX960作为亮机卡。
+</code></pre>
+<h3 id="bios中断">BIOS中断</h3>
+<p>BIOS还会在内存中起始的4K处<code>0x00000-0x003FF</code>建立<em>中断向量表</em>，以及位于<code>0x0E05B-0x0FFFE</code>处对应的<em>中断服务程序</em>。</p>
+<p>BIOS提供的中断服务可以查阅网上资料，参考资料中也提供了一份。我们会用到如下几个：</p>
+<table>
+<thead>
+<tr>
+<th>中断号</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int 10h</td>
+<td>显示服务</td>
+</tr>
+<tr>
+<td>int 13h</td>
+<td>低级磁盘服务</td>
+</tr>
+<tr>
+<td>int 19h</td>
+<td>加电自检后载入操作系统</td>
+</tr>
+</tbody>
+</table>
+<p>调用BIOS中断时，可能需要设置一些参数。比如<code>int 10h</code>中断用来在屏幕上显示信息，就需要指定显示的字符串内容，显示的颜色，位置等信息。中断信息如何设置，BIOS对此都有详细的说明。</p>
+<h2 id="加载bootsec">加载bootsec</h2>
+<p>BIOS加电自检后使用<code>int 19h</code>中断将软盘中的第一个扇区（512 byte）中的内容复制到内存<code>0x7C00h</code>处，然后开始执行。在Linux中，第1个扇区的内容被称为bootsec。</p>
+<p>对于OS来说，我们可以认为计算机加电后直到将bootsec中的内容载入内存并开始执行，这些都是自动完成的，我们只需要关注从bootsec代码开始执行之后的部分就可以了。</p>
+<p>bootsec之后的事情我们也可以大致设想一下：依靠bootsec这512个字节的代码，我们会继续读取软盘上更多的代码，然后依赖读入的代码完成更多的工作，直至整个系统运行起来。</p>
+<h3 id="一个简单的bootsec样例">一个简单的bootsec样例</h3>
+<p>CPU硬件设计师，BIOS系统开发等费了九牛二虎之力，终于在上电之后把OS自身最开始的512个字节的bootsec给运行起来了。作为“全村的希望”，当然是希望我们再接再励把OS运行起来的。但这里，我们不管这么多，先写一个hello world再说吧。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#a6e22e">org</span> <span style="color:#ae81ff">07</span><span style="color:#66d9ef">c00h</span>         <span style="color:#75715e">; 告诉编译器程序加载到7c00处
+</span><span style="color:#75715e">;----直接往显存中写数据
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">mov</span> <span style="color:#66d9ef">ax</span>, <span style="color:#ae81ff">0xb800</span>
+<span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">gs</span>, <span style="color:#66d9ef">ax</span>
+<span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">byte</span> [<span style="color:#66d9ef">gs</span>:<span style="color:#ae81ff">0x00</span>],<span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#66d9ef">h</span><span style="color:#960050;background-color:#1e0010">&#39;</span>
+<span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">byte</span> [<span style="color:#66d9ef">gs</span>:<span style="color:#ae81ff">0x02</span>],<span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#66d9ef">e</span><span style="color:#960050;background-color:#1e0010">&#39;</span>
+<span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">byte</span> [<span style="color:#66d9ef">gs</span>:<span style="color:#ae81ff">0x04</span>],<span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#66d9ef">l</span><span style="color:#960050;background-color:#1e0010">&#39;</span>
+<span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">byte</span> [<span style="color:#66d9ef">gs</span>:<span style="color:#ae81ff">0x06</span>],<span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#66d9ef">l</span><span style="color:#960050;background-color:#1e0010">&#39;</span>
+<span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">byte</span> [<span style="color:#66d9ef">gs</span>:<span style="color:#ae81ff">0x08</span>],<span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#66d9ef">o</span><span style="color:#960050;background-color:#1e0010">&#39;</span>
+
+<span style="color:#a6e22e">times</span> <span style="color:#ae81ff">510</span>-(<span style="color:#66d9ef">$-$$</span>) <span style="color:#66d9ef">db</span> <span style="color:#ae81ff">0</span> <span style="color:#75715e">; 填充剩下的空间，使生成的二进制代码恰好为512字节
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">dw</span> <span style="color:#ae81ff">0xaa55</span>             <span style="color:#75715e">; 结束标志
+</span></code></pre></div><p>
+        <img class="mx-auto" alt="int10" src="https://gitee.com/axiomaster/pages-imgs/raw/master/int.png" />   
+    </p>
+<p>上图中，<code>0xb800</code>是显存开始的地址。显存中，每2个字节对应显示字符，第1个字节为字符对应ASCII码，第2个字节为字符对应的颜色。屏幕每行有80个字符，共24行。这里，我们我们只修改了屏幕左上角开始的前5个字符对应的ASCII码，所以在左上角显示出了<code>hello</code>5个字符。</p>
+<h4 id="0xaa55">0xAA55</h4>
+<p>是不是将任意一张软盘插入计算机中，上电之后就会自动执行第1扇区的代码呢？其实并不是这样的。</p>
+<p>软件中经常会约定使用一个魔数进行标识某个系统，比如在Java中，将文件中前4个字节固定为<code>CAFEBABE</code>用来标识这是一个class文件。同样，在BIOS中，约定只有当第一个扇区最后两个字节为<code>0xAA55</code>时才表示这是一个启动扇区。</p>
+<h4 id="运行bootsec样例">运行bootsec样例</h4>
+<p>工具安装及使用可以参考附录中内容。</p>
+<ul>
+<li>编译代码</li>
+</ul>
+<p>使用如下命令将以上汇编代码编译为二进制</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nasm boot.asm -o boot.bin
+</code></pre></div><ul>
+<li>使用bximage制作软盘镜像文件。</li>
+</ul>
+<p>
+        <img class="mx-auto" alt="bximage" src="https://gitee.com/axiomaster/pages-imgs/raw/master/bximage.png" />   
+    </p>
+<ul>
+<li>将二进制写入软盘</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>boot.bin of<span style="color:#f92672">=</span>a.img bs<span style="color:#f92672">=</span><span style="color:#ae81ff">512</span> count<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> conv<span style="color:#f92672">=</span>notrunc
+</code></pre></div><ul>
+<li>使用bochs运行bootsec</li>
+</ul>
+<p>输入bochs启动虚拟机，然后在终端中输入c继续运行虚拟机，之后就可以看到如下画面了。</p>
+<p>
+        <img class="mx-auto" alt="bochs" src="https://gitee.com/axiomaster/pages-imgs/raw/master/bochs1.png" />   
+    </p>
+<p>
+        <img class="mx-auto" alt="bochs" src="https://gitee.com/axiomaster/pages-imgs/raw/master/bochs2.png" />   
+    </p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>
+<p><a href="https://zhuanlan.zhihu.com/p/25281151">UEFI背后的历史</a></p>
+</li>
+<li>
+<p><a href="https://baike.baidu.com/item/BIOS%E4%B8%AD%E6%96%AD%E8%B0%83%E7%94%A8/22788153">BIOS中断调用</a></p>
+</li>
+</ul>
+
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/2020-01-05-io/">I/O模型</a></li>
+        
+        <li><a href="/post/2018-03-04-java-oom/">Java内存泄漏分析</a></li>
+        
+        <li><a href="/post/2018-08-14-linux-perf-tool/">linux perf tool</a></li>
+        
+        <li><a href="/post/2018-07-01-linux-cpu/">linux-cpu</a></li>
+        
+        <li><a href="/post/2018-09-08-page/">线性地址 -&gt; 物理地址 PAGE</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/os'>OS</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="https://axiomaster.github.io/">Axiomaster&#39;s Site By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-19-page/" title="内存分页">内存分页</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-18-protected_mode/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-04-os-loader-addition/" title="确认软盘内容执行">确认软盘内容执行</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-22-os-loader/" title="读取并执行软盘内容">读取并执行软盘内容</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-21-os-boot-addition/" title="启动补充说明">启动补充说明</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://axiomaster.github.io/tags/activity/">activity</a>
+    
+    <a href="https://axiomaster.github.io/tags/algorithm/">algorithm</a>
+    
+    <a href="https://axiomaster.github.io/tags/android/">android</a>
+    
+    <a href="https://axiomaster.github.io/tags/aosp/">aosp</a>
+    
+    <a href="https://axiomaster.github.io/tags/bazel/">bazel</a>
+    
+    <a href="https://axiomaster.github.io/tags/bug/">bug</a>
+    
+    <a href="https://axiomaster.github.io/tags/debug/">debug</a>
+    
+    <a href="https://axiomaster.github.io/tags/debugger/">debugger</a>
+    
+    <a href="https://axiomaster.github.io/tags/docker/">docker</a>
+    
+    <a href="https://axiomaster.github.io/tags/golang/">golang</a>
+    
+    <a href="https://axiomaster.github.io/tags/gradle/">Gradle</a>
+    
+    <a href="https://axiomaster.github.io/tags/i/o/">I/O</a>
+    
+    <a href="https://axiomaster.github.io/tags/idea%E6%8F%92%E4%BB%B6/">IDEA插件</a>
+    
+    <a href="https://axiomaster.github.io/tags/java/">java</a>
+    
+    <a href="https://axiomaster.github.io/tags/linux/">linux</a>
+    
+    <a href="https://axiomaster.github.io/tags/ml/">ML</a>
+    
+    <a href="https://axiomaster.github.io/tags/net/">net</a>
+    
+    <a href="https://axiomaster.github.io/tags/nginx/">nginx</a>
+    
+    <a href="https://axiomaster.github.io/tags/os/">OS</a>
+    
+    <a href="https://axiomaster.github.io/tags/tensorflow/">Tensorflow</a>
+    
+    <a href="https://axiomaster.github.io/tags/tool/">tool</a>
+    
+    <a href="https://axiomaster.github.io/tags/view/">view</a>
+    
+    <a href="https://axiomaster.github.io/tags/window/">window</a>
+    
+    <a href="https://axiomaster.github.io/tags/zookeeper/">zookeeper</a>
+    
+    <a href="https://axiomaster.github.io/tags/zygote/">zygote</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E5%86%85%E5%AD%98/">内存</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E5%90%90%E6%A7%BD/">吐槽</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E5%B7%A5%E5%85%B7/">工具</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E6%89%8B%E5%B7%A5/">手工</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/">神奇的bug</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E8%AF%81%E4%B9%A6/">证书</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E9%93%BE%E6%8E%A5/">链接</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://axiomaster.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

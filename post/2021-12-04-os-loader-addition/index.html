@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>确认软盘内容执行 | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="确认软盘内容执行 - Axiomaster&#39;s Site">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2021-12-04T09:17:29&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2021-12-04T09:17:29&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="确认软盘内容执行">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://axiomaster.github.io/post/2021-12-04-os-loader-addition/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://axiomaster.github.io/">
+                        Axiomaster&#39;s Site
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://axiomaster.github.io/">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">确认软盘内容执行</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2021年12月4日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <ul>
+<li><a href="https://axiomaster.gitee.io/post/2021-11-17-os-boot/">1-1 从上电到引导扇区</a></li>
+<li><a href="https://axiomaster.gitee.io/post/2021-11-21-os-boot-addition/">1-2 启动补充说明</a></li>
+<li><a href="https://axiomaster.gitee.io/post/2021-11-22-os-loader/">2-1 读取并执行软盘内容</a></li>
+</ul>
+<p>上一节我们根据内存地址推算，确定<code>0xc400</code>位置保存着我们存储在软盘中的<code>sys.bin</code>内容，并跳转到这个地址位置开始执行。但我们如何确认代码正确执行了呢？</p>
+<h2 id="hlt指令">hlt指令</h2>
+<h3 id="cpu负载">CPU负载</h3>
+<p>当前在<code>sys.bin</code>中只有一个死循环，如果程序中出现一个死循环，那会将所有空闲CPU资源占满，即运行死循环的CPU负载会飙到100%。在真实机器上这点可能不好确认，但如果在虚拟机中运行操作系统，我们可以很容易的在宿主机上观察到这点。</p>
+<p>
+        <img class="mx-auto" alt="loop cpu 100%" src="https://gitee.com/axiomaster/pages-imgs/raw/master/loop_100.png" />   
+    </p>
+<h2 id="hlt指令-1">hlt指令</h2>
+<p>当前我们的OS还没有任何实质性业务，就这样空跑CPU比较浪费。<code>hlt</code>指令就是为了解决这个问题的，它可以使CPU进入暂停状态，不执行任何操作。</p>
+<p>我们修改<code>sys.asm</code>代码如下，在死循环中插入<code>hlt</code>指令。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm">    <span style="color:#a6e22e">org</span> <span style="color:#ae81ff">0xc400</span>
+fin:
+    <span style="color:#a6e22e">hlt</span>
+    <span style="color:#a6e22e">jmp</span> <span style="color:#66d9ef">fin</span>
+</code></pre></div><p>再试试效果：</p>
+<h2 id="bochs-debug">bochs Debug</h2>
+<p>我们使用bochs虚拟机来运行我们写的OS，bochs提供了很多调试功能，可以看到cpu寄存器，内存等实时的数据。这样可以更直观的看到我们的OS运行情况。</p>
+<p>这里我们用到两个调试命令:</p>
+<ul>
+<li>打断点 <code>b 0xc400</code></li>
+<li>反编译内存内容 <code>u /10</code></li>
+</ul>
+<p>使用<code>b</code>在<code>0xc400</code>处设置断点，运行后断点命中：</p>
+<p>
+        <img class="mx-auto" alt="bochs b" src="https://gitee.com/axiomaster/pages-imgs/raw/master/chap_bochs_b.png" />   
+    </p>
+<p>命中断点后，使用反编译指令<code>u</code>反编译<code>0xc400</code>开始的2行代码，可以看到，与我们写的内容基本一致。</p>
+<p>
+        <img class="mx-auto" alt="bochs u" src="https://gitee.com/axiomaster/pages-imgs/raw/master/chap2_bochs_u.png" />   
+    </p>
+<p><em>跳转指令不完全一致，但可以猜到是给予当前行<code>$</code>-3位置处。</em></p>
+<h2 id="添加打印">添加打印</h2>
+<p>我们也可以通过在<code>sys.asm</code>调用BIOS的打印中断<code>int 10h</code>来往屏幕写内容，确认代码是否执行成功。</p>
+<pre><code>mov ax, 0xb800
+mov gs, ax
+mov byte [gs:0xa0],'s'
+mov byte [gs:0xa2],'y'
+mov byte [gs:0xa4],'s'
+</code></pre><p>
+        <img class="mx-auto" alt="print sys" src="https://gitee.com/axiomaster/pages-imgs/raw/master/chap_print_sys.png" />   
+    </p>
+<p>可以看到，<code>sys.asm</code>中的打印代码成功输出了，因此可以确认<code>sys.asm</code>已经被正确执行了。</p>
+
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/2021-11-22-os-loader/">读取并执行软盘内容</a></li>
+        
+        <li><a href="/post/2021-11-21-os-boot-addition/">启动补充说明</a></li>
+        
+        <li><a href="/post/2021-11-17-os-boot/">从上电到引导扇区</a></li>
+        
+        <li><a href="/post/2020-01-05-io/">I/O模型</a></li>
+        
+        <li><a href="/post/2018-03-04-java-oom/">Java内存泄漏分析</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/os'>OS</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="https://axiomaster.github.io/">Axiomaster&#39;s Site By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-19-page/" title="内存分页">内存分页</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-18-protected_mode/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-04-os-loader-addition/" title="确认软盘内容执行">确认软盘内容执行</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-22-os-loader/" title="读取并执行软盘内容">读取并执行软盘内容</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-21-os-boot-addition/" title="启动补充说明">启动补充说明</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://axiomaster.github.io/tags/activity/">activity</a>
+    
+    <a href="https://axiomaster.github.io/tags/algorithm/">algorithm</a>
+    
+    <a href="https://axiomaster.github.io/tags/android/">android</a>
+    
+    <a href="https://axiomaster.github.io/tags/aosp/">aosp</a>
+    
+    <a href="https://axiomaster.github.io/tags/bazel/">bazel</a>
+    
+    <a href="https://axiomaster.github.io/tags/bug/">bug</a>
+    
+    <a href="https://axiomaster.github.io/tags/debug/">debug</a>
+    
+    <a href="https://axiomaster.github.io/tags/debugger/">debugger</a>
+    
+    <a href="https://axiomaster.github.io/tags/docker/">docker</a>
+    
+    <a href="https://axiomaster.github.io/tags/golang/">golang</a>
+    
+    <a href="https://axiomaster.github.io/tags/gradle/">Gradle</a>
+    
+    <a href="https://axiomaster.github.io/tags/i/o/">I/O</a>
+    
+    <a href="https://axiomaster.github.io/tags/idea%E6%8F%92%E4%BB%B6/">IDEA插件</a>
+    
+    <a href="https://axiomaster.github.io/tags/java/">java</a>
+    
+    <a href="https://axiomaster.github.io/tags/linux/">linux</a>
+    
+    <a href="https://axiomaster.github.io/tags/ml/">ML</a>
+    
+    <a href="https://axiomaster.github.io/tags/net/">net</a>
+    
+    <a href="https://axiomaster.github.io/tags/nginx/">nginx</a>
+    
+    <a href="https://axiomaster.github.io/tags/os/">OS</a>
+    
+    <a href="https://axiomaster.github.io/tags/tensorflow/">Tensorflow</a>
+    
+    <a href="https://axiomaster.github.io/tags/tool/">tool</a>
+    
+    <a href="https://axiomaster.github.io/tags/view/">view</a>
+    
+    <a href="https://axiomaster.github.io/tags/window/">window</a>
+    
+    <a href="https://axiomaster.github.io/tags/zookeeper/">zookeeper</a>
+    
+    <a href="https://axiomaster.github.io/tags/zygote/">zygote</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E5%86%85%E5%AD%98/">内存</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E5%90%90%E6%A7%BD/">吐槽</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E5%B7%A5%E5%85%B7/">工具</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E6%89%8B%E5%B7%A5/">手工</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/">神奇的bug</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E8%AF%81%E4%B9%A6/">证书</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E9%93%BE%E6%8E%A5/">链接</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://axiomaster.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

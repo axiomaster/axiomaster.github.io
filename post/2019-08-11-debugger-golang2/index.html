@@ -82,7 +82,7 @@
 </blockquote>
 <p>During the first part we’ve bootstrapped development environment and made a simple program (tracer) which stops child process (tracee) at the very beginning and then continues it execution together with showing its standard output. Now it’s time to extend its basic capabilities.</p>
 <p>Usually debuggers allow to single-step through debugged program. It can be done using ptrace <em>PTRACE_SINGLESTEP</em> request which tells tracee to stop after execution of single instruction:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
 <span style="color:#f92672">import</span> (
     <span style="color:#e6db74">&#34;flag&#34;</span>
@@ -141,7 +141,7 @@
     <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Steps: %d\n&#34;</span>, <span style="color:#a6e22e">steps</span>)
 }
 </code></pre></div><p>Building and output looks like this (number of steps can vary between each calls):</p>
-<pre tabindex="0"><code>&gt; go install -gcflags=&quot;-N -l&quot; github.com/mlowicki/hello
+<pre><code>&gt; go install -gcflags=&quot;-N -l&quot; github.com/mlowicki/hello
 &gt; go install github.com/mlowicki/debugger
 &gt; debugger /go/bin/hello
 2017/06/09 19:54:42 State: stop signal: trace/breakpoint trap
@@ -149,12 +149,12 @@ hello world
 2017/06/09 19:54:49 Steps: 297583
 </code></pre><p>First part is the same as in our initial program from previous post. What is new is the use of syscall.PtraceSingleStep. It stops tracee (hello in our case) after execution of single instruction.</p>
 <p>Option <code>PTRACE_O_TRACECLONE</code> has been also set:</p>
-<pre tabindex="0"><code>PTRACE_O_TRACECLONE (since Linux 2.5.46)
+<pre><code>PTRACE_O_TRACECLONE (since Linux 2.5.46)
 Stop the tracee at the next clone(2) and automatically start tracing the newly cloned process...
 </code></pre><p>(<a href="http://man7.org/linux/man-pages/man2/ptrace.2.html">http://man7.org/linux/man-pages/man2/ptrace.2.html</a>)</p>
 <p>Thanks to that our debugger knows when new thread has been started and can step through it as well so the number of steps at the very end is a sum of executed instructions across all processes.</p>
 <p>Number of instructions may seem pretty huge but it contains among others initialization of the whole Golang runtime (libc initialization should be known to those with C experience). We can prepare very simple program to check that our counting works fine. Let’s create <em>src/github.com/mlowicki/hello/hello.asm:</em></p>
-<pre tabindex="0"><code class="language-assembly" data-lang="assembly">section .data
+<pre><code class="language-assembly" data-lang="assembly">section .data
     msg db &quot;hello, world!&quot;, 0xA
     len equ $ — msg
 
@@ -173,7 +173,7 @@ _start:
     mov rdi, 0 ; exit code
     syscall
 </code></pre><p>Inside the container let’s build our “hello world” program and see how many instructions we’ll count there:</p>
-<pre tabindex="0"><code>&gt; pwd
+<pre><code>&gt; pwd
 /go
 &gt; apt-get install nasm
 &gt; nasm -f elf64 -o hello.o src/github.com/mlowicki/hello/hello.asm &amp;&amp; ld -o hello hello.o
@@ -186,7 +186,7 @@ hello, world!
 </code></pre><p>It looks good since we get the exact number of instructions inside hello.asm.</p>
 <p>So far we’ve learned how to stop the program at the very beginning, step through it instruction by instruction and track its processes / threads. Now it’s time to set trap at desired place and inspect state of the process like variable values.</p>
 <p>Let’s start with some basics. We have a function main from our hello.go:</p>
-<pre tabindex="0"><code>package main
+<pre><code>package main
 import &quot;fmt&quot;
 func main() {
     fmt.Println(&quot;hello world&quot;)
@@ -194,7 +194,7 @@ func main() {
 </code></pre><p>How to set a trap at the beginning of this function? Ultimately our program after compilation and linking is a set of machine instructions. How to express that we want to set a breakpoint at particular place in the source code having only cooked binary (stuffed with instructions only CPUs understand)?</p>
 <h2 id="linetable">LineTable</h2>
 <p>Golang has built-in support to access debug information contained in Go binaries. The struct which maps program counter (PC) to line number and vice versa is called LineTable. Let’s see it in action:</p>
-<pre tabindex="0"><code>package main
+<pre><code>package main
 
 import (
     &quot;debug/elf&quot;
@@ -233,7 +233,7 @@ func main() {
     log.Printf(&quot;lineno: %v\n&quot;, lineno)
 }
 </code></pre><p>If we pass as an argument to above program something like:</p>
-<pre tabindex="0"><code>1 package main
+<pre><code>1 package main
 2
 3 import &quot;fmt&quot;
 4
@@ -241,13 +241,13 @@ func main() {
 6     fmt.Println(&quot;hello world&quot;)
 7 }
 </code></pre><p>then it gives expected result:</p>
-<pre tabindex="0"><code>&gt; go install github.com/mlowicki/linetable
+<pre><code>&gt; go install github.com/mlowicki/linetable
 &gt; go install — gcflags=”-N -l” github.com/mlowicki/hello
 &gt; linetable /go/bin/hello
 2017/06/30 18:47:38 filename: /go/src/github.com/mlowicki/hello/hello.go
 2017/06/30 18:47:38 lineno: 5
 </code></pre><p>ELF stands for Executable and Linkable Format. It’s among others a format of executables:</p>
-<pre tabindex="0"><code>&gt; apt-get install file
+<pre><code>&gt; apt-get install file
 &gt; file /go/bin/hello
 /go/bin/hello: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, not stripped
 </code></pre><p>ELF file consists of sections and we’re using three of them: .text, .gopclntab and .gosymtab. The first one contains machine instructions, 2nd one maps instruction counter to source code lines and the last one is a symbol table.</p>
@@ -346,6 +346,34 @@ func main() {
 <ul class="widget-list">
     
     <li>
+        <a href="https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-19-page/" title="内存分页">内存分页</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-18-protected_mode/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-04-os-loader-addition/" title="确认软盘内容执行">确认软盘内容执行</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-22-os-loader/" title="读取并执行软盘内容">读取并执行软盘内容</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-21-os-boot-addition/" title="启动补充说明">启动补充说明</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
+    </li>
+    
+    <li>
         <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
     </li>
     
@@ -355,34 +383,6 @@ func main() {
     
     <li>
         <a href="https://axiomaster.github.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-03-01-weakreference/" title="Weak Reference">Weak Reference</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-17-camerax/" title="CameraX">CameraX</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-16-bazel-build-system/" title="Bazel build system">Bazel build system</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-16-mediapipe/" title="mediapipe">mediapipe</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-01-x86-register/" title="x86寄存器汇总">x86寄存器汇总</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-01-27-post-to-bootsec/" title="系统启动分析(一)">系统启动分析(一)</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-01-10-android-debug/" title="Android调试">Android调试</a>
     </li>
     
 </ul>
@@ -445,11 +445,7 @@ func main() {
     
     <a href="https://axiomaster.github.io/tags/view/">view</a>
     
-    <a href="https://axiomaster.github.io/tags/vs-code/">VS code</a>
-    
     <a href="https://axiomaster.github.io/tags/window/">window</a>
-    
-    <a href="https://axiomaster.github.io/tags/wsl/">WSL</a>
     
     <a href="https://axiomaster.github.io/tags/zookeeper/">zookeeper</a>
     
@@ -470,8 +466,6 @@ func main() {
     <a href="https://axiomaster.github.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
     
     <a href="https://axiomaster.github.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
-    
-    <a href="https://axiomaster.github.io/tags/%E6%B1%87%E7%BC%96/">汇编</a>
     
     <a href="https://axiomaster.github.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
     

@@ -84,7 +84,7 @@
 <p>Creating debugger isn’t easy though. We won’t even strive to cover this topic within a single story. Instead, this post starts a series with ultimate goal to have working solution handling most common scenarios. Along the way we’ll discuss topics like ELF, DWARF and will touch some architecture-specific issues.</p>
 <h2 id="environment">Environment</h2>
 <p>Throughout this series we’ll use Docker to get repeatable playground environment based on Debian Jessie. I’m using x86–64 and this come into play at some point when we’ll move to low-level discussions. Project’s layout is like this:</p>
-<pre tabindex="0"><code>&gt; tree
+<pre><code>&gt; tree
 .
 ├── Dockerfile
 └── src
@@ -96,23 +96,23 @@
                 └── hello.go
 </code></pre><p>The main file of upcoming debugger is debugger.go and file hello.go holds source code of sample program being debugged while our journey. For now you can put there absolute minimum:
 package main</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
 }
 </code></pre></div><p>Let’s start with very simple Dockerfile:</p>
-<pre tabindex="0"><code>FROM golang:1.8.1
+<pre><code>FROM golang:1.8.1
 RUN apt-get update &amp;&amp; apt-get install -y tree
 </code></pre><p>To build Docker image, go to the top-level directory (where Dockerfile sits) and run:</p>
-<pre tabindex="0"><code>&gt; docker build -t godebugger .
+<pre><code>&gt; docker build -t godebugger .
 </code></pre><p>To spin the container up execute:</p>
-<pre tabindex="0"><code>&gt; docker run --rm -it -v &quot;$PWD&quot;/src:/go/src --security-opt seccomp=unconfined godebugger
+<pre><code>&gt; docker run --rm -it -v &quot;$PWD&quot;/src:/go/src --security-opt seccomp=unconfined godebugger
 </code></pre><p>Secure computing mode (<em>seccomp</em>) is described here. Now what is left is to compile both programs inside the container. First one can be done using:</p>
-<pre tabindex="0"><code>&gt; go install --gcflags=&quot;-N -l&quot; github.com/mlowicki/hello
+<pre><code>&gt; go install --gcflags=&quot;-N -l&quot; github.com/mlowicki/hello
 </code></pre><p>Flag <code>—-gcflag</code> has been used to disable function inlining (<code>-l</code>) and compiler optimizations (<code>-N</code>) to make debugging easier. Debugger can be built using:</p>
-<pre tabindex="0"><code>&gt; go install github.com/mlowicki/debugger
+<pre><code>&gt; go install github.com/mlowicki/debugger
 </code></pre><p>Inside the container <code>PATH</code> environment variable contains <code>/go/bin</code> so to run any of just prepared programs type either hello or debugger without full path.</p>
 <h2 id="first-step">First step</h2>
 <p>Our first task will be simple. Let’s stop the program before executing any instruction and then start it again, until it terminates (either voluntarily or caused by error). This is how you start working with most debuggers. You set some traps (breakpoints) and then run something like <code>continue</code> to actually launch till it’ll stopped at one of desired places. Let’s see how it works with Delve:</p>
-<pre tabindex="0"><code>&gt; cat hello.go
+<pre><code>&gt; cat hello.go
 
 package main
 
@@ -192,7 +192,7 @@ Breakpoint 1 set at 0x1087050 for main.f() ./hello.go:5
 1
 </code></pre><p>Let’s see how to implement it on our own.</p>
 <p>The first step is to have a mechanism for a process (our debugger) to control other process (program being debugged). Luckily on Linux we’ve something in place — ptrace. It’s not the last good news. Golang’s syscall package provides an interface to it like PtraceCont to restart traced process. So it covers the 2nd part but to have a chance to f.ex. set breakpoints before program starts its execution we need something more. While creating new process we can specify its behaviour through set of attributes— SysProcAttr. One of them is Ptrace which enables tracking and process will stop and send SIGSTOP signal to its parent before start. Let’s put everything we’ve just learned into a working machinery…</p>
-<pre tabindex="0"><code>&gt; cat src/github.com/mlowicki/hello/hello.go
+<pre><code>&gt; cat src/github.com/mlowicki/hello/hello.go
 
 package main
 
@@ -265,9 +265,9 @@ hello world
     <h2>See Also</h2>
     <ul class="listing">
         
-        <li><a href="/post/2019-08-11-debugger-golang2/">Making debugger for Golang</a></li>
-        
         <li><a href="/post/2019-08-11-debugger-golang3/">Making debugger for Golang</a></li>
+        
+        <li><a href="/post/2019-08-11-debugger-golang2/">Making debugger for Golang</a></li>
         
     </ul>
 </div>
@@ -346,6 +346,34 @@ hello world
 <ul class="widget-list">
     
     <li>
+        <a href="https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-19-page/" title="内存分页">内存分页</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-18-protected_mode/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-04-os-loader-addition/" title="确认软盘内容执行">确认软盘内容执行</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-22-os-loader/" title="读取并执行软盘内容">读取并执行软盘内容</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-21-os-boot-addition/" title="启动补充说明">启动补充说明</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
+    </li>
+    
+    <li>
         <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
     </li>
     
@@ -355,34 +383,6 @@ hello world
     
     <li>
         <a href="https://axiomaster.github.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-03-01-weakreference/" title="Weak Reference">Weak Reference</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-17-camerax/" title="CameraX">CameraX</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-16-bazel-build-system/" title="Bazel build system">Bazel build system</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-16-mediapipe/" title="mediapipe">mediapipe</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-01-x86-register/" title="x86寄存器汇总">x86寄存器汇总</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-01-27-post-to-bootsec/" title="系统启动分析(一)">系统启动分析(一)</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-01-10-android-debug/" title="Android调试">Android调试</a>
     </li>
     
 </ul>
@@ -445,11 +445,7 @@ hello world
     
     <a href="https://axiomaster.github.io/tags/view/">view</a>
     
-    <a href="https://axiomaster.github.io/tags/vs-code/">VS code</a>
-    
     <a href="https://axiomaster.github.io/tags/window/">window</a>
-    
-    <a href="https://axiomaster.github.io/tags/wsl/">WSL</a>
     
     <a href="https://axiomaster.github.io/tags/zookeeper/">zookeeper</a>
     
@@ -470,8 +466,6 @@ hello world
     <a href="https://axiomaster.github.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
     
     <a href="https://axiomaster.github.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
-    
-    <a href="https://axiomaster.github.io/tags/%E6%B1%87%E7%BC%96/">汇编</a>
     
     <a href="https://axiomaster.github.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
     

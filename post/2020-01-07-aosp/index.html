@@ -94,9 +94,9 @@
 <p>编译很简单, aosp源码中<code>prebuilts</code>目录下集成了所有编译会用到的工具,包括clang, jdk等,不需要额外下载. 编译脚本只支持<code>python2</code>,环境上安装一下<code>python2</code>就可以了.</p>
 <p>在Ubuntu 18.04上使用如下步骤进行编译:</p>
 <h3 id="设置环境变量等">设置环境变量等</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">source build/envsetup.sh
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">source build/envsetup.sh
 </code></pre></div><h3 id="设置编译目标版本">设置编译目标版本</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">lism@lism-u18:~/android/aosp$ lunch aosp_x86_64-eng 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">lism@lism-u18:~/android/aosp$ lunch aosp_x86_64-eng 
 
 <span style="color:#f92672">============================================</span>
 PLATFORM_VERSION_CODENAME<span style="color:#f92672">=</span>R
@@ -120,7 +120,7 @@ BUILD_ID<span style="color:#f92672">=</span>QD1A.190821.011
 OUT_DIR<span style="color:#f92672">=</span>out
 <span style="color:#f92672">============================================</span>
 </code></pre></div><p>如果不清楚需要输入什么版本, 输入<code>lunch</code>后会自动列出支持的版本信息.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">lism@lism-u18:~/android/aosp$ lunch
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">lism@lism-u18:~/android/aosp$ lunch
 
 You<span style="color:#960050;background-color:#1e0010">&#39;</span>re building on Linux
 
@@ -133,7 +133,7 @@ Lunch menu... pick a combo:
      6. aosp_car_arm64-userdebug
     ...
 </code></pre></div><h3 id="编译aosp">编译aosp</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">make -j <span style="color:#ae81ff">16</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">make -j <span style="color:#ae81ff">16</span>
 </code></pre></div><p>参数<code>-j</code>后跟的时并发数,不指定时系统会自动设置为<code>CPU核数+2</code>. 这一步比较费时间,我是在睡觉前执行的,也没有统计具体时间.</p>
 <h3 id="编译可能的错误">编译可能的错误</h3>
 <ul>
@@ -148,14 +148,14 @@ Lunch menu... pick a combo:
 <h4 id="主板开启虚拟化支持">主板开启虚拟化支持</h4>
 <p>我是用AMD CPU, 进入bios后打开对应的KVM虚拟化开关就好了. Intel CPU应该VT虚拟化开关,这个按照主板bios的说明操作就好了.</p>
 <h4 id="安装kvm软件">安装kvm软件</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-get install qemu-kvm qemu-system libvirt-bin  bridge-utils
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-get install qemu-kvm qemu-system libvirt-bin  bridge-utils
 </code></pre></div><p>安装之后, 输入<code>kvm-ok</code>如果输出显示正常就ok了.</p>
 <h4 id="kvm权限">kvm权限</h4>
 <p>安装好之后使用<code>emulator</code>可能会提示kvm permission之类的问题.实际查看也可以看到kvm文件的属主.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">lism@lism-u18:~/android/aosp$ ll /dev/kvm 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">lism@lism-u18:~/android/aosp$ ll /dev/kvm 
 crw-rw---- <span style="color:#ae81ff">1</span> root kvm 10, <span style="color:#ae81ff">232</span> 1月  <span style="color:#ae81ff">12</span> 23:38 /dev/kvm
 </code></pre></div><p>将自己的用户添加到<code>kvm group</code>中,并增加权限就好了.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo adduser &lt;username&gt; kvm
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo adduser &lt;username&gt; kvm
 sudo chown &lt;username&gt; /dev/kvm
 </code></pre></div><p>
         <img class="mx-auto" alt="emulator" src="../img/emulator.png" />   
@@ -169,7 +169,7 @@ sudo chown &lt;username&gt; /dev/kvm
 <p>aosp中就提供了idegen这个小工具,通过遍历源码目录,自动生成<code>IDEA</code>系支持的工程文件.</p>
 <h3 id="使用idegen生成工程配置文件">使用idegen生成工程配置文件</h3>
 <h4 id="编译idegen">编译idegen</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">lism@lism-u18:~/android/aosp$ source build/envsetup.sh 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">lism@lism-u18:~/android/aosp$ source build/envsetup.sh 
 lism@lism-u18:~/android/aosp$ mmm development/tools/idegen/
 <span style="color:#f92672">============================================</span>
 PLATFORM_VERSION_CODENAME<span style="color:#f92672">=</span>R
@@ -196,11 +196,11 @@ OUT_DIR<span style="color:#f92672">=</span>out
 
 <span style="color:#75715e">#### build completed successfully (4 seconds) ####</span>
 </code></pre></div><h4 id="使用idegen生成idea工程文件">使用idegen生成IDEA工程文件</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">lism@lism-u18:~/android/aosp$ bash development/tools/idegen/idegen.sh 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">lism@lism-u18:~/android/aosp$ bash development/tools/idegen/idegen.sh 
 Read excludes: 9ms
 Traversed tree: 40644ms
 </code></pre></div><p>执行之后,它会在源码根目录自动生成如下两个文件</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">lism@lism-u18:~/android/aosp$ ll android*
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">lism@lism-u18:~/android/aosp$ ll android*
 -rw-r--r-- <span style="color:#ae81ff">1</span> lism lism <span style="color:#ae81ff">706237</span> 1月  <span style="color:#ae81ff">13</span> 01:05 android.iml
 -rw-r--r-- <span style="color:#ae81ff">1</span> lism lism  <span style="color:#ae81ff">16569</span> 1月  <span style="color:#ae81ff">13</span> 01:05 android.ipr
 </code></pre></div><h3 id="idea打开代码">IDEA打开代码</h3>
@@ -209,7 +209,7 @@ Traversed tree: 40644ms
 <h4 id="修改idea-jvm参数">修改IDEA JVM参数</h4>
 <p>aosp代码还是很庞大的, 修改IDEA对应的JVM参数, 增大堆内存, 防止OOM或不停的触发GC导致IDEA挂起, 体验不好.</p>
 <p>在<code>help &gt; Edit Custom JVM Options</code>中根据自己的电脑配置修改如下参数:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">-</span>Xmx4096m
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">-</span>Xmx4096m
 </code></pre></div><h4 id="部分导入源码">部分导入源码</h4>
 <p>aosp中大多数代码都是硬件驱动, 第3方依赖库, 甚至jdk等. idegen生成的工程配置中也包含了这些目录. 如果都导入, 还是很吃电脑性能的, 也完全没有必要. 我们可以将自己关注的模块比如<code>framework</code>和生成的<code>android.ipl</code>和<code>android.iml</code>文件移动到新的文件夹下,并保持目录结构不变, 这样打开速度会快很多.</p>
 <h3 id="aidl自动生成代码">AIDL自动生成代码</h3>
@@ -219,7 +219,7 @@ Traversed tree: 40644ms
 <li>IPC调用相关的代码无法跳转</li>
 </ul>
 <p>解决方法就是将编译生成的framework对应的jar作为<code>lib</code>导入到工程中, jar包中已经包含了AIDL最终生成的代码, IDEA会自动分析代码间的引用关系, 可以方便的查找,跳转. 可以使用如下路径下的jar</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">out/soong/.intermediates/frameworks/base/framework-annotation-proc/android_common/combined/framework-annotation-proc.jar
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">out/soong/.intermediates/frameworks/base/framework-annotation-proc/android_common/combined/framework-annotation-proc.jar
 </code></pre></div><p>
         <img class="mx-auto" alt="aosp" src="../img/aosp.png" />   
     </p>
@@ -322,6 +322,34 @@ Traversed tree: 40644ms
 <ul class="widget-list">
     
     <li>
+        <a href="https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-19-page/" title="内存分页">内存分页</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-18-protected_mode/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-04-os-loader-addition/" title="确认软盘内容执行">确认软盘内容执行</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-22-os-loader/" title="读取并执行软盘内容">读取并执行软盘内容</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-21-os-boot-addition/" title="启动补充说明">启动补充说明</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
+    </li>
+    
+    <li>
         <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
     </li>
     
@@ -331,34 +359,6 @@ Traversed tree: 40644ms
     
     <li>
         <a href="https://axiomaster.github.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-03-01-weakreference/" title="Weak Reference">Weak Reference</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-17-camerax/" title="CameraX">CameraX</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-16-bazel-build-system/" title="Bazel build system">Bazel build system</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-16-mediapipe/" title="mediapipe">mediapipe</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-01-x86-register/" title="x86寄存器汇总">x86寄存器汇总</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-01-27-post-to-bootsec/" title="系统启动分析(一)">系统启动分析(一)</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-01-10-android-debug/" title="Android调试">Android调试</a>
     </li>
     
 </ul>
@@ -421,11 +421,7 @@ Traversed tree: 40644ms
     
     <a href="https://axiomaster.github.io/tags/view/">view</a>
     
-    <a href="https://axiomaster.github.io/tags/vs-code/">VS code</a>
-    
     <a href="https://axiomaster.github.io/tags/window/">window</a>
-    
-    <a href="https://axiomaster.github.io/tags/wsl/">WSL</a>
     
     <a href="https://axiomaster.github.io/tags/zookeeper/">zookeeper</a>
     
@@ -446,8 +442,6 @@ Traversed tree: 40644ms
     <a href="https://axiomaster.github.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
     
     <a href="https://axiomaster.github.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
-    
-    <a href="https://axiomaster.github.io/tags/%E6%B1%87%E7%BC%96/">汇编</a>
     
     <a href="https://axiomaster.github.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
     

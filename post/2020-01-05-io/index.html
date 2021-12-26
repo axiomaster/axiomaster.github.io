@@ -81,7 +81,7 @@
 <h3 id="系统调用">系统调用</h3>
 <p>操作系统出于安全的考虑，将进程的内存空间划分为用户空间(0~3G)和内核空间(3-4G)。进程在执行用户自己的代码时处于用户态(ring3); 当用户代码需要操作系统资源时, 可以通过调用操作系统提供的标准接口(POSIX)进行访问, 此时进程从用户态切换到内核态. 操作系统提供的这些接口称为系统调用.</p>
 <p>使用<code>top</code>命令时, Cpu后面的<code>us</code>就对应用户态使用的cpu, <code>sy</code>就对应内核态使用的cpu.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">%Cpu<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:  1.2 us,  0.7 sy,  0.0 ni, 98.0 id,  0.1 wa,  0.0 hi,  0.0 si,  0.0 st
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">%Cpu<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:  1.2 us,  0.7 sy,  0.0 ni, 98.0 id,  0.1 wa,  0.0 hi,  0.0 si,  0.0 st
 </code></pre></div><p>硬盘, 网卡等等这些设备, 用户代码都是无法直接访问的, 需要通过操作系统提供的标准系统调用进行访问. 对于linux系统, 将所有的设备都抽象成文件, 因此, 对于这些设备的访问都可以归类为IO操作.</p>
 <h3 id="文件读取过程">文件读取过程</h3>
 <p>用户程序读取磁盘或网卡上的数据, 执行read系统调用时可以分为2个过程:</p>
@@ -142,7 +142,7 @@
 <p>从图中可以看出, 异步I/O在数据处理的两个阶段中, 都不会阻塞用户线程.</p>
 <h2 id="io-模型比较">I/O 模型比较</h2>
 <p>这里<code>阻塞</code>和<code>异步</code>很容易迷惑人, 因为大家很自然的就会认为<code>非阻塞 = 异步</code>, <code>阻塞 = 同步</code>. 但在I/O模型中并不是这样的, 根据POSIX中对异步I/O的定义:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">A synchronous I/O operation causes the requesting process to be blocked <span style="color:#66d9ef">until</span> that I/O operation completes;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">A synchronous I/O operation causes the requesting process to be blocked <span style="color:#66d9ef">until</span> that I/O operation completes;
 An asynchronous I/O operation does not cause the requesting process to be blocked;
 </code></pre></div><p>数据处理的2个阶段中, 只要任意阶段会阻塞用户线程, 都不属于<code>asynchronous I/O</code>. 从上面介绍可以看出, 5种I/O模型中, 前4种都属于同步I/O.</p>
 <h3 id="io复用">I/O复用</h3>
@@ -155,7 +155,7 @@ An asynchronous I/O operation does not cause the requesting process to be blocke
 <h3 id="epoll和异步io">epoll和异步I/O</h3>
 <p>从前面的分析可知, I/O复用只是解决了避免因为第1阶段阻塞从而需要创建大量线程的问题, 而异步I/O则解决了2阶段阻塞问题. 那是否异步I/O相比epoll的性能更加优异呢?</p>
 <p>其实, 异步I/O只是POSIX规范中描述的一种I/O模型, 并非实现. 在linux上, 目前还没有成熟的内核异步I/O实现, glibc提供了一个用户态的异步IO实现, 但据说也有很多bug. 但是在windows上, <code>IOCP</code>是一个成熟的内核态异步IO实现, windows上的很多应用是基于IOCP实现的. 关于这个问题, stackoverflow上有一个回答:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">There is a notify on ready model in Windows as well (select or WSAWaitForMultipleEvents), which you may have looked at before. It can&#39;t scale to large numbers of sockets, so it&#39;s not suitable for high-performance network applications.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">There is a notify on ready model in Windows as well (select or WSAWaitForMultipleEvents), which you may have looked at before. It can&#39;t scale to large numbers of sockets, so it&#39;s not suitable for high-performance network applications.
 
 Don&#39;t let that put you off - Windows and Linux are completely different operating systems. Something that doesn&#39;t scale well on one system may work very well on the other. This approach actually works very well on Linux, with performance comparable to IOCP on Windows.
 </code></pre></div><h3 id="协程">协程</h3>
@@ -262,6 +262,34 @@ Don&#39;t let that put you off - Windows and Linux are completely different oper
 <ul class="widget-list">
     
     <li>
+        <a href="https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-19-page/" title="内存分页">内存分页</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-18-protected_mode/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-04-os-loader-addition/" title="确认软盘内容执行">确认软盘内容执行</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-22-os-loader/" title="读取并执行软盘内容">读取并执行软盘内容</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-21-os-boot-addition/" title="启动补充说明">启动补充说明</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
+    </li>
+    
+    <li>
         <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
     </li>
     
@@ -271,34 +299,6 @@ Don&#39;t let that put you off - Windows and Linux are completely different oper
     
     <li>
         <a href="https://axiomaster.github.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-03-01-weakreference/" title="Weak Reference">Weak Reference</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-17-camerax/" title="CameraX">CameraX</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-16-bazel-build-system/" title="Bazel build system">Bazel build system</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-16-mediapipe/" title="mediapipe">mediapipe</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-01-x86-register/" title="x86寄存器汇总">x86寄存器汇总</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-01-27-post-to-bootsec/" title="系统启动分析(一)">系统启动分析(一)</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-01-10-android-debug/" title="Android调试">Android调试</a>
     </li>
     
 </ul>
@@ -361,11 +361,7 @@ Don&#39;t let that put you off - Windows and Linux are completely different oper
     
     <a href="https://axiomaster.github.io/tags/view/">view</a>
     
-    <a href="https://axiomaster.github.io/tags/vs-code/">VS code</a>
-    
     <a href="https://axiomaster.github.io/tags/window/">window</a>
-    
-    <a href="https://axiomaster.github.io/tags/wsl/">WSL</a>
     
     <a href="https://axiomaster.github.io/tags/zookeeper/">zookeeper</a>
     
@@ -386,8 +382,6 @@ Don&#39;t let that put you off - Windows and Linux are completely different oper
     <a href="https://axiomaster.github.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
     
     <a href="https://axiomaster.github.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
-    
-    <a href="https://axiomaster.github.io/tags/%E6%B1%87%E7%BC%96/">汇编</a>
     
     <a href="https://axiomaster.github.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
     

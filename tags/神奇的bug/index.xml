@@ -6,7 +6,11 @@
     <description>Recent content in 神奇的bug on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 17 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://axiomaster.github.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 17 Mar 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://axiomaster.github.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/index.xml" rel="self" type="application/rss+xml" />
+    
+    
     <item>
       <title>Golang defer导致内存溢出</title>
       <link>https://axiomaster.github.io/post/2019-04-14-defer/</link>

@@ -80,7 +80,7 @@
             <p>Golang中提供了defer关键字，以前可能需要在函数内进行多次判断之后释放资源，现在使用defer一次就搞定了，习惯之后会觉得这个特性非常好用。</p>
 <h2 id="问题代码">问题代码</h2>
 <p>有一句话是<code>软件设计没有银弹</code>，放在这里依然成立。defer这么好用，但也需要注意一些坑。代码逻辑大致如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">for</span> {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">for</span> {
     <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">释放资源</span>
 
     <span style="color:#75715e">// http request
@@ -178,6 +178,34 @@
 <ul class="widget-list">
     
     <li>
+        <a href="https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-19-page/" title="内存分页">内存分页</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-18-protected_mode/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-04-os-loader-addition/" title="确认软盘内容执行">确认软盘内容执行</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-22-os-loader/" title="读取并执行软盘内容">读取并执行软盘内容</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-21-os-boot-addition/" title="启动补充说明">启动补充说明</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
+    </li>
+    
+    <li>
         <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
     </li>
     
@@ -187,34 +215,6 @@
     
     <li>
         <a href="https://axiomaster.github.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-03-01-weakreference/" title="Weak Reference">Weak Reference</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-17-camerax/" title="CameraX">CameraX</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-16-bazel-build-system/" title="Bazel build system">Bazel build system</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-16-mediapipe/" title="mediapipe">mediapipe</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-01-x86-register/" title="x86寄存器汇总">x86寄存器汇总</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-01-27-post-to-bootsec/" title="系统启动分析(一)">系统启动分析(一)</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-01-10-android-debug/" title="Android调试">Android调试</a>
     </li>
     
 </ul>
@@ -277,11 +277,7 @@
     
     <a href="https://axiomaster.github.io/tags/view/">view</a>
     
-    <a href="https://axiomaster.github.io/tags/vs-code/">VS code</a>
-    
     <a href="https://axiomaster.github.io/tags/window/">window</a>
-    
-    <a href="https://axiomaster.github.io/tags/wsl/">WSL</a>
     
     <a href="https://axiomaster.github.io/tags/zookeeper/">zookeeper</a>
     
@@ -302,8 +298,6 @@
     <a href="https://axiomaster.github.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
     
     <a href="https://axiomaster.github.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
-    
-    <a href="https://axiomaster.github.io/tags/%E6%B1%87%E7%BC%96/">汇编</a>
     
     <a href="https://axiomaster.github.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
     

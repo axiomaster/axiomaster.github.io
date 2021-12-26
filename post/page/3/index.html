@@ -67,6 +67,151 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2020-01-05-io/" title="I/O模型">I/O模型</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年1月5日
+        </date>
+        
+        <div class="post-content">
+            I/O处理过程 系统调用 操作系统出于安全的考虑，将进程的内存空间划分为用户空间(0~3G)和内核空间(3-4G)。进程在执行用户自己的代码时处于用户态(ring3); 当用户代码需要操作系统资源时, 可以通过调用操作系统提供的标准接口(POSIX)进行访问, 此时进程从用户态切换到内核态. 操作系统提供的这些接口称为系统调用.
+使用top命令时, Cpu后面的us就对应用户态使用的cpu, sy就对应内核态使用的cpu.
+%Cpu(s): 1.2 us, 0.7 sy, 0.0 ni, 98.0 id, 0.1 wa, 0.0 hi, 0.0 si, 0.0 st 硬盘, 网卡等等这些设备, 用户代码都是无法直接访问的, 需要通过操作系统提供的标准系统调用进行访问. 对于linux系统, 将所有的设备都抽象成文件, 因此, 对于这些设备的访问都可以归类为IO操作.
+文件读取过程 用户程序读取磁盘或网卡上的数据, 执行read系统调用时可以分为2个过程:
+  操作系统需要将磁盘或网卡上的数据先拷贝到内核缓冲区
+  操作系统再将内核缓冲区的数据拷贝到用户缓冲区
+  内核缓冲区 我们知道, 硬盘等外设因为硬件原因, 读写相对内存来说是要慢几个数量级的. 如果内核一有数据就立即写入磁盘, 就需要频繁的调用驱动的硬件.操作系统为了提高与硬件交互的效率, 并不会一有数据就立即写入, 而是等攒够一些数据之后再批量写入.
+因此, 内核缓冲区时为了减少内核与外部硬件交互的次数.
+用户缓冲区 操作系统进行系统调用是有一定开销的, 而且相对开销很大. 回想读取文件时, 我们都会先申请一个buffer数组, 然后循环每次read len大小的数据, 之后代码对buffer内容进行处理.
+这么做的原因是为了避免频繁的进行系统调用. 关于len为什么取1024或4096, &laquo;UNIX环境高级编程&raquo;中专门有讨论, 这个取值是基于统计分析出来的最佳大小.
+因此, 用户缓冲区是为了减少系统调用次数.……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.github.io/post/2020-01-05-io/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2020-01-05-looper/" title="Handler和Looper">Handler和Looper</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年1月5日
+        </date>
+        
+        <div class="post-content">
+            ……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.github.io/post/2020-01-05-looper/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2020-01-05-handler/" title="Handler和Looper">Handler和Looper</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年1月5日
+        </date>
+        
+        <div class="post-content">
+            ……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.github.io/post/2020-01-05-handler/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2019-12-31-makeup-computer/" title="自己动手组装台式机">自己动手组装台式机</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年12月31日
+        </date>
+        
+        <div class="post-content">
+            双十一买了一个34'的21:9超宽屏显示器，回来之后接上笔记本，越来越觉得笔记本有点儿带不动。正好最近学习android需要编译aosp， 然后就研究了一下攒机，预算3000，组一台linux编译机。于是趁着双十二买了一堆零件自己组了一台电脑。
+配置单 先说说最终的配置：
+   配件 型号 价格     CPU ryzen 3700x    主板 MSI B450M mortar max 主板+CPU套装 ￥2514   内存 海盗船 DDR4 3600MHz 16G x 2 ￥1038   固态硬盘 阿斯加特 M.2 NVMe 500G ￥343   显卡 二手铭暄 GTX 960 2G ￥399   电源 酷冷至尊 MWE 550 铜牌 ￥312   机箱 先马 征途 中塔机箱 送5把RGB机箱风扇 ￥164   显示器 小米 34&rsquo; 曲面显示器 ￥1999   无线网卡 腾达U10 USB无线网卡 ￥59   dp线 绿联 DP 1.……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.github.io/post/2019-12-31-makeup-computer/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2019-08-11-debugger-golang3/" title="Making debugger for Golang">Making debugger for Golang</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月11日
+        </date>
+        
+        <div class="post-content">
+            转载自 Making debugger for Golang (part III)
+ So far we’ve learned how to single-step ptraced process (tracee) and get some debugging info out of binary (read it here if you haven’t done it yet). Now it’s time to set a breakpoint at desired place, wait until reached and then investigate process state.
+Let’s start with assembly code used before:
+section .data msg db &quot;hello, world!&quot;, 0xA len equ $ - msg section .……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.github.io/post/2019-08-11-debugger-golang3/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2019-08-11-debugger-golang2/" title="Making debugger for Golang">Making debugger for Golang</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月11日
+        </date>
+        
+        <div class="post-content">
+            转载自 Making debugger for Golang (part II)
+ During the first part we’ve bootstrapped development environment and made a simple program (tracer) which stops child process (tracee) at the very beginning and then continues it execution together with showing its standard output. Now it’s time to extend its basic capabilities.
+Usually debuggers allow to single-step through debugged program. It can be done using ptrace PTRACE_SINGLESTEP request which tells tracee to stop after execution of single instruction:……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.github.io/post/2019-08-11-debugger-golang2/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2019-08-11-debugger-golang/" title="Making debugger for Golang">Making debugger for Golang</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月11日
+        </date>
+        
+        <div class="post-content">
+            转载自 Making debugger for Golang (part I)
+ The goal of this series is not to write full-featured debugger for Go programming language. If you’re looking for some then please take a look at Delve. We’ll try to understand here how debuggers work in general and how to implement basic one on Linux which takes into account Golang’s features like goroutines.
+Creating debugger isn’t easy though. We won’t even strive to cover this topic within a single story.……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.github.io/post/2019-08-11-debugger-golang/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://axiomaster.github.io/post/2019-07-30-bug/" title="神奇的bug">神奇的bug</a>
             </h1>
         </header>
@@ -123,40 +268,6 @@ docker run -d -p 5000:5000 --name registry registry:2 2 保存registry.tar并运
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2019-06-23-vscode-remote/" title="VS code remote">VS code remote</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年6月23日
-        </date>
-        
-        <div class="post-content">
-            build 2019 微软发布了wsl2和vscode remote插件。前者使用了真正的linux内核，解决了wsl的很多问题，据说可以直接运行docker。wsl2在20H1的快速预览版18917已经可以使用。VS code remote是vscode的一组插件，包括remote ssh， remote wsl和remote container，VS code升级到1.35.1之后就可以使用了。今天我们尝试一下VS code remote的配置。
-首先在VS code的Extensions中安装所有的remote插件。然后按照下方官方说明进行安装配置，这里就不多说了。
-VS Code Remote Development
-下面主要说一下踩到的坑。
-remote ssh &amp; remote wsl remote插件机制都类似，安装时会在remote虚拟机/WSl/容器内安装vscode server，由server端实际运行，本地VS code只作为界面显示。
-1 remote ssh 免密登录
-官方配置指导为将本地ssh公钥加入服务端信任列表中，ssh登录时可以免密登录。这里遇到的一个坑是，所有配置都正确，但ssh时总是不成功。后来发现使用的服务器之前已经配置过多次ssh免密登录了，被限制了。换了一个vm就成功了。这应该是ssh的一个限制，网上找了一个解决方法，但实测没有生效，这里就不说了。
-还有一种解决方法是配置&quot;remote.SSH.showLoginTerminal&quot;: true使用密码登录。但这样需要多次账号密码，略麻烦。
-2 下载vs code server
-第一次打开remote ssh时连接的服务端需要下载vs code server， 所以需要使用的vm能够访问外网。在某些网络环境下可能需要使用vpn。
-3 证书认证失败
-wget下载使用https地址。使用vpn时，有些vpn会拦截替换证书。但是vm本身没有添加私有ca导致无法认证ms的证书。这里有以下3个解决方法：
- 找到下载脚本，在wget后面添加--no-check-certificate  remote wsl我就是这样子解决的，但remote ssh没有找到对应的脚本，无法修改。
- 将vpn的私有ca添加到os中  使用浏览器访问https地址，可以拿到ca证书。将ca证书导出，ubuntu需要导成pem(base64)格式。导出的文件后缀名为cer, 直接手动修改为crt后缀。然后把证书放入/usr/local/share/ca-certificates/目录下，并执行如下命令:
-sudo update-ca-certificates  修改wget全局配置  在~/.wgetrc中添加如下配置，修改wget全局配置，不校验对端证书。当然需要自己把握风险。
-check-certificate=off remote container 我是win10系统，安装了docker-for-windows。使用的是官方给的vscode-remote-try-cpp例子。
-remote container会根据Dockerfile去docker.io下载debian基础镜像，然后apt安装build-essential等编译工具。……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2019-06-23-vscode-remote/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
                 <a href="https://axiomaster.github.io/post/2019-06-15-dont-be-evil/" title="Don&#39;t be evil">Don&#39;t be evil</a>
             </h1>
         </header>
@@ -183,167 +294,6 @@ remote container会根据Dockerfile去docker.io下载debian基础镜像，然后
 能说什么呢，天也亮了，希望工作生活中大家都能dont be evil，把自己这一跳的事情努力尽责做好，提升自己能力，之后再说be kind，be nice，be cool吧~……
         </div>
         <p class="readmore"><a href="https://axiomaster.github.io/post/2019-06-15-dont-be-evil/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2019-04-27-java-concurrent/" title="Java并发编程">Java并发编程</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年4月27日
-        </date>
-        
-        <div class="post-content">
-            缓存一致性与并发问题 我们今天使用的计算机体系结构都属于存储程序型（冯·诺伊曼结构），运行时所有的数据都存储在内存中；指令执行时，数据从内存读入寄存器，运算结束后再写回内存。
-// i == 0 i = i + 1 // i == 1 以上面代码为例，计算机先将i加载到寄存器中，再寄存器中+1后再将i写回内存。
-可以认为运算中，寄存器中的数据是内存的一份缓存。但是，有缓存，就有缓存不一致的问题。
-我们只考虑多CPU时的并发问题。单线程执行时，以上执行顺序不存在问题；但并发场景下，假设2个线程A、B同时执行，A读入寄存器的值均为0, 计算后都为1，在A写入内存前，B此时读取到的值为0，最终写入内存的i为1，显然存在问题。
-解决缓存不一致问题，通常有2种方法：
- 在总线加锁； 使用缓存一致性协议；  总线加锁 CPU通过总线读取内存，通过在总线加锁，锁未释放前，CPU只能再次读取i所在内存，直到锁释放。早期CPU采用这种方式，这样可以解决不一致问题，但这等于同一块内存锁释放前无法访问。
-缓存一致性协议 Intel的MESI协议，提供了如下机制：CPU写数据时，如果发现变量是共享变量，会发信号通知其它CPU将该变量的缓存置为无效状态。其它CPU操作时发现缓存失效了，就会重新从内存读取。
-并发编程中的概念 原子性 提到原子性时都会以银行转账为例：用户A向用户B转账100元。
-转账事务请求中，银行会进行2项操作：A账户减少100元；B账户增加100元。
-不管银行按什么顺序执行，如果2项操作进行到一半时失败了，银行都需要先进行回滚，否则就会出现错误（银行损失或用户A损失）。
-换句话说，银行需要保障转账的原子性：这项请求要么成功，要么失败，不能出现任何中间状态（2个操作一个成功，一个失败）。
-对应到计算机运行中，一些操作是原子性的，另一些操作是由若干原子性操作组合而成。
-比如根据上面分析，i=i+1不是原子操作；那i=9是原子操作吗？如果计算机分别对i的高低16位先后赋值，那就不是原子操作。
-可见性 可见性是指多个线程访问同一个变量时，一个线程修改了这个变量的值，其他线程能够立即看得到修改的值。
-比如：
-// 线程A int i = 0 i = 5 // 线程B j = i 如果线程A执行完i = 5但尚未写入内存时，线程B从内存看到的i = 0，无法看到线程A缓存中i的值已经发生变化。
-有序性 以下代码示例来自《七周七并发》
-public class Puzzle { static boolean answerReady = false; static int answer = 0; static Thread t1 = new Thread() { @Override public void run() { answer = 42; answerReady = true; } }; static Thread t2 = new Thread() { @Override public void run() { if (answerReady) { System.……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2019-04-27-java-concurrent/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2019-04-27-dlib/" title="静态库与动态库">静态库与动态库</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年3月17日
-        </date>
-        
-        <div class="post-content">
-            编译流程  编译生成可重定位目标文件，经链接器将其和依赖的库组合起来，生成可执行文件。
-可执行文件运行时，经过加载器(loader)将其中的代码和和数据拷贝到内存，然后跳转到程序起始地址开始执行。
- 链接 连接器主要完成2个任务
- 符号解析：每个符号对应一个函数，全局变量或静态变量。符号解析将符号引用与符号定义关联起来。 重定位：编译器生成的可重定位目标文件中地址从0开始。链接器把多个库合并，将符号与内存地址关联，重定位这些节，并修改符号引用地址。  ELF文件  可执行可链接格式ELF(Executable and Linkable Format)
-   静态库与静态链接 linux上静态库以存档（archive, .a后缀）文件格式存储，是一组可重定位目标文件的集合。
-静态链接时，会将.a中对应的内容拷贝，最终生成的可执行文件中包含静态库内容。程序运行时不再依赖静态库。
-动态共享库与动态链接  静态库内容需要拷贝到可执行文件中，生成目标文件比较大，占用空间（减少了运行时依赖，现在看也许是优势） 静态库不支持热更新  相比静态库，以上就是动态库的特点：允许多个进程在内存中共享同一份库代码。
-位置无关代码  位置无关代码PIC(Position-Independent Code), 编译时需要指定-fpic参数
- 显示调用 显示使用共享库时不需要依赖头文件，通过dlfcn.h中提供的API进行调用：
-// 将动态库加载到内存 // 指定名称，在LD_LIBRARY_PATH、/lib、/usr/lib目录下查找 // 或指定全路径 void *dlopen(const char *libname,int flag); // 在动态库中查找对应函数 void *dlsym(void *handle,const char *symbol); // dlclose() // 获取最近一次error信息，调用后会清空最近的错误信息 char *dlerror(void); 显示调用，可以在运行时打开库函数进行调用，有点儿类似动态语言的效果；而且，在代码执行到dlopen之前，so可以不存在。
-隐式调用 隐式调用时需要引用库对应的头文件，代码中直接调用头文件中声明的函数即可；编译时，通过-l指定需要链接的库。
-但隐式调用，在可执行文件开始执行时，所有依赖的库必须存在，否则无法运行。
-后记 又水一篇。
-链接中ELF结构与《深入理解Java虚拟机》第6章 类文件结构简直神似，看这种内容就和看模电或高频里一大坨电路图一样，全是记都记不住的细节。果然还是脑袋缓存太小了，处理太慢了。……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2019-04-27-dlib/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2019-03-23-bugs/" title="神奇的bug">神奇的bug</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年3月17日
-        </date>
-        
-        <div class="post-content">
-             状态模式允许对象在内部状态改变时改变它的行为，对象看起来好像修改了它的类。
-   Etcd启动失败
-  数字排序问题
-  golang defer导致内存溢出
-  jpa事务读写
-  CRL校验问题
-  ……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2019-03-23-bugs/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2019-03-17-state-pattern/" title="状态模式 State Pattern">状态模式 State Pattern</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年3月17日
-        </date>
-        
-        <div class="post-content">
-            状态模式允许对象在内部状态改变时改变它的行为，对象看起来好像修改了它的类。
- 工作中经常会遇到各种状态机，使用流程控制的方式虽然也可以实现，但后续的维护变动就变得很困难。在实际中我们现在就遇到了一个这样子的问题，整个状态机的代码有一千多行，代码完成的还算工整，但要看懂现在就只能对比状态图了，因为状态实在太多了。我曾经增改过两次，每次改动都伴随着一大堆的问题单。
-这时候就真真切切体会到状态模式的好处了。
-类图  状态模式 vs 策略模式 如果与策略模式的类图对比的话，会发现图结构几乎一模一样。虽然如此，这俩模式还是有比较明显的区别。
-策略模式中，最后的每一个业务类只包含了一组算法中的一个实现；或者说每一种算法的组合形成了一个业务类。
-但在状态模式中，业务类中继承了算法的所有实现，并且在运行态切换算法为不同的实现，从而让自己拥有不同的行为（表现为不同的状态）。
-我觉得类比之前策略模式中不同种类鸭子的实现，状态模式只存在一只百变鸭，但这只鸭子根据外界输入一会将自己变成红头鸭吱吱叫，一会儿变成绿头鸭呱呱叫。
-代码 略……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2019-03-17-state-pattern/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2019-03-31-factory-pattern/" title="工厂模式 Factory Pattern">工厂模式 Factory Pattern</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年3月17日
-        </date>
-        
-        <div class="post-content">
-            工厂模式定义了一个创建对象的接口，但由子类决定要实例化的类时哪一个。工厂方法让类把实例化推迟到子类。
- 简单工厂 简单工厂的思路也确实非常简单，就像将创建类的代码进行了简单的抽离。《设计模式》也说这不应该算一种模式，更像一种编程习惯。就好比撸完代码之后自己回头看看，发现这一块独立的逻辑可以抽离出来独立一下。
- 工厂模式 工厂模式中，创建者与产品为平行类层级，只是创建者的创建方法产生产品。要创建哪种产品，由具体的创建者子类决定；产品的实际创建，也由产品的具体实现类完成。
- 代码 略……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2019-03-31-factory-pattern/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2019-04-21-gradle-proxy/" title="使用Gradle开发IDEA插件">使用Gradle开发IDEA插件</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年3月17日
-        </date>
-        
-        <div class="post-content">
-            最近想试着开发一个IDEA的插件，官方指导 中有两种方式:
- 使用Gradle 使用DevKit  而且官方推荐Gradle的方式，称DevKit的工作流已经过时了。但百度出来的全都是DevKit的方式。而且Android Studio也是gradle，那就试试gradle的方式开发一个插件。
-Gradle配置 使用gradle创建工程之后，需要下载一些文件，因为GWF的原因这一步会特别慢，不使用VPN基本都失败了。网上找了使用aliyun源的方式，搞定了这一步。
-单个工程修改 将工程下build.gradle中的repositories替换为如下内容
-repositories { maven { url &#39;https://maven.aliyun.com/repository/public/&#39; } maven { url &#39;https://maven.aliyun.com/repository/google/&#39; } maven { url &#39;https://maven.aliyun.com/repository/jcenter&#39; } } 具体替换地址可以看aliyun官网的地址，网上大多数配置都没有更新，使用的还是旧地址。
-全局配置 以上方式只修改单个工程的，每次新建工程都要修改，很麻烦。下面这个方法可以修改全局的配置。
-在 C:\Users\用户名\.gradle目录下创建init.gradle文件，内容如下：
-allprojects { repositories { maven { url &#39;https://maven.aliyun.com/repository/public/&#39; } maven { url &#39;https://maven.aliyun.com/repository/google/&#39; } maven { url &#39;https://maven.aliyun.com/repository/jcenter&#39; } all { ArtifactRepository repo -&gt; if (repo instanceof MavenArtifactRepository) { def url = repo.url.toString() if (url.startsWith(&#39;https://repo.maven.apache.org/maven2/&#39;) || url.……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2019-04-21-gradle-proxy/">阅读全文</a></p>
     </article>
     
     
@@ -385,6 +335,10 @@ allprojects { repositories { maven { url &#39;https://maven.aliyun.com/repositor
     
     <li >
         <a href="https://axiomaster.github.io/post/page/7/">7</a>
+    </li>
+    
+    <li >
+        <a href="https://axiomaster.github.io/post/page/8/">8</a>
     </li>
     
 
@@ -445,6 +399,34 @@ allprojects { repositories { maven { url &#39;https://maven.aliyun.com/repositor
 <ul class="widget-list">
     
     <li>
+        <a href="https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-19-page/" title="内存分页">内存分页</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-18-protected_mode/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-04-os-loader-addition/" title="确认软盘内容执行">确认软盘内容执行</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-22-os-loader/" title="读取并执行软盘内容">读取并执行软盘内容</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-21-os-boot-addition/" title="启动补充说明">启动补充说明</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
+    </li>
+    
+    <li>
         <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
     </li>
     
@@ -454,34 +436,6 @@ allprojects { repositories { maven { url &#39;https://maven.aliyun.com/repositor
     
     <li>
         <a href="https://axiomaster.github.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-03-01-weakreference/" title="Weak Reference">Weak Reference</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-17-camerax/" title="CameraX">CameraX</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-16-bazel-build-system/" title="Bazel build system">Bazel build system</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-16-mediapipe/" title="mediapipe">mediapipe</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-02-01-x86-register/" title="x86寄存器汇总">x86寄存器汇总</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-01-27-post-to-bootsec/" title="系统启动分析(一)">系统启动分析(一)</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-01-10-android-debug/" title="Android调试">Android调试</a>
     </li>
     
 </ul>
@@ -544,11 +498,7 @@ allprojects { repositories { maven { url &#39;https://maven.aliyun.com/repositor
     
     <a href="https://axiomaster.github.io/tags/view/">view</a>
     
-    <a href="https://axiomaster.github.io/tags/vs-code/">VS code</a>
-    
     <a href="https://axiomaster.github.io/tags/window/">window</a>
-    
-    <a href="https://axiomaster.github.io/tags/wsl/">WSL</a>
     
     <a href="https://axiomaster.github.io/tags/zookeeper/">zookeeper</a>
     
@@ -569,8 +519,6 @@ allprojects { repositories { maven { url &#39;https://maven.aliyun.com/repositor
     <a href="https://axiomaster.github.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
     
     <a href="https://axiomaster.github.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
-    
-    <a href="https://axiomaster.github.io/tags/%E6%B1%87%E7%BC%96/">汇编</a>
     
     <a href="https://axiomaster.github.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
     

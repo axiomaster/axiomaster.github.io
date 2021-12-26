@@ -5,7 +5,11 @@
     <link>https://axiomaster.github.io/tags/net/</link>
     <description>Recent content in net on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://axiomaster.github.io/tags/net/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    
+	<atom:link href="https://axiomaster.github.io/tags/net/index.xml" rel="self" type="application/rss+xml" />
+    
+    
     <item>
       <title>HttpClient getContentLength()问题</title>
       <link>https://axiomaster.github.io/post/2018-04-17-httpclient-getcontentlength/</link>

@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>启动补充说明 | Axiomaster&#39;s Site</title>
+    <meta property="og:title" content="启动补充说明 - Axiomaster&#39;s Site">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2021-11-21T23:06:29&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2021-11-21T23:06:29&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="启动补充说明">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://axiomaster.github.io/post/2021-11-21-os-boot-addition/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://axiomaster.github.io/">
+                        Axiomaster&#39;s Site
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://axiomaster.github.io/">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">启动补充说明</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2021年11月21日
+        </date>
+        
+        
+        
+        <div class="post-content">
+            <ul>
+<li><a href="https://axiomaster.gitee.io/post/2021-11-17-os-boot/">1-1 从上电到引导扇区</a></li>
+<li><a href="https://axiomaster.gitee.io/post/2021-11-21-os-boot-addition/">1-2 启动补充说明</a></li>
+</ul>
+<h2 id="清理屏幕">清理屏幕</h2>
+<p>上一节我们通过在显存地址直接写入字符，打印除了“hello”。但因为显存内存储着BIOS启动过程中的一些显示信息，所以屏幕看着很乱。这一节我们在打印字符之前，先讲显存内的内容清空，再进行打印，这样看着清爽些。</p>
+<p>清空显存，当然有个笨办法，就是像打印“hello”一样，从0xb8000开始，向显存写入空白或不可见字符。但这个比较累。还有一个办法就是调用bios提供的<code>int 10</code>中断。</p>
+<h2 id="int10中断">int10中断</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#a6e22e">org</span> <span style="color:#ae81ff">07</span><span style="color:#66d9ef">c00h</span>         <span style="color:#75715e">; 告诉编译器程序加载到7c00处
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">;----中断10h，卷屏，实现清屏
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">ax</span>, <span style="color:#ae81ff">0x0600</span>
+<span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">bx</span>, <span style="color:#ae81ff">0x0700</span>
+<span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">cx</span>, <span style="color:#ae81ff">0</span>
+<span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">dx</span>, <span style="color:#ae81ff">0x184f</span>
+<span style="color:#a6e22e">int</span> <span style="color:#ae81ff">0x10</span>
+
+<span style="color:#75715e">;----直接往显存中写数据
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">ax</span>, <span style="color:#ae81ff">0xb800</span>
+<span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">gs</span>, <span style="color:#66d9ef">ax</span>
+<span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">byte</span> [<span style="color:#66d9ef">gs</span>:<span style="color:#ae81ff">0x00</span>],<span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#66d9ef">h</span><span style="color:#960050;background-color:#1e0010">&#39;</span>
+<span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">byte</span> [<span style="color:#66d9ef">gs</span>:<span style="color:#ae81ff">0x02</span>],<span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#66d9ef">e</span><span style="color:#960050;background-color:#1e0010">&#39;</span>
+<span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">byte</span> [<span style="color:#66d9ef">gs</span>:<span style="color:#ae81ff">0x04</span>],<span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#66d9ef">l</span><span style="color:#960050;background-color:#1e0010">&#39;</span>
+<span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">byte</span> [<span style="color:#66d9ef">gs</span>:<span style="color:#ae81ff">0x06</span>],<span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#66d9ef">l</span><span style="color:#960050;background-color:#1e0010">&#39;</span>
+<span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">byte</span> [<span style="color:#66d9ef">gs</span>:<span style="color:#ae81ff">0x08</span>],<span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#66d9ef">o</span><span style="color:#960050;background-color:#1e0010">&#39;</span>
+
+<span style="color:#a6e22e">times</span> <span style="color:#ae81ff">510</span>-(<span style="color:#66d9ef">$-$$</span>) <span style="color:#66d9ef">db</span> <span style="color:#ae81ff">0</span> <span style="color:#75715e">; 填充剩下的空间，使生成的二进制代码恰好为512字节
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">dw</span> <span style="color:#ae81ff">0xaa55</span>             <span style="color:#75715e">; 结束标志
+</span></code></pre></div><p>以上代码中，我们先设置好参数，然后调用<code>int 10</code>中断，实现了清屏操作。效果如下：</p>
+<p>
+        <img class="mx-auto" alt="hello" src="https://gitee.com/axiomaster/pages-imgs/raw/master/clean_screen.png" />   
+    </p>
+<p>关于INT 10h的更多细节，可以看这里 <a href="https://en.wikipedia.org/wiki/INT_10H">wikipedia INT 10h</a>。</p>
+<h2 id="内存布局">内存布局</h2>
+<p>启动后，BIOS通过<code>int 19</code>中断将第一个扇区对应的512字节拷贝至内存0x7c00处。那此时的内存布局是什么样子的呢？</p>
+<p>
+        <img class="mx-auto" alt="ram_boot" src="https://gitee.com/axiomaster/pages-imgs/raw/master/chap1_ram_boot.png" />   
+    </p>
+<p>如上图所示，点击电源键开机后，CPU处于实模式，即16位工作模式。但此时地址总线宽度为20位，最大寻址内存空间为<code>2^20=1MB</code>。</p>
+<h2 id="实模式寻址">实模式寻址</h2>
+<p>实模式下，CPU寻址方式为<code>段基地址+段内偏移地址</code>，即每个内存单元可以用两个16位寄存器的值拼接而成。寄存器为16位，可以表示的最大段内偏移量为<code>2^16=64KB</code>。CPU将16位段寄存器值左移4位得到段基地址，再加上段内偏移量，得到20位内存地址。</p>
+
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/2021-11-17-os-boot/">从上电到引导扇区</a></li>
+        
+        <li><a href="/post/2020-01-05-io/">I/O模型</a></li>
+        
+        <li><a href="/post/2018-03-04-java-oom/">Java内存泄漏分析</a></li>
+        
+        <li><a href="/post/2018-08-14-linux-perf-tool/">linux perf tool</a></li>
+        
+        <li><a href="/post/2018-07-01-linux-cpu/">linux-cpu</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/os'>OS</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="https://axiomaster.github.io/">Axiomaster&#39;s Site By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-19-page/" title="内存分页">内存分页</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-18-protected_mode/" title="保护模式">保护模式</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-12-04-os-loader-addition/" title="确认软盘内容执行">确认软盘内容执行</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-22-os-loader/" title="读取并执行软盘内容">读取并执行软盘内容</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-21-os-boot-addition/" title="启动补充说明">启动补充说明</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://axiomaster.github.io/tags/activity/">activity</a>
+    
+    <a href="https://axiomaster.github.io/tags/algorithm/">algorithm</a>
+    
+    <a href="https://axiomaster.github.io/tags/android/">android</a>
+    
+    <a href="https://axiomaster.github.io/tags/aosp/">aosp</a>
+    
+    <a href="https://axiomaster.github.io/tags/bazel/">bazel</a>
+    
+    <a href="https://axiomaster.github.io/tags/bug/">bug</a>
+    
+    <a href="https://axiomaster.github.io/tags/debug/">debug</a>
+    
+    <a href="https://axiomaster.github.io/tags/debugger/">debugger</a>
+    
+    <a href="https://axiomaster.github.io/tags/docker/">docker</a>
+    
+    <a href="https://axiomaster.github.io/tags/golang/">golang</a>
+    
+    <a href="https://axiomaster.github.io/tags/gradle/">Gradle</a>
+    
+    <a href="https://axiomaster.github.io/tags/i/o/">I/O</a>
+    
+    <a href="https://axiomaster.github.io/tags/idea%E6%8F%92%E4%BB%B6/">IDEA插件</a>
+    
+    <a href="https://axiomaster.github.io/tags/java/">java</a>
+    
+    <a href="https://axiomaster.github.io/tags/linux/">linux</a>
+    
+    <a href="https://axiomaster.github.io/tags/ml/">ML</a>
+    
+    <a href="https://axiomaster.github.io/tags/net/">net</a>
+    
+    <a href="https://axiomaster.github.io/tags/nginx/">nginx</a>
+    
+    <a href="https://axiomaster.github.io/tags/os/">OS</a>
+    
+    <a href="https://axiomaster.github.io/tags/tensorflow/">Tensorflow</a>
+    
+    <a href="https://axiomaster.github.io/tags/tool/">tool</a>
+    
+    <a href="https://axiomaster.github.io/tags/view/">view</a>
+    
+    <a href="https://axiomaster.github.io/tags/window/">window</a>
+    
+    <a href="https://axiomaster.github.io/tags/zookeeper/">zookeeper</a>
+    
+    <a href="https://axiomaster.github.io/tags/zygote/">zygote</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E5%86%85%E5%AD%98/">内存</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E5%90%90%E6%A7%BD/">吐槽</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E5%B7%A5%E5%85%B7/">工具</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E6%89%8B%E5%B7%A5/">手工</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/">神奇的bug</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E8%AF%81%E4%B9%A6/">证书</a>
+    
+    <a href="https://axiomaster.github.io/tags/%E9%93%BE%E6%8E%A5/">链接</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://axiomaster.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

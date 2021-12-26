@@ -6,7 +6,11 @@
     <description>Recent content in ML on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 03 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://axiomaster.github.io/tags/ml/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 03 Sep 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://axiomaster.github.io/tags/ml/index.xml" rel="self" type="application/rss+xml" />
+    
+    
     <item>
       <title>Tensorflow2.0 笔记（2）</title>
       <link>https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/</link>
@@ -14,8 +18,8 @@
       
       <guid>https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/</guid>
       <description>六步法  import train, test 网络结构  model=tf.keras.models.Sequential # 搭建网络结构 class MyModel(Model) model = MyModel   model.compile # 配置训练优化器，损失函数 model.fit # 输入特征，batch, epoch model.summary  网络结构 拉直层 tf.keras.layers.Flatten()
-全连接层 tf.keras.layers.Dense(神经元个数, activation=&amp;#34;激活函数&amp;#34;, kernel_regularizer=&amp;#34;正则化&amp;#34;) 卷积层 tf.keras.layers.Conv2D(filters=卷积核个数, kernel_size=卷积核尺寸, strides=卷积步长, padding=&amp;#34;valid&amp;#34; or &amp;#34;same&amp;#34;) LSTM层 tf.keras.layers.LSTM()
-训练方法 model.compile(optimizer=优化器, loss=损失函数, metrics=[&amp;#34;准确率&amp;#34;]) Optimizer  sgd adagrad adadelta adam  loss Metrics 训练过程 model.fit(训练集的输入特征, 训练集的标签, batch_size=, epochs=, validation_data=(测试集的输入特征, 测试集的标签), validation_split=从训练集划分多少比例分给测试集, validation_freq=多少次epoch测试一次) </description>
+全连接层 tf.keras.layers.Dense(神经元个数, activation=&amp;#34;激活函数&amp;#34;, kernel_regularizer=&amp;#34;正则化&amp;#34;)卷积层 tf.keras.layers.Conv2D(filters=卷积核个数, kernel_size=卷积核尺寸, strides=卷积步长, padding=&amp;#34;valid&amp;#34; or &amp;#34;same&amp;#34;)LSTM层 tf.keras.layers.LSTM()
+训练方法 model.compile(optimizer=优化器, loss=损失函数, metrics=[&amp;#34;准确率&amp;#34;])Optimizer  sgd adagrad adadelta adam  loss Metrics 训练过程 model.fit(训练集的输入特征, 训练集的标签, batch_size=, epochs=, validation_data=(测试集的输入特征, 测试集的标签), validation_split=从训练集划分多少比例分给测试集, validation_freq=多少次epoch测试一次)</description>
     </item>
     
     <item>
@@ -24,7 +28,7 @@
       <pubDate>Thu, 03 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://axiomaster.github.io/post/2020-09-07-tensorflow2_3/</guid>
-      <description>CNN  输入特征图的深度（channel数），决定了当前层卷积核的深度； 当前层卷积核的个数，决定了当前层输出特征图的深度；  tf.keras.layers.Conv2D( kernel_size=卷积核尺寸, strides=滑动补偿, padding=&amp;#34;same&amp;#34; or &amp;#34;valid&amp;#34;, activation=&amp;#34;relu&amp;#34; or &amp;#34;sigmoid&amp;#34; or &amp;#34;tanh&amp;#34; or &amp;#34;softmax&amp;#34;, input_shape=(高, 宽, 通道数) ) 批标准化（Batch Normalization, BN） 池化 池化用于减少特征数据量，最大值池化可提取图片纹理，均值池化可保留背景特征。
+      <description>CNN  输入特征图的深度（channel数），决定了当前层卷积核的深度； 当前层卷积核的个数，决定了当前层输出特征图的深度；  tf.keras.layers.Conv2D(kernel_size=卷积核尺寸,strides=滑动补偿,padding=&amp;#34;same&amp;#34; or &amp;#34;valid&amp;#34;,activation=&amp;#34;relu&amp;#34; or &amp;#34;sigmoid&amp;#34; or &amp;#34;tanh&amp;#34; or &amp;#34;softmax&amp;#34;,input_shape=(高, 宽, 通道数))批标准化（Batch Normalization, BN） 池化 池化用于减少特征数据量，最大值池化可提取图片纹理，均值池化可保留背景特征。
 舍弃 Dropout 训练时，一定概率随机舍弃神经元。网络使用时，恢复神经元。
 卷积神经网络结构 卷积：特征提取器，CBAPD(Convolutinoal, BN, Activation, Pooling, Dropout)</description>
     </item>

@@ -6,7 +6,122 @@
     <description>Recent content on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 31 Oct 2021 21:05:29 +0800</lastBuildDate><atom:link href="https://axiomaster.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 27 Oct 2021 22:05:16 +0800</lastBuildDate>
+    
+	<atom:link href="https://axiomaster.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>保护模式</title>
+      <link>https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/</link>
+      <pubDate>Sun, 26 Dec 2021 14:15:29 +0800</pubDate>
+      
+      <guid>https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/</guid>
+      <description> 1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 分页  根据Intel CPU的设计，理论上我们可以将内存划分出很多个段。但Linux基于可移植性等因素考虑，并没有充分利用CPU分段机制，而是将整个4GB的线性地址空间都对应为同一个段。
+ </description>
+    </item>
+    
+    <item>
+      <title>内存分页</title>
+      <link>https://axiomaster.github.io/post/2021-12-19-page/</link>
+      <pubDate>Sun, 19 Dec 2021 15:00:29 +0800</pubDate>
+      
+      <guid>https://axiomaster.github.io/post/2021-12-19-page/</guid>
+      <description> 1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式  内存分页 </description>
+    </item>
+    
+    <item>
+      <title>保护模式</title>
+      <link>https://axiomaster.github.io/post/2021-12-18-protected_mode/</link>
+      <pubDate>Sat, 18 Dec 2021 09:45:29 +0800</pubDate>
+      
+      <guid>https://axiomaster.github.io/post/2021-12-18-protected_mode/</guid>
+      <description>1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行  CPU保护模式 我们知道，操作系统是对计算机各种硬件资源进行管理的，通过提供各种API，方便各种应用使用计算机硬件完成各自功能。因此，开发操作系统需要受硬件实现限制，也可以理解为按照硬件接口约定调用硬件能力。比如启动扇区的最后两个字节必须是0xAA 0x55，这就是一种约定，不这样做就没法正常启动。对于386指令集的CPU，这样的硬件接口约定和指导汇总就是《Intel 80386 程序员参考手册》。
+随着CPU功能的日益强大，这种硬件上的约定越来越多，其中很多还是特定历史原因造成的，或为了保持兼容性而设计的。这就导致我们需要了解的细节很多，而且不会很直观。保护模式就是实现操作系统过程中将会遇到的第一座大山，因为我们要借助CPU硬件能力实现。
+实模式&amp;amp;保护模式 我们前面访问内存是采用的[CS:IP]=CS&amp;lt;&amp;lt;4+IP的方式就是实模式下的内存寻址方式。Intel 8086 CPU只有16位，到了80386时代（286存在时间很短），CPU进入了32位，这时再也不能采用之前8086 16位CPU的寻址方式了。同时，Intel在硬件设计中加入了很多内存访问检查等保护机制。为了与之前的CPU特性区分，Intel将8086对应的16位运行模式称为实模式，将386及之后的x86CPU对应的32位运行模式称为保护模式。
+因为x86CPU是兼容之前8086CPU的，而且x86CPU启动后默认运行在实模式下。这也是为什么我们前面的代码放在最新的x86CPU上也可以运行的很happy的原因。
+保护模式寻址方式 保护模式下，CPU分段寻址方式与实模式不再相同。操作系统将内存进行分段，并将分段信息以数组的形式存储在内存中。数组的每一项对应一个分段信息，称为段描述符（Segment Descriptor），这个数组被称之为段描述符表。全局有一个总的段描述符表，称为全局段描述符表（GDT），当然，也有局部段描述符表（LDT）。
+可以想想，所有的内存寻址都需要通过GDT表进行，为了加速内存寻址，CPU提供了GDTR寄存器用于存储GDT对应的内存起始地址。同时，CPU提供了LGDT指令用于将GDT的内存起始地址加载到GDTR寄存器中。
+有了全局段描述符表GDT，段寄存器中的值就不再像实模式下那样，是段的起始地址了。而是用来筛选出GDT表中对应的某一项的，称之为段选择子（Segment selector）。
+这样，保护模式下的寻址方式大概如下：
+ 操作系统开发者在内存中按格式创建出GDT 操作系统启动后通过LGDT指令将内存中GDT的起始地址加载到GDTR中 寻址时，[CS:IP]中，段寄存器的值被CPU理解为段选择子，通过CPU某些运算检查，从GDTR中找出某一项段描述符 段描述符通过CPU某些运算检查，得到段基址，加上偏移地址，得到最终地址结果  怎么样，被这些概念绕晕了吧？ ^_^
+保护 也许你会好奇，第3步的段选择子不应该就是一个数组下标吗？第4步中的段描述符不就是一个内存起始地址吗？如果让我来设计CPU，我也会这么干。但历史上，从8086到80386发展过程中，也许发生了很多因为内存访问导致的bug，导致Intel决定，在CPU中设计一套内存访问控制，权限检查机制。
+因此，第3步段选择子除了数组下表的功能外，还存储了一些其它用于内存访问检查的信息，第4步段描述符除了存储内存起始地址，也存储了其它对应信息。这些信息在内存访问时，CPU会按照设计规则对齐进行检查，防止非法访问。这也就是保护模式中所谓的保护的意思。
+数据结构 段描述符  段选择子  GDTR寄存器  从实模式到保护模式 从实模式切换到保护模式，要进行如下3步操作，这些操作都是Intel CPU要求的。
+ 打开A20 Gate 加载GDT 将CR0的PE位置1  A20 Gate历史背景 8086下，CPU是16位的，地址总线20位，对应1M内存。当程序访问大于1M的地址时，系统会贴心的对地址按1M求模。这个技术称为wrap-around。
+到了保护模式，我们需要访问大于1M的内存，需要关闭wrap-around机制。而这个机制，因为历史原因，被键盘控制器上的第21根地址线（A20 Gate）控制。当打开A20 Gate时，才能突破1M的内存限制。
+创建并记载GDT 我们将内存空间划分为3个段。根据规定，第1个段必须为空。因为GDT中4项如下：
+;0描述符  dd 0x00000000 dd 0x00000000 ;1描述符(4GB代码段描述符)  dd 0x0000ffff dd 0x00cf9800 ;2描述符(4GB数据段描述符)  dd 0x0000ffff dd 0x00cf9200 ;3描述符(28Kb的视频段描述符)  dd 0x80000007 dd 0x00c0920b lgdt_value: dw $-gdt-1 ;高16位表示表的最后一个字节的偏移（表的大小-1）  dd gdt ;低32位表示起始位置（GDT的物理地址） 跳转至32位模式 protect_mode: ;进入32位 lgdt [lgdt_value] in al, 0x92 or al, 0000_0010b out 0x92, al cli mov eax, cr0 or eax, 1 mov cr0, eax jmp dword SELECTOR_CODE:main [bits 32] ;正式进入32位 main: 测试 64位视频段描述符，我们展开后如下图：</description>
+    </item>
+    
+    <item>
+      <title>确认软盘内容执行</title>
+      <link>https://axiomaster.github.io/post/2021-12-04-os-loader-addition/</link>
+      <pubDate>Sat, 04 Dec 2021 09:17:29 +0800</pubDate>
+      
+      <guid>https://axiomaster.github.io/post/2021-12-04-os-loader-addition/</guid>
+      <description>1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容  上一节我们根据内存地址推算，确定0xc400位置保存着我们存储在软盘中的sys.bin内容，并跳转到这个地址位置开始执行。但我们如何确认代码正确执行了呢？
+hlt指令 CPU负载 当前在sys.bin中只有一个死循环，如果程序中出现一个死循环，那会将所有空闲CPU资源占满，即运行死循环的CPU负载会飙到100%。在真实机器上这点可能不好确认，但如果在虚拟机中运行操作系统，我们可以很容易的在宿主机上观察到这点。
+ hlt指令 当前我们的OS还没有任何实质性业务，就这样空跑CPU比较浪费。hlt指令就是为了解决这个问题的，它可以使CPU进入暂停状态，不执行任何操作。
+我们修改sys.asm代码如下，在死循环中插入hlt指令。
+org 0xc400 fin: hlt jmp fin 再试试效果：
+bochs Debug 我们使用bochs虚拟机来运行我们写的OS，bochs提供了很多调试功能，可以看到cpu寄存器，内存等实时的数据。这样可以更直观的看到我们的OS运行情况。
+这里我们用到两个调试命令:
+ 打断点 b 0xc400 反编译内存内容 u /10  使用b在0xc400处设置断点，运行后断点命中：
+ 命中断点后，使用反编译指令u反编译0xc400开始的2行代码，可以看到，与我们写的内容基本一致。
+ 跳转指令不完全一致，但可以猜到是给予当前行$-3位置处。
+添加打印 我们也可以通过在sys.asm调用BIOS的打印中断int 10h来往屏幕写内容，确认代码是否执行成功。
+mov ax, 0xb800 mov gs, ax mov byte [gs:0xa0],&#39;s&#39; mov byte [gs:0xa2],&#39;y&#39; mov byte [gs:0xa4],&#39;s&#39;  可以看到，sys.asm中的打印代码成功输出了，因此可以确认sys.asm已经被正确执行了。</description>
+    </item>
+    
+    <item>
+      <title>读取并执行软盘内容</title>
+      <link>https://axiomaster.github.io/post/2021-11-22-os-loader/</link>
+      <pubDate>Mon, 22 Nov 2021 23:17:29 +0800</pubDate>
+      
+      <guid>https://axiomaster.github.io/post/2021-11-22-os-loader/</guid>
+      <description>1-1 从上电到引导扇区 1-2 启动补充说明  根据前面的内容我们知道，上电之后，根据CPU硬件电路设计，会自动将软盘第1扇区加载并执行。如果我们实现的OS只需要使用512个字节的代码，那就不需要主动读取软盘，只依靠CPU的硬件设计自动读取第1扇区就可以了。但这显然不可能。
+所以接下来，我们就依靠第1扇区这512个字节的代码量，读取更多的软盘内容。
+读取软盘内容至内存 我们将自己写的操作系统的代码编译成二进制文件后，存储在软盘上。然后利用第1个扇区的代码（开机后被BIOS自动加载至0x7c00处并开始执行），将软盘上的内容拷贝到内存中。拷贝完成后，再跳转到我们拷贝的目的内存地址，开始执行。
+软盘的结构  上图来自《30天自制操作系统》
+从上图中，我们可以看到，软盘有一圈有18个扇区Sector，从外向内分为80个柱面Cylinder，正反两面分别对应不同的磁头Heads来读写，这称之为CHS寻址模式，对应三部分的首字母。前面提到每个扇区可以存储512个字节，所以整个软盘共可以存储512*80*18*2=1440KB
+读取1个扇区 通过调用BIOS int 13中断，可以读取软盘数据，调用代码如下：
+MOV AX, 0x0820 ; 内存目的地址 0x08200  MOV ES, AX MOV CH, 0 ; 柱面0  MOV DH, 0 ; 磁头0  MOV CL, 2 ; 扇区2  MOV AH, 0x02 ; AH=0x02 : 读盘  MOV AL, 1 ; 1个扇区  MOV BX, 0 MOV DL, 0x00 ; A驱动器  INT 0x13 ; 调用BIOS int 13中断 读取10个柱面 如果上面的代码封装为一个函数，那读取整个软盘的逻辑用c语言描述大约如下：</description>
+    </item>
+    
+    <item>
+      <title>启动补充说明</title>
+      <link>https://axiomaster.github.io/post/2021-11-21-os-boot-addition/</link>
+      <pubDate>Sun, 21 Nov 2021 23:06:29 +0800</pubDate>
+      
+      <guid>https://axiomaster.github.io/post/2021-11-21-os-boot-addition/</guid>
+      <description>1-1 从上电到引导扇区 1-2 启动补充说明  清理屏幕 上一节我们通过在显存地址直接写入字符，打印除了“hello”。但因为显存内存储着BIOS启动过程中的一些显示信息，所以屏幕看着很乱。这一节我们在打印字符之前，先讲显存内的内容清空，再进行打印，这样看着清爽些。
+清空显存，当然有个笨办法，就是像打印“hello”一样，从0xb8000开始，向显存写入空白或不可见字符。但这个比较累。还有一个办法就是调用bios提供的int 10中断。
+int10中断 org 07c00h ; 告诉编译器程序加载到7c00处  ;----中断10h，卷屏，实现清屏 mov ax, 0x0600 mov bx, 0x0700 mov cx, 0 mov dx, 0x184f int 0x10 ;----直接往显存中写数据 mov ax, 0xb800 mov gs, ax mov byte [gs:0x00],&amp;#39;h&amp;#39; mov byte [gs:0x02],&amp;#39;e&amp;#39; mov byte [gs:0x04],&amp;#39;l&amp;#39; mov byte [gs:0x06],&amp;#39;l&amp;#39; mov byte [gs:0x08],&amp;#39;o&amp;#39; times 510-($-$$) db 0 ; 填充剩下的空间，使生成的二进制代码恰好为512字节 dw 0xaa55 ; 结束标志 以上代码中，我们先设置好参数，然后调用int 10中断，实现了清屏操作。效果如下：
+ 关于INT 10h的更多细节，可以看这里 wikipedia INT 10h。</description>
+    </item>
+    
+    <item>
+      <title>从上电到引导扇区</title>
+      <link>https://axiomaster.github.io/post/2021-11-17-os-boot/</link>
+      <pubDate>Wed, 17 Nov 2021 21:05:29 +0800</pubDate>
+      
+      <guid>https://axiomaster.github.io/post/2021-11-17-os-boot/</guid>
+      <description>1-1 从上电到引导扇区 1-2 启动补充说明  上电 我们知道，现在使用的计算机都是存储程序计算机（冯·诺依曼计算机）。计算机运行时一边从内存中读取指令，一边执行指令。进一步，可能也知道对于8086 CPU，段寄存器 CS、指令寄存器 IP共同构成的地址[CS:IP]指向当前执行的指令。
+但计算机上电开机之后，CS与IP中内容均为空，其它寄存器、内存的内容也为空。类似牛顿力学体系中的第一推动力一样，计算机上电后第一步该如何开始呢？牛顿给的答案是上帝提供了第一推动力。类似的，计算机启动第一步也只能通过体系外的某种方式解决。
+上电后执行软件前只能靠硬件。CPU的硬件设计为上电后默认将CS置为0xF000, IP置为0xFFF0，即上电后默认执行的第一条指令位于[CS:IP]=0xFFFF0处的。而这个地址处存储的是BIOS。
+BIOS 我们都知道计算机启动后会运行BIOS(basic input output system)，进一步可能也知道BIOS存储在ROM中，当然也知道相对RAM，ROM掉电后信息不会丢失。计算机上电后，硬件将指令地址置为BIOS所在的0xFFFF0处，开始执行BIOS内容。
+BIOS会先进行加电自检（POST, Power-On Self-Test），测试各项硬件是否正常等。
+加电自检小插曲 我前一阵（2019年底）组装了一台AMD的电脑（AMD, YES!!!）。不考虑打游戏，只用来沉迷于学习，所以预算里没有考虑显卡。等所有零件到了之后迫不及待装好之后上电，然后显示器黑屏，主板上有一个标有VGA的LED红灯常亮。 想了一小会立即意识到，现在Intel的CPU基本都带了核显（大多数人觉得很鸡肋），但AMD的CPU并没有。BIOS加电自检挂这里过不去了。 后来没办法，买了一张二手的GTX960作为亮机卡。  BIOS中断 BIOS还会在内存中起始的4K处0x00000-0x003FF建立中断向量表，以及位于0x0E05B-0x0FFFE处对应的中断服务程序。
+BIOS提供的中断服务可以查阅网上资料，参考资料中也提供了一份。我们会用到如下几个：
+   中断号 描述     int 10h 显示服务   int 13h 低级磁盘服务   int 19h 加电自检后载入操作系统    调用BIOS中断时，可能需要设置一些参数。比如int 10h中断用来在屏幕上显示信息，就需要指定显示的字符串内容，显示的颜色，位置等信息。中断信息如何设置，BIOS对此都有详细的说明。
+加载bootsec BIOS加电自检后使用int 19h中断将软盘中的第一个扇区（512 byte）中的内容复制到内存0x7C00h处，然后开始执行。在Linux中，第1个扇区的内容被称为bootsec。
+对于OS来说，我们可以认为计算机加电后直到将bootsec中的内容载入内存并开始执行，这些都是自动完成的，我们只需要关注从bootsec代码开始执行之后的部分就可以了。
+bootsec之后的事情我们也可以大致设想一下：依靠bootsec这512个字节的代码，我们会继续读取软盘上更多的代码，然后依赖读入的代码完成更多的工作，直至整个系统运行起来。
+一个简单的bootsec样例 CPU硬件设计师，BIOS系统开发等费了九牛二虎之力，终于在上电之后把OS自身最开始的512个字节的bootsec给运行起来了。作为“全村的希望”，当然是希望我们再接再励把OS运行起来的。但这里，我们不管这么多，先写一个hello world再说吧。
+org 07c00h ; 告诉编译器程序加载到7c00处 ;----直接往显存中写数据 mov ax, 0xb800 mov gs, ax mov byte [gs:0x00],&amp;#39;h&amp;#39; mov byte [gs:0x02],&amp;#39;e&amp;#39; mov byte [gs:0x04],&amp;#39;l&amp;#39; mov byte [gs:0x06],&amp;#39;l&amp;#39; mov byte [gs:0x08],&amp;#39;o&amp;#39; times 510-($-$$) db 0 ; 填充剩下的空间，使生成的二进制代码恰好为512字节 dw 0xaa55 ; 结束标志  上图中，0xb800是显存开始的地址。显存中，每2个字节对应显示字符，第1个字节为字符对应ASCII码，第2个字节为字符对应的颜色。屏幕每行有80个字符，共24行。这里，我们我们只修改了屏幕左上角开始的前5个字符对应的ASCII码，所以在左上角显示出了hello5个字符。</description>
+    </item>
+    
     <item>
       <title>GCC Inline ASM</title>
       <link>https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/</link>
@@ -41,8 +156,8 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
       
       <guid>https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/</guid>
       <description>六步法  import train, test 网络结构  model=tf.keras.models.Sequential # 搭建网络结构 class MyModel(Model) model = MyModel   model.compile # 配置训练优化器，损失函数 model.fit # 输入特征，batch, epoch model.summary  网络结构 拉直层 tf.keras.layers.Flatten()
-全连接层 tf.keras.layers.Dense(神经元个数, activation=&amp;#34;激活函数&amp;#34;, kernel_regularizer=&amp;#34;正则化&amp;#34;) 卷积层 tf.keras.layers.Conv2D(filters=卷积核个数, kernel_size=卷积核尺寸, strides=卷积步长, padding=&amp;#34;valid&amp;#34; or &amp;#34;same&amp;#34;) LSTM层 tf.keras.layers.LSTM()
-训练方法 model.compile(optimizer=优化器, loss=损失函数, metrics=[&amp;#34;准确率&amp;#34;]) Optimizer  sgd adagrad adadelta adam  loss Metrics 训练过程 model.fit(训练集的输入特征, 训练集的标签, batch_size=, epochs=, validation_data=(测试集的输入特征, 测试集的标签), validation_split=从训练集划分多少比例分给测试集, validation_freq=多少次epoch测试一次) </description>
+全连接层 tf.keras.layers.Dense(神经元个数, activation=&amp;#34;激活函数&amp;#34;, kernel_regularizer=&amp;#34;正则化&amp;#34;)卷积层 tf.keras.layers.Conv2D(filters=卷积核个数, kernel_size=卷积核尺寸, strides=卷积步长, padding=&amp;#34;valid&amp;#34; or &amp;#34;same&amp;#34;)LSTM层 tf.keras.layers.LSTM()
+训练方法 model.compile(optimizer=优化器, loss=损失函数, metrics=[&amp;#34;准确率&amp;#34;])Optimizer  sgd adagrad adadelta adam  loss Metrics 训练过程 model.fit(训练集的输入特征, 训练集的标签, batch_size=, epochs=, validation_data=(测试集的输入特征, 测试集的标签), validation_split=从训练集划分多少比例分给测试集, validation_freq=多少次epoch测试一次)</description>
     </item>
     
     <item>
@@ -51,7 +166,7 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
       <pubDate>Thu, 03 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://axiomaster.github.io/post/2020-09-07-tensorflow2_3/</guid>
-      <description>CNN  输入特征图的深度（channel数），决定了当前层卷积核的深度； 当前层卷积核的个数，决定了当前层输出特征图的深度；  tf.keras.layers.Conv2D( kernel_size=卷积核尺寸, strides=滑动补偿, padding=&amp;#34;same&amp;#34; or &amp;#34;valid&amp;#34;, activation=&amp;#34;relu&amp;#34; or &amp;#34;sigmoid&amp;#34; or &amp;#34;tanh&amp;#34; or &amp;#34;softmax&amp;#34;, input_shape=(高, 宽, 通道数) ) 批标准化（Batch Normalization, BN） 池化 池化用于减少特征数据量，最大值池化可提取图片纹理，均值池化可保留背景特征。
+      <description>CNN  输入特征图的深度（channel数），决定了当前层卷积核的深度； 当前层卷积核的个数，决定了当前层输出特征图的深度；  tf.keras.layers.Conv2D(kernel_size=卷积核尺寸,strides=滑动补偿,padding=&amp;#34;same&amp;#34; or &amp;#34;valid&amp;#34;,activation=&amp;#34;relu&amp;#34; or &amp;#34;sigmoid&amp;#34; or &amp;#34;tanh&amp;#34; or &amp;#34;softmax&amp;#34;,input_shape=(高, 宽, 通道数))批标准化（Batch Normalization, BN） 池化 池化用于减少特征数据量，最大值池化可提取图片纹理，均值池化可保留背景特征。
 舍弃 Dropout 训练时，一定概率随机舍弃神经元。网络使用时，恢复神经元。
 卷积神经网络结构 卷积：特征提取器，CBAPD(Convolutinoal, BN, Activation, Pooling, Dropout)</description>
     </item>
@@ -224,7 +339,7 @@ lism@lism-u18:~/android/aosp$ lunch You&amp;#39;re building on Linux Lunch menu.
       <guid>https://axiomaster.github.io/post/2019-12-31-makeup-computer/</guid>
       <description>双十一买了一个34&#39;的21:9超宽屏显示器，回来之后接上笔记本，越来越觉得笔记本有点儿带不动。正好最近学习android需要编译aosp， 然后就研究了一下攒机，预算3000，组一台linux编译机。于是趁着双十二买了一堆零件自己组了一台电脑。
 配置单 先说说最终的配置：
-   配件 型号 价格     CPU ryzen 3700x    主板 MSI B450M mortar max 主板+CPU套装 ￥2514   内存 海盗船 DDR4 3600MHz 16G x 2 ￥1038   固态硬盘 阿斯加特 M.2 NVMe 500G ￥343   显卡 二手铭暄 GTX 960 2G ￥399   电源 酷冷至尊 MWE 550 铜牌 ￥312   机箱 先马 征途 中塔机箱 送5把RGB机箱风扇 ￥164   显示器 小米 34&#39; 曲面显示器 ￥1999   无线网卡 腾达U10 USB无线网卡 ￥59   dp线 绿联 DP 1.</description>
+   配件 型号 价格     CPU ryzen 3700x    主板 MSI B450M mortar max 主板+CPU套装 ￥2514   内存 海盗船 DDR4 3600MHz 16G x 2 ￥1038   固态硬盘 阿斯加特 M.2 NVMe 500G ￥343   显卡 二手铭暄 GTX 960 2G ￥399   电源 酷冷至尊 MWE 550 铜牌 ￥312   机箱 先马 征途 中塔机箱 送5把RGB机箱风扇 ￥164   显示器 小米 34&amp;rsquo; 曲面显示器 ￥1999   无线网卡 腾达U10 USB无线网卡 ￥59   dp线 绿联 DP 1.</description>
     </item>
     
     <item>
@@ -297,31 +412,6 @@ docker run -d -p 5000:5000 --name registry registry:2 2 保存registry.tar并运
   使用docker tag为镜像打上私有镜像地址的标签，比如192.168.1.11:5000/ubuntu:least
   使用docker push将镜像推到镜像仓库
   使用私有镜像地址 修改daemon.</description>
-    </item>
-    
-    <item>
-      <title>VS code remote</title>
-      <link>https://axiomaster.github.io/post/2019-06-23-vscode-remote/</link>
-      <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://axiomaster.github.io/post/2019-06-23-vscode-remote/</guid>
-      <description>build 2019 微软发布了wsl2和vscode remote插件。前者使用了真正的linux内核，解决了wsl的很多问题，据说可以直接运行docker。wsl2在20H1的快速预览版18917已经可以使用。VS code remote是vscode的一组插件，包括remote ssh， remote wsl和remote container，VS code升级到1.35.1之后就可以使用了。今天我们尝试一下VS code remote的配置。
-首先在VS code的Extensions中安装所有的remote插件。然后按照下方官方说明进行安装配置，这里就不多说了。
-VS Code Remote Development
-下面主要说一下踩到的坑。
-remote ssh &amp;amp; remote wsl remote插件机制都类似，安装时会在remote虚拟机/WSl/容器内安装vscode server，由server端实际运行，本地VS code只作为界面显示。
-1 remote ssh 免密登录
-官方配置指导为将本地ssh公钥加入服务端信任列表中，ssh登录时可以免密登录。这里遇到的一个坑是，所有配置都正确，但ssh时总是不成功。后来发现使用的服务器之前已经配置过多次ssh免密登录了，被限制了。换了一个vm就成功了。这应该是ssh的一个限制，网上找了一个解决方法，但实测没有生效，这里就不说了。
-还有一种解决方法是配置&amp;quot;remote.SSH.showLoginTerminal&amp;quot;: true使用密码登录。但这样需要多次账号密码，略麻烦。
-2 下载vs code server
-第一次打开remote ssh时连接的服务端需要下载vs code server， 所以需要使用的vm能够访问外网。在某些网络环境下可能需要使用vpn。
-3 证书认证失败
-wget下载使用https地址。使用vpn时，有些vpn会拦截替换证书。但是vm本身没有添加私有ca导致无法认证ms的证书。这里有以下3个解决方法：
- 找到下载脚本，在wget后面添加--no-check-certificate  remote wsl我就是这样子解决的，但remote ssh没有找到对应的脚本，无法修改。
- 将vpn的私有ca添加到os中  使用浏览器访问https地址，可以拿到ca证书。将ca证书导出，ubuntu需要导成pem(base64)格式。导出的文件后缀名为cer, 直接手动修改为crt后缀。然后把证书放入/usr/local/share/ca-certificates/目录下，并执行如下命令:
-sudo update-ca-certificates  修改wget全局配置  在~/.wgetrc中添加如下配置，修改wget全局配置，不校验对端证书。当然需要自己把握风险。
-check-certificate=off remote container 我是win10系统，安装了docker-for-windows。使用的是官方给的vscode-remote-try-cpp例子。
-remote container会根据Dockerfile去docker.io下载debian基础镜像，然后apt安装build-essential等编译工具。</description>
     </item>
     
     <item>
