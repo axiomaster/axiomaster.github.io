@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>工具 on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.github.io/tags/%E5%B7%A5%E5%85%B7/</link>
+    <link>https://axiomaster.gitee.io/tags/%E5%B7%A5%E5%85%B7/</link>
     <description>Recent content in 工具 on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="https://axiomaster.github.io/tags/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://axiomaster.gitee.io/tags/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>go get 网络问题失败</title>
-      <link>https://axiomaster.github.io/post/2018-05-06-go-get-xxx-failed/</link>
+      <link>https://axiomaster.gitee.io/post/2018-05-06-go-get-xxx-failed/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2018-05-06-go-get-xxx-failed/</guid>
+      <guid>https://axiomaster.gitee.io/post/2018-05-06-go-get-xxx-failed/</guid>
       <description>go get 网络问题失败 使用go get golang.org/x获取包时，因为GWF问题导致下载失败。可以通过以下方法解决：
 Comments lism: https://coolshell.cn/articles/9070.html
 Bugsturb: Generally I don&amp;rsquo;t read article on blogs, but I wish to say that this write-up very forced me to try and do so! Your writing style has been amazed me. Thanks, very nice post.
@@ -24,28 +24,28 @@ Free auto approve list 7-27-2018: I added a new list. As you&amp;rsquo;ll see it
     
     <item>
       <title>TLS协议抓包分析</title>
-      <link>https://axiomaster.github.io/post/2018-03-04-tls-tcpdump-analyses/</link>
+      <link>https://axiomaster.gitee.io/post/2018-03-04-tls-tcpdump-analyses/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2018-03-04-tls-tcpdump-analyses/</guid>
+      <guid>https://axiomaster.gitee.io/post/2018-03-04-tls-tcpdump-analyses/</guid>
       <description>TLS协议抓包分析 </description>
     </item>
     
     <item>
       <title>使用patch更新源代码</title>
-      <link>https://axiomaster.github.io/post/2018-03-04-update-code-with-patch/</link>
+      <link>https://axiomaster.gitee.io/post/2018-03-04-update-code-with-patch/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2018-03-04-update-code-with-patch/</guid>
+      <guid>https://axiomaster.gitee.io/post/2018-03-04-update-code-with-patch/</guid>
       <description>使用patch更新源代码 使用patch更新源代码</description>
     </item>
     
     <item>
       <title>好玩的linux小应用</title>
-      <link>https://axiomaster.github.io/post/2018-03-10-funny-linux-app/</link>
+      <link>https://axiomaster.gitee.io/post/2018-03-10-funny-linux-app/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2018-03-10-funny-linux-app/</guid>
+      <guid>https://axiomaster.gitee.io/post/2018-03-10-funny-linux-app/</guid>
       <description>好玩的linux小应用 收集一些linux下好玩的应用 </description>
     </item>
     

@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>nginx on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.github.io/tags/nginx/</link>
+    <link>https://axiomaster.gitee.io/tags/nginx/</link>
     <description>Recent content in nginx on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="https://axiomaster.github.io/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://axiomaster.gitee.io/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>nginx中proxy_next_upstream问题</title>
-      <link>https://axiomaster.github.io/post/2018-06-04-nginx-proxy_next_upstream/</link>
+      <link>https://axiomaster.gitee.io/post/2018-06-04-nginx-proxy_next_upstream/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2018-06-04-nginx-proxy_next_upstream/</guid>
+      <guid>https://axiomaster.gitee.io/post/2018-06-04-nginx-proxy_next_upstream/</guid>
       <description>nginx中proxy_next_upstream问题 nginx提供了proxy_next_upstream命令，当转发给一个后端失败时，配置proxy_next_upstream可以转发给下一个后端。下面是完整的描述。
 Comments axiomaster_lism: 简直无力吐槽这个markdown编辑器出来的效果
 Auwneviosy: online gambling casino gsn casino games slots for real money | https://casinorealmoney2018.us.org/ - casino online
@@ -27,29 +27,29 @@ Quick Loan: loans online payday loans no faxing loans loan for bad credit</descr
     
     <item>
       <title>Nginx监听著名端口</title>
-      <link>https://axiomaster.github.io/post/2018-03-04-nginxlisten-famous-port/</link>
+      <link>https://axiomaster.gitee.io/post/2018-03-04-nginxlisten-famous-port/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2018-03-04-nginxlisten-famous-port/</guid>
+      <guid>https://axiomaster.gitee.io/post/2018-03-04-nginxlisten-famous-port/</guid>
       <description>Nginx监听著名端口 Nginx监听著名端口</description>
     </item>
     
     <item>
       <title>Nginx配置CRL</title>
-      <link>https://axiomaster.github.io/post/2018-03-13-nginx-crl/</link>
+      <link>https://axiomaster.gitee.io/post/2018-03-13-nginx-crl/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2018-03-13-nginx-crl/</guid>
+      <guid>https://axiomaster.gitee.io/post/2018-03-13-nginx-crl/</guid>
       <description>Nginx配置CRL Nginx配置crl时，如果使用多级CA构成的证书链，则crl中必须包含每一级CA对应的crl文件，否则nginx使用crl校验会失败。
 Comments John: Hey webmaster</description>
     </item>
     
     <item>
       <title>修改nginx代码支持从文件读取密文密码</title>
-      <link>https://axiomaster.github.io/post/2018-04-17-ngx-read-pwd-from-file/</link>
+      <link>https://axiomaster.gitee.io/post/2018-04-17-ngx-read-pwd-from-file/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2018-04-17-ngx-read-pwd-from-file/</guid>
+      <guid>https://axiomaster.gitee.io/post/2018-04-17-ngx-read-pwd-from-file/</guid>
       <description>修改nginx代码支持从文件读取密文密码 主要修改的是event模块下的ngx_event_openssl.c文件。将原来的密码字符串当做文件名来处理，然后使用nginx的读取文件功能，读出密码。</description>
     </item>
     

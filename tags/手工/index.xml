@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>手工 on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.github.io/tags/%E6%89%8B%E5%B7%A5/</link>
+    <link>https://axiomaster.gitee.io/tags/%E6%89%8B%E5%B7%A5/</link>
     <description>Recent content in 手工 on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 31 Dec 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://axiomaster.github.io/tags/%E6%89%8B%E5%B7%A5/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://axiomaster.gitee.io/tags/%E6%89%8B%E5%B7%A5/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>自己动手组装台式机</title>
-      <link>https://axiomaster.github.io/post/2019-12-31-makeup-computer/</link>
+      <link>https://axiomaster.gitee.io/post/2019-12-31-makeup-computer/</link>
       <pubDate>Tue, 31 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2019-12-31-makeup-computer/</guid>
+      <guid>https://axiomaster.gitee.io/post/2019-12-31-makeup-computer/</guid>
       <description>双十一买了一个34&#39;的21:9超宽屏显示器，回来之后接上笔记本，越来越觉得笔记本有点儿带不动。正好最近学习android需要编译aosp， 然后就研究了一下攒机，预算3000，组一台linux编译机。于是趁着双十二买了一堆零件自己组了一台电脑。
 配置单 先说说最终的配置：
    配件 型号 价格     CPU ryzen 3700x    主板 MSI B450M mortar max 主板+CPU套装 ￥2514   内存 海盗船 DDR4 3600MHz 16G x 2 ￥1038   固态硬盘 阿斯加特 M.2 NVMe 500G ￥343   显卡 二手铭暄 GTX 960 2G ￥399   电源 酷冷至尊 MWE 550 铜牌 ￥312   机箱 先马 征途 中塔机箱 送5把RGB机箱风扇 ￥164   显示器 小米 34&amp;rsquo; 曲面显示器 ￥1999   无线网卡 腾达U10 USB无线网卡 ￥59   dp线 绿联 DP 1.</description>

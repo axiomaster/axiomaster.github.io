@@ -2,354 +2,354 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.github.io/tags/</link>
+    <link>https://axiomaster.gitee.io/tags/</link>
     <description>Recent content in Tags on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 26 Dec 2021 14:15:29 +0800</lastBuildDate>
     
-	<atom:link href="https://axiomaster.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://axiomaster.gitee.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>OS</title>
-      <link>https://axiomaster.github.io/tags/os/</link>
+      <link>https://axiomaster.gitee.io/tags/os/</link>
       <pubDate>Sun, 26 Dec 2021 14:15:29 +0800</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/os/</guid>
+      <guid>https://axiomaster.gitee.io/tags/os/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ML</title>
-      <link>https://axiomaster.github.io/tags/ml/</link>
+      <link>https://axiomaster.gitee.io/tags/ml/</link>
       <pubDate>Thu, 03 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/ml/</guid>
+      <guid>https://axiomaster.gitee.io/tags/ml/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Tensorflow</title>
-      <link>https://axiomaster.github.io/tags/tensorflow/</link>
+      <link>https://axiomaster.gitee.io/tags/tensorflow/</link>
       <pubDate>Thu, 03 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/tensorflow/</guid>
+      <guid>https://axiomaster.gitee.io/tags/tensorflow/</guid>
       <description></description>
     </item>
     
     <item>
       <title>bazel</title>
-      <link>https://axiomaster.github.io/tags/bazel/</link>
+      <link>https://axiomaster.gitee.io/tags/bazel/</link>
       <pubDate>Sun, 16 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/bazel/</guid>
+      <guid>https://axiomaster.gitee.io/tags/bazel/</guid>
       <description></description>
     </item>
     
     <item>
       <title>tool</title>
-      <link>https://axiomaster.github.io/tags/tool/</link>
+      <link>https://axiomaster.gitee.io/tags/tool/</link>
       <pubDate>Sun, 16 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/tool/</guid>
+      <guid>https://axiomaster.gitee.io/tags/tool/</guid>
       <description></description>
     </item>
     
     <item>
       <title>android</title>
-      <link>https://axiomaster.github.io/tags/android/</link>
+      <link>https://axiomaster.gitee.io/tags/android/</link>
       <pubDate>Sat, 01 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/android/</guid>
+      <guid>https://axiomaster.gitee.io/tags/android/</guid>
       <description></description>
     </item>
     
     <item>
       <title>debug</title>
-      <link>https://axiomaster.github.io/tags/debug/</link>
+      <link>https://axiomaster.gitee.io/tags/debug/</link>
       <pubDate>Sat, 01 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/debug/</guid>
+      <guid>https://axiomaster.gitee.io/tags/debug/</guid>
       <description></description>
     </item>
     
     <item>
       <title>activity</title>
-      <link>https://axiomaster.github.io/tags/activity/</link>
+      <link>https://axiomaster.gitee.io/tags/activity/</link>
       <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/activity/</guid>
+      <guid>https://axiomaster.gitee.io/tags/activity/</guid>
       <description></description>
     </item>
     
     <item>
       <title>aosp</title>
-      <link>https://axiomaster.github.io/tags/aosp/</link>
+      <link>https://axiomaster.gitee.io/tags/aosp/</link>
       <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/aosp/</guid>
+      <guid>https://axiomaster.gitee.io/tags/aosp/</guid>
       <description></description>
     </item>
     
     <item>
       <title>view</title>
-      <link>https://axiomaster.github.io/tags/view/</link>
+      <link>https://axiomaster.gitee.io/tags/view/</link>
       <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/view/</guid>
+      <guid>https://axiomaster.gitee.io/tags/view/</guid>
       <description></description>
     </item>
     
     <item>
       <title>window</title>
-      <link>https://axiomaster.github.io/tags/window/</link>
+      <link>https://axiomaster.gitee.io/tags/window/</link>
       <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/window/</guid>
+      <guid>https://axiomaster.gitee.io/tags/window/</guid>
       <description></description>
     </item>
     
     <item>
       <title>zygote</title>
-      <link>https://axiomaster.github.io/tags/zygote/</link>
+      <link>https://axiomaster.gitee.io/tags/zygote/</link>
       <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/zygote/</guid>
+      <guid>https://axiomaster.gitee.io/tags/zygote/</guid>
       <description></description>
     </item>
     
     <item>
       <title>手工</title>
-      <link>https://axiomaster.github.io/tags/%E6%89%8B%E5%B7%A5/</link>
+      <link>https://axiomaster.gitee.io/tags/%E6%89%8B%E5%B7%A5/</link>
       <pubDate>Tue, 31 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/%E6%89%8B%E5%B7%A5/</guid>
+      <guid>https://axiomaster.gitee.io/tags/%E6%89%8B%E5%B7%A5/</guid>
       <description></description>
     </item>
     
     <item>
       <title>debugger</title>
-      <link>https://axiomaster.github.io/tags/debugger/</link>
+      <link>https://axiomaster.gitee.io/tags/debugger/</link>
       <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/debugger/</guid>
+      <guid>https://axiomaster.gitee.io/tags/debugger/</guid>
       <description></description>
     </item>
     
     <item>
       <title>docker</title>
-      <link>https://axiomaster.github.io/tags/docker/</link>
+      <link>https://axiomaster.gitee.io/tags/docker/</link>
       <pubDate>Tue, 30 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/docker/</guid>
+      <guid>https://axiomaster.gitee.io/tags/docker/</guid>
       <description></description>
     </item>
     
     <item>
       <title>吐槽</title>
-      <link>https://axiomaster.github.io/tags/%E5%90%90%E6%A7%BD/</link>
+      <link>https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/</link>
       <pubDate>Sat, 15 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/%E5%90%90%E6%A7%BD/</guid>
+      <guid>https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/</guid>
       <description></description>
     </item>
     
     <item>
       <title>java</title>
-      <link>https://axiomaster.github.io/tags/java/</link>
+      <link>https://axiomaster.gitee.io/tags/java/</link>
       <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/java/</guid>
+      <guid>https://axiomaster.gitee.io/tags/java/</guid>
       <description></description>
     </item>
     
     <item>
       <title>并发</title>
-      <link>https://axiomaster.github.io/tags/%E5%B9%B6%E5%8F%91/</link>
+      <link>https://axiomaster.gitee.io/tags/%E5%B9%B6%E5%8F%91/</link>
       <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/%E5%B9%B6%E5%8F%91/</guid>
+      <guid>https://axiomaster.gitee.io/tags/%E5%B9%B6%E5%8F%91/</guid>
       <description></description>
     </item>
     
     <item>
       <title>bug</title>
-      <link>https://axiomaster.github.io/tags/bug/</link>
+      <link>https://axiomaster.gitee.io/tags/bug/</link>
       <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/bug/</guid>
+      <guid>https://axiomaster.gitee.io/tags/bug/</guid>
       <description></description>
     </item>
     
     <item>
       <title>golang</title>
-      <link>https://axiomaster.github.io/tags/golang/</link>
+      <link>https://axiomaster.gitee.io/tags/golang/</link>
       <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/golang/</guid>
+      <guid>https://axiomaster.gitee.io/tags/golang/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Gradle</title>
-      <link>https://axiomaster.github.io/tags/gradle/</link>
+      <link>https://axiomaster.gitee.io/tags/gradle/</link>
       <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/gradle/</guid>
+      <guid>https://axiomaster.gitee.io/tags/gradle/</guid>
       <description></description>
     </item>
     
     <item>
       <title>IDEA插件</title>
-      <link>https://axiomaster.github.io/tags/idea%E6%8F%92%E4%BB%B6/</link>
+      <link>https://axiomaster.gitee.io/tags/idea%E6%8F%92%E4%BB%B6/</link>
       <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/idea%E6%8F%92%E4%BB%B6/</guid>
+      <guid>https://axiomaster.gitee.io/tags/idea%E6%8F%92%E4%BB%B6/</guid>
       <description></description>
     </item>
     
     <item>
       <title>扯淡</title>
-      <link>https://axiomaster.github.io/tags/%E6%89%AF%E6%B7%A1/</link>
+      <link>https://axiomaster.gitee.io/tags/%E6%89%AF%E6%B7%A1/</link>
       <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/%E6%89%AF%E6%B7%A1/</guid>
+      <guid>https://axiomaster.gitee.io/tags/%E6%89%AF%E6%B7%A1/</guid>
       <description></description>
     </item>
     
     <item>
       <title>神奇的bug</title>
-      <link>https://axiomaster.github.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/</link>
+      <link>https://axiomaster.gitee.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/</link>
       <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/</guid>
+      <guid>https://axiomaster.gitee.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/</guid>
       <description></description>
     </item>
     
     <item>
       <title>设计模式</title>
-      <link>https://axiomaster.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link>
+      <link>https://axiomaster.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</guid>
+      <guid>https://axiomaster.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</guid>
       <description></description>
     </item>
     
     <item>
       <title>链接</title>
-      <link>https://axiomaster.github.io/tags/%E9%93%BE%E6%8E%A5/</link>
+      <link>https://axiomaster.gitee.io/tags/%E9%93%BE%E6%8E%A5/</link>
       <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/%E9%93%BE%E6%8E%A5/</guid>
+      <guid>https://axiomaster.gitee.io/tags/%E9%93%BE%E6%8E%A5/</guid>
       <description></description>
     </item>
     
     <item>
       <title>日常</title>
-      <link>https://axiomaster.github.io/tags/%E6%97%A5%E5%B8%B8/</link>
+      <link>https://axiomaster.gitee.io/tags/%E6%97%A5%E5%B8%B8/</link>
       <pubDate>Sat, 05 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/%E6%97%A5%E5%B8%B8/</guid>
+      <guid>https://axiomaster.gitee.io/tags/%E6%97%A5%E5%B8%B8/</guid>
       <description></description>
     </item>
     
     <item>
       <title>生活</title>
-      <link>https://axiomaster.github.io/tags/%E7%94%9F%E6%B4%BB/</link>
+      <link>https://axiomaster.gitee.io/tags/%E7%94%9F%E6%B4%BB/</link>
       <pubDate>Sat, 05 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/%E7%94%9F%E6%B4%BB/</guid>
+      <guid>https://axiomaster.gitee.io/tags/%E7%94%9F%E6%B4%BB/</guid>
       <description></description>
     </item>
     
     <item>
       <title>algorithm</title>
-      <link>https://axiomaster.github.io/tags/algorithm/</link>
+      <link>https://axiomaster.gitee.io/tags/algorithm/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/algorithm/</guid>
+      <guid>https://axiomaster.gitee.io/tags/algorithm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>I/O</title>
-      <link>https://axiomaster.github.io/tags/i/o/</link>
+      <link>https://axiomaster.gitee.io/tags/i/o/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/i/o/</guid>
+      <guid>https://axiomaster.gitee.io/tags/i/o/</guid>
       <description></description>
     </item>
     
     <item>
       <title>linux</title>
-      <link>https://axiomaster.github.io/tags/linux/</link>
+      <link>https://axiomaster.gitee.io/tags/linux/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/linux/</guid>
+      <guid>https://axiomaster.gitee.io/tags/linux/</guid>
       <description></description>
     </item>
     
     <item>
       <title>net</title>
-      <link>https://axiomaster.github.io/tags/net/</link>
+      <link>https://axiomaster.gitee.io/tags/net/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/net/</guid>
+      <guid>https://axiomaster.gitee.io/tags/net/</guid>
       <description></description>
     </item>
     
     <item>
       <title>nginx</title>
-      <link>https://axiomaster.github.io/tags/nginx/</link>
+      <link>https://axiomaster.gitee.io/tags/nginx/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/nginx/</guid>
+      <guid>https://axiomaster.gitee.io/tags/nginx/</guid>
       <description></description>
     </item>
     
     <item>
       <title>zookeeper</title>
-      <link>https://axiomaster.github.io/tags/zookeeper/</link>
+      <link>https://axiomaster.gitee.io/tags/zookeeper/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/zookeeper/</guid>
+      <guid>https://axiomaster.gitee.io/tags/zookeeper/</guid>
       <description></description>
     </item>
     
     <item>
       <title>内存</title>
-      <link>https://axiomaster.github.io/tags/%E5%86%85%E5%AD%98/</link>
+      <link>https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/%E5%86%85%E5%AD%98/</guid>
+      <guid>https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98/</guid>
       <description></description>
     </item>
     
     <item>
       <title>内存管理</title>
-      <link>https://axiomaster.github.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link>
+      <link>https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</guid>
+      <guid>https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</guid>
       <description></description>
     </item>
     
     <item>
       <title>工具</title>
-      <link>https://axiomaster.github.io/tags/%E5%B7%A5%E5%85%B7/</link>
+      <link>https://axiomaster.gitee.io/tags/%E5%B7%A5%E5%85%B7/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/%E5%B7%A5%E5%85%B7/</guid>
+      <guid>https://axiomaster.gitee.io/tags/%E5%B7%A5%E5%85%B7/</guid>
       <description></description>
     </item>
     
     <item>
       <title>证书</title>
-      <link>https://axiomaster.github.io/tags/%E8%AF%81%E4%B9%A6/</link>
+      <link>https://axiomaster.gitee.io/tags/%E8%AF%81%E4%B9%A6/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/tags/%E8%AF%81%E4%B9%A6/</guid>
+      <guid>https://axiomaster.gitee.io/tags/%E8%AF%81%E4%B9%A6/</guid>
       <description></description>
     </item>
     

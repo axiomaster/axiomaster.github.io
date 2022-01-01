@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>algorithm on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.github.io/tags/algorithm/</link>
+    <link>https://axiomaster.gitee.io/tags/algorithm/</link>
     <description>Recent content in algorithm on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="https://axiomaster.github.io/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://axiomaster.gitee.io/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>n-sum问题</title>
-      <link>https://axiomaster.github.io/post/2018-03-11-n-sum/</link>
+      <link>https://axiomaster.gitee.io/post/2018-03-11-n-sum/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2018-03-11-n-sum/</guid>
+      <guid>https://axiomaster.gitee.io/post/2018-03-11-n-sum/</guid>
       <description>n-sum问题 n-sum问题是指在一列数nums中，对给定target，寻找n个数相加之和为target。n-sum问题最简单的形式就是2-sum问题。</description>
     </item>
     

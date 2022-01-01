@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>android on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.github.io/tags/android/</link>
+    <link>https://axiomaster.gitee.io/tags/android/</link>
     <description>Recent content in android on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 01 Feb 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://axiomaster.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://axiomaster.gitee.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>x86寄存器汇总</title>
-      <link>https://axiomaster.github.io/post/2020-02-01-x86-register/</link>
+      <link>https://axiomaster.gitee.io/post/2020-02-01-x86-register/</link>
       <pubDate>Sat, 01 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2020-02-01-x86-register/</guid>
+      <guid>https://axiomaster.gitee.io/post/2020-02-01-x86-register/</guid>
       <description>x86寄存器分类 8个通用寄存器 均为32位。
   EAX
 累加寄存器(Accumulator Register)。
@@ -48,46 +48,46 @@
     
     <item>
       <title>系统启动分析(一)</title>
-      <link>https://axiomaster.github.io/post/2020-01-27-post-to-bootsec/</link>
+      <link>https://axiomaster.gitee.io/post/2020-01-27-post-to-bootsec/</link>
       <pubDate>Mon, 27 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2020-01-27-post-to-bootsec/</guid>
+      <guid>https://axiomaster.gitee.io/post/2020-01-27-post-to-bootsec/</guid>
       <description>dumpsys dumpsys input 获取linux事件 getevent -lr </description>
     </item>
     
     <item>
       <title>Android调试</title>
-      <link>https://axiomaster.github.io/post/2020-01-10-android-debug/</link>
+      <link>https://axiomaster.gitee.io/post/2020-01-10-android-debug/</link>
       <pubDate>Fri, 10 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2020-01-10-android-debug/</guid>
+      <guid>https://axiomaster.gitee.io/post/2020-01-10-android-debug/</guid>
       <description>dumpsys dumpsys input 获取linux事件 getevent -lr </description>
     </item>
     
     <item>
       <title>activity、window、view和surface</title>
-      <link>https://axiomaster.github.io/post/2020-01-09-activity/</link>
+      <link>https://axiomaster.gitee.io/post/2020-01-09-activity/</link>
       <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2020-01-09-activity/</guid>
+      <guid>https://axiomaster.gitee.io/post/2020-01-09-activity/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Android启动分析</title>
-      <link>https://axiomaster.github.io/post/2020-01-07-zygote/</link>
+      <link>https://axiomaster.gitee.io/post/2020-01-07-zygote/</link>
       <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2020-01-07-zygote/</guid>
+      <guid>https://axiomaster.gitee.io/post/2020-01-07-zygote/</guid>
       <description></description>
     </item>
     
     <item>
       <title>aosp源码编译与阅读</title>
-      <link>https://axiomaster.github.io/post/2020-01-07-aosp/</link>
+      <link>https://axiomaster.gitee.io/post/2020-01-07-aosp/</link>
       <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2020-01-07-aosp/</guid>
+      <guid>https://axiomaster.gitee.io/post/2020-01-07-aosp/</guid>
       <description>下载源码 国内从google下载aosp源码需要翻墙，很不方便。可以使用清华大学开源软件镜像站提供的镜像地址进行下载,同步代码.
 下载,检出代码按照清华镜像站的地址说明一步步操作就可以了.
 可能的错误  初始化包比较大,下载后记得进行md5校验. 使用迅雷中断后续传,发现md5值不匹配,推荐使用uget之类的工具在晚上下载,一次成功.  aosp编译 官方指导
@@ -99,19 +99,19 @@ lism@lism-u18:~/android/aosp$ lunch You&amp;#39;re building on Linux Lunch menu.
     
     <item>
       <title>Handler和Looper</title>
-      <link>https://axiomaster.github.io/post/2020-01-05-handler/</link>
+      <link>https://axiomaster.gitee.io/post/2020-01-05-handler/</link>
       <pubDate>Sun, 05 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2020-01-05-handler/</guid>
+      <guid>https://axiomaster.gitee.io/post/2020-01-05-handler/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Handler和Looper</title>
-      <link>https://axiomaster.github.io/post/2020-01-05-looper/</link>
+      <link>https://axiomaster.gitee.io/post/2020-01-05-looper/</link>
       <pubDate>Sun, 05 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2020-01-05-looper/</guid>
+      <guid>https://axiomaster.gitee.io/post/2020-01-05-looper/</guid>
       <description></description>
     </item>
     

@@ -16,12 +16,12 @@
     <meta name="description" content="Posts">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://axiomaster.github.io/post/">
+    <meta property="og:url" content="https://axiomaster.gitee.io/post/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="https://axiomaster.github.io/post/index.xml" title="Axiomaster's Site" />
+    <link rel="alternate" type="application/rss+xml" href="https://axiomaster.gitee.io/post/index.xml" title="Axiomaster's Site" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -39,7 +39,7 @@
         <div class="col-group">
             <div class="site-name ">
                 
-                    <a id="logo" href="https://axiomaster.github.io/">
+                    <a id="logo" href="https://axiomaster.gitee.io/">
                         Axiomaster&#39;s Site
                     </a>
                 
@@ -47,7 +47,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="https://axiomaster.github.io/">首页</a>
+                    <a class="current" href="https://axiomaster.gitee.io/">首页</a>
                     
                 </nav>
             </div>
@@ -67,7 +67,7 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/" title="保护模式">保护模式</a>
+                <a href="https://axiomaster.gitee.io/post/2021-12-26-protected_mode-addition/" title="保护模式补充">保护模式补充</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -78,7 +78,7 @@
              1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 分页  根据Intel CPU的设计，理论上我们可以将内存划分出很多个段。但Linux基于可移植性等因素考虑，并没有充分利用CPU分段机制，而是将整个4GB的线性地址空间都对应为同一个段。
  ……
         </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-12-26-protected_mode-addition/">阅读全文</a></p>
     </article>
     
     
@@ -86,7 +86,7 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2021-12-19-page/" title="内存分页">内存分页</a>
+                <a href="https://axiomaster.gitee.io/post/2021-12-19-page/" title="内存分页">内存分页</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -94,9 +94,23 @@
         </date>
         
         <div class="post-content">
-             1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式  内存分页 ……
+            1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式  逻辑地址，线性地址，物理地址 程序编译后，程序内部使用的地址是段内偏移量，这个地址是逻辑地址。
+程序加载运行时，操作系统负责多个程序的调度。程序使用的段内偏移量（逻辑地址），加上段内偏移量，就是线性地址。
+如果没有分页机制，那线性地址=物理地址。启用分页机制之后，线性地址通过转换，才能对应为物理地址。
+ 因此，逻辑地址经过分段机制转换后，得到线性地址；再经过分页机制转换后，得到物理地址。
+分页 为什么要分页 段的长度不定,在分配内存时,可能会发生内存中的空闲区域小于要加载的段,或者空闲区域远远大于要加载的段。在前一种情况下,需要另外寻找合适的空闲区域;在后一种情况下,分配会成功,但太过于浪费。为了解决这个问题,从386开始,引入了分页机制。分页功能从总体上来说,是用长度固定的页来代替长度不一定的段,藉此解决因段长度不同而带来的内存空间管理问题。
+页框，页表，页目录表 操作系统将线性地址按固定大小组织，每一份称之为一页（page）。页大小可以为4K，1M等，一般为4KB。物理地址按照同样大小进行划分，称为页框（frame）。操作系统需要记录线性地址与物理地址的映射关系，这个关系就记录在页表（page table）中。页表中的每一项称为PTE。
+实际中，为了节省内存，会使用多级页表，即为页表再创建一个页目录表（page direcotry table）。页目录表中每的一项，称之为PDE，都指向不同的页表。
+ 分页寻址 逻辑地址经过分段后，得到32位的线性地址。启用分页机制后，32位的线性地址会再次划分为3部分，分别表示
+ 22~31位：指向页目录表中的某一项PDE 12~21位：指向具体某个页表中的某一项 0~11位：页内偏移量   假设我们采用2级页表，我们可以计算一下：
+ 每个页大小4KB，12位的业内偏移量恰好可以寻址4KB偏移地址。 22~31位共10位，最多可以表示1024个不同值，因此页目录表最多只能有1024个PDE 同理，12~21位共10位，对应页表最多页也只能有1024个PTE 1024个PDE * 1024个PTE * 4KB = 4GB，分页之后能够寻址的最大空间还是4GB   启用分页机制 启用分页机制，需要进行如下3步操作：
+ 创建页表 将cr3寄存器设置为页目录表地址 将cr0寄存器pg位置1  内存布局设计 现在的内存布局是我从其它地方抄来的。
+ 截图中显示了页目录表，及第1页表。
+ 页目录表中的第0项及第768项，均对应第1页表。 页目录表中第1023项（即最后一项），对应页目录表本身。 第1页表，只填写了0~255项，对应1M（4K*256）物理内存。  页目录表第0项表示线性地址最开端的4M地址，页目录表第768项对应线性地址3G开始的4M内存。均对应第1页表。当前我们在第1页表只填充了1M内存。所以线性地址开始的1M内存（0~1M）与3G开始的1M内存（3G~3G+1M），对应同一块物理内存。
+这样划分，是因为之前所有的代码都是在线性地址的开始（0~1M）内存实现的。但我们会将4G内存空间划分为用户空间（0~3G）和内核空间（3G~4G）。通过将页目录表第0项与第768项指向同一块内存，则可以在使用线性地址3G以上的内核空间地址继续访问之前的1M内存。
+测试 测试方法和以前相同，通过在屏幕打日志的方式判断是否执行成功。……
         </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2021-12-19-page/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-12-19-page/">阅读全文</a></p>
     </article>
     
     
@@ -104,7 +118,7 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2021-12-18-protected_mode/" title="保护模式">保护模式</a>
+                <a href="https://axiomaster.gitee.io/post/2021-12-18-protected_mode/" title="保护模式">保护模式</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -129,7 +143,7 @@
 创建并记载GDT 我们将内存空间划分为3个段。根据规定，第1个段必须为空。因为GDT中4项如下：
 ;0描述符  dd 0x00000000 dd 0x00000000 ;1描述符(4GB代码段描述符)  dd 0x0000ffff dd 0x00cf9800 ;2描述符(4GB数据段描述符)  dd 0x0000ffff dd 0x00cf9200 ;3描述符(28Kb的视频段描述符)  dd 0x80000007 dd 0x00c0920b lgdt_value: dw $-gdt-1 ;高16位表示表的最后一个字节的偏移（表的大小-1）  dd gdt ;低32位表示起始位置（GDT的物理地址） 跳转至32位模式 protect_mode: ;进入32位 lgdt [lgdt_value] in al, 0x92 or al, 0000_0010b out 0x92, al cli mov eax, cr0 or eax, 1 mov cr0, eax jmp dword SELECTOR_CODE:main [bits 32] ;正式进入32位 main: 测试 64位视频段描述符，我们展开后如下图：……
         </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2021-12-18-protected_mode/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-12-18-protected_mode/">阅读全文</a></p>
     </article>
     
     
@@ -137,7 +151,7 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2021-12-04-os-loader-addition/" title="确认软盘内容执行">确认软盘内容执行</a>
+                <a href="https://axiomaster.gitee.io/post/2021-12-04-os-loader-addition/" title="确认软盘内容执行">确认软盘内容执行</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -158,7 +172,7 @@ bochs Debug 我们使用bochs虚拟机来运行我们写的OS，bochs提供了�
 添加打印 我们也可以通过在sys.asm调用BIOS的打印中断int 10h来往屏幕写内容，确认代码是否执行成功。
 mov ax, 0xb800 mov gs, ax mov byte [gs:0xa0],'s' mov byte [gs:0xa2],'y' mov byte [gs:0xa4],'s'  可以看到，sys.asm中的打印代码成功输出了，因此可以确认sys.asm已经被正确执行了。……
         </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2021-12-04-os-loader-addition/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-12-04-os-loader-addition/">阅读全文</a></p>
     </article>
     
     
@@ -166,7 +180,7 @@ mov ax, 0xb800 mov gs, ax mov byte [gs:0xa0],'s' mov byte [gs:0xa2],'y' mov byte
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2021-11-22-os-loader/" title="读取并执行软盘内容">读取并执行软盘内容</a>
+                <a href="https://axiomaster.gitee.io/post/2021-11-22-os-loader/" title="读取并执行软盘内容">读取并执行软盘内容</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -182,7 +196,7 @@ mov ax, 0xb800 mov gs, ax mov byte [gs:0xa0],'s' mov byte [gs:0xa2],'y' mov byte
 读取1个扇区 通过调用BIOS int 13中断，可以读取软盘数据，调用代码如下：
 MOV AX, 0x0820 ; 内存目的地址 0x08200  MOV ES, AX MOV CH, 0 ; 柱面0  MOV DH, 0 ; 磁头0  MOV CL, 2 ; 扇区2  MOV AH, 0x02 ; AH=0x02 : 读盘  MOV AL, 1 ; 1个扇区  MOV BX, 0 MOV DL, 0x00 ; A驱动器  INT 0x13 ; 调用BIOS int 13中断 读取10个柱面 如果上面的代码封装为一个函数，那读取整个软盘的逻辑用c语言描述大约如下：……
         </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2021-11-22-os-loader/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-11-22-os-loader/">阅读全文</a></p>
     </article>
     
     
@@ -190,7 +204,7 @@ MOV AX, 0x0820 ; 内存目的地址 0x08200  MOV ES, AX MOV CH, 0 ; 柱面0  MOV
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2021-11-21-os-boot-addition/" title="启动补充说明">启动补充说明</a>
+                <a href="https://axiomaster.gitee.io/post/2021-11-21-os-boot-addition/" title="启动补充说明">启动补充说明</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -203,7 +217,7 @@ MOV AX, 0x0820 ; 内存目的地址 0x08200  MOV ES, AX MOV CH, 0 ; 柱面0  MOV
 int10中断 org 07c00h ; 告诉编译器程序加载到7c00处  ;----中断10h，卷屏，实现清屏 mov ax, 0x0600 mov bx, 0x0700 mov cx, 0 mov dx, 0x184f int 0x10 ;----直接往显存中写数据 mov ax, 0xb800 mov gs, ax mov byte [gs:0x00],&#39;h&#39; mov byte [gs:0x02],&#39;e&#39; mov byte [gs:0x04],&#39;l&#39; mov byte [gs:0x06],&#39;l&#39; mov byte [gs:0x08],&#39;o&#39; times 510-($-$$) db 0 ; 填充剩下的空间，使生成的二进制代码恰好为512字节 dw 0xaa55 ; 结束标志 以上代码中，我们先设置好参数，然后调用int 10中断，实现了清屏操作。效果如下：
  关于INT 10h的更多细节，可以看这里 wikipedia INT 10h。……
         </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2021-11-21-os-boot-addition/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-11-21-os-boot-addition/">阅读全文</a></p>
     </article>
     
     
@@ -211,7 +225,7 @@ int10中断 org 07c00h ; 告诉编译器程序加载到7c00处  ;----中断10h�
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
+                <a href="https://axiomaster.gitee.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -233,7 +247,7 @@ bootsec之后的事情我们也可以大致设想一下：依靠bootsec这512个
 一个简单的bootsec样例 CPU硬件设计师，BIOS系统开发等费了九牛二虎之力，终于在上电之后把OS自身最开始的512个字节的bootsec给运行起来了。作为“全村的希望”，当然是希望我们再接再励把OS运行起来的。但这里，我们不管这么多，先写一个hello world再说吧。
 org 07c00h ; 告诉编译器程序加载到7c00处 ;----直接往显存中写数据 mov ax, 0xb800 mov gs, ax mov byte [gs:0x00],&#39;h&#39; mov byte [gs:0x02],&#39;e&#39; mov byte [gs:0x04],&#39;l&#39; mov byte [gs:0x06],&#39;l&#39; mov byte [gs:0x08],&#39;o&#39; times 510-($-$$) db 0 ; 填充剩下的空间，使生成的二进制代码恰好为512字节 dw 0xaa55 ; 结束标志  上图中，0xb800是显存开始的地址。显存中，每2个字节对应显示字符，第1个字节为字符对应ASCII码，第2个字节为字符对应的颜色。屏幕每行有80个字符，共24行。这里，我们我们只修改了屏幕左上角开始的前5个字符对应的ASCII码，所以在左上角显示出了hello5个字符。……
         </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2021-11-17-os-boot/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-11-17-os-boot/">阅读全文</a></p>
     </article>
     
     
@@ -241,7 +255,7 @@ org 07c00h ; 告诉编译器程序加载到7c00处 ;----直接往显存中写数
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
+                <a href="https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -260,7 +274,7 @@ __asm__(&#34;movl $1,%eax/r/t&#34; /&#34;xor %ebx,%ebx/r/t&#34; /&#34;int $0x80&
 我们看一看下面这个例子：
 $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc; (*__p) = 9999; //__asm__(&#34;&#34;:::&#34;memory&#34;); if ((*__p) == 9999) { return 5; } return (*__p); } 在这段代码中，那条内联汇编是被注释掉的。在这条内联汇编之前，内存指针__p所指向的内存被赋值为9999，随即在内联汇编之后，一条if语句判断__p 所指向的内存与9999是否相等。很明显，它们是相等的。GCC在优化编译的时候能够很聪明的发现这一点。我们使用下面的命令行对其进行编译：……
         </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/">阅读全文</a></p>
     </article>
     
     
@@ -268,7 +282,7 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
+                <a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -280,7 +294,7 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
 舍弃 Dropout 训练时，一定概率随机舍弃神经元。网络使用时，恢复神经元。
 卷积神经网络结构 卷积：特征提取器，CBAPD(Convolutinoal, BN, Activation, Pooling, Dropout)……
         </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2020-09-07-tensorflow2_3/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/">阅读全文</a></p>
     </article>
     
     
@@ -288,7 +302,7 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
+                <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -300,7 +314,7 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
 全连接层 tf.keras.layers.Dense(神经元个数, activation=&#34;激活函数&#34;, kernel_regularizer=&#34;正则化&#34;)卷积层 tf.keras.layers.Conv2D(filters=卷积核个数, kernel_size=卷积核尺寸, strides=卷积步长, padding=&#34;valid&#34; or &#34;same&#34;)LSTM层 tf.keras.layers.LSTM()
 训练方法 model.compile(optimizer=优化器, loss=损失函数, metrics=[&#34;准确率&#34;])Optimizer  sgd adagrad adadelta adam  loss Metrics 训练过程 model.fit(训练集的输入特征, 训练集的标签, batch_size=, epochs=, validation_data=(测试集的输入特征, 测试集的标签), validation_split=从训练集划分多少比例分给测试集, validation_freq=多少次epoch测试一次)……
         </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/">阅读全文</a></p>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/">阅读全文</a></p>
     </article>
     
     
@@ -313,41 +327,41 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
 
     
     <li  class="current">
-        <a href="https://axiomaster.github.io/post/">1</a>
+        <a href="https://axiomaster.gitee.io/post/">1</a>
     </li>
     
     <li >
-        <a href="https://axiomaster.github.io/post/page/2/">2</a>
+        <a href="https://axiomaster.gitee.io/post/page/2/">2</a>
     </li>
     
     <li >
-        <a href="https://axiomaster.github.io/post/page/3/">3</a>
+        <a href="https://axiomaster.gitee.io/post/page/3/">3</a>
     </li>
     
     <li >
-        <a href="https://axiomaster.github.io/post/page/4/">4</a>
+        <a href="https://axiomaster.gitee.io/post/page/4/">4</a>
     </li>
     
     <li >
-        <a href="https://axiomaster.github.io/post/page/5/">5</a>
+        <a href="https://axiomaster.gitee.io/post/page/5/">5</a>
     </li>
     
     <li >
-        <a href="https://axiomaster.github.io/post/page/6/">6</a>
+        <a href="https://axiomaster.gitee.io/post/page/6/">6</a>
     </li>
     
     <li >
-        <a href="https://axiomaster.github.io/post/page/7/">7</a>
+        <a href="https://axiomaster.gitee.io/post/page/7/">7</a>
     </li>
     
     <li >
-        <a href="https://axiomaster.github.io/post/page/8/">8</a>
+        <a href="https://axiomaster.gitee.io/post/page/8/">8</a>
     </li>
     
 
     
     <li class="next">
-        <a href="https://axiomaster.github.io/post/page/2/">下一页</a>
+        <a href="https://axiomaster.gitee.io/post/page/2/">下一页</a>
     </li>
     
 </ol>
@@ -358,7 +372,7 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
 
                     <footer id="footer">
     <div>
-        &copy; 2021 <a href="https://axiomaster.github.io/">Axiomaster&#39;s Site By </a>
+        &copy; 2022 <a href="https://axiomaster.gitee.io/">Axiomaster&#39;s Site By </a>
         
     </div>
     <br />
@@ -392,7 +406,7 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
         <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io/">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.gitee.io/">
       <button type="submit" class="submit icon-search"></button>
 </form>
     </section>
@@ -402,43 +416,43 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
 <ul class="widget-list">
     
     <li>
-        <a href="https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/" title="保护模式">保护模式</a>
+        <a href="https://axiomaster.gitee.io/post/2021-12-26-protected_mode-addition/" title="保护模式补充">保护模式补充</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.github.io/post/2021-12-19-page/" title="内存分页">内存分页</a>
+        <a href="https://axiomaster.gitee.io/post/2021-12-19-page/" title="内存分页">内存分页</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.github.io/post/2021-12-18-protected_mode/" title="保护模式">保护模式</a>
+        <a href="https://axiomaster.gitee.io/post/2021-12-18-protected_mode/" title="保护模式">保护模式</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.github.io/post/2021-12-04-os-loader-addition/" title="确认软盘内容执行">确认软盘内容执行</a>
+        <a href="https://axiomaster.gitee.io/post/2021-12-04-os-loader-addition/" title="确认软盘内容执行">确认软盘内容执行</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.github.io/post/2021-11-22-os-loader/" title="读取并执行软盘内容">读取并执行软盘内容</a>
+        <a href="https://axiomaster.gitee.io/post/2021-11-22-os-loader/" title="读取并执行软盘内容">读取并执行软盘内容</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.github.io/post/2021-11-21-os-boot-addition/" title="启动补充说明">启动补充说明</a>
+        <a href="https://axiomaster.gitee.io/post/2021-11-21-os-boot-addition/" title="启动补充说明">启动补充说明</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
+        <a href="https://axiomaster.gitee.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
+        <a href="https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
+        <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.github.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
+        <a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
     </li>
     
 </ul>
@@ -457,81 +471,81 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
         <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
     
-    <a href="https://axiomaster.github.io/tags/activity/">activity</a>
+    <a href="https://axiomaster.gitee.io/tags/activity/">activity</a>
     
-    <a href="https://axiomaster.github.io/tags/algorithm/">algorithm</a>
+    <a href="https://axiomaster.gitee.io/tags/algorithm/">algorithm</a>
     
-    <a href="https://axiomaster.github.io/tags/android/">android</a>
+    <a href="https://axiomaster.gitee.io/tags/android/">android</a>
     
-    <a href="https://axiomaster.github.io/tags/aosp/">aosp</a>
+    <a href="https://axiomaster.gitee.io/tags/aosp/">aosp</a>
     
-    <a href="https://axiomaster.github.io/tags/bazel/">bazel</a>
+    <a href="https://axiomaster.gitee.io/tags/bazel/">bazel</a>
     
-    <a href="https://axiomaster.github.io/tags/bug/">bug</a>
+    <a href="https://axiomaster.gitee.io/tags/bug/">bug</a>
     
-    <a href="https://axiomaster.github.io/tags/debug/">debug</a>
+    <a href="https://axiomaster.gitee.io/tags/debug/">debug</a>
     
-    <a href="https://axiomaster.github.io/tags/debugger/">debugger</a>
+    <a href="https://axiomaster.gitee.io/tags/debugger/">debugger</a>
     
-    <a href="https://axiomaster.github.io/tags/docker/">docker</a>
+    <a href="https://axiomaster.gitee.io/tags/docker/">docker</a>
     
-    <a href="https://axiomaster.github.io/tags/golang/">golang</a>
+    <a href="https://axiomaster.gitee.io/tags/golang/">golang</a>
     
-    <a href="https://axiomaster.github.io/tags/gradle/">Gradle</a>
+    <a href="https://axiomaster.gitee.io/tags/gradle/">Gradle</a>
     
-    <a href="https://axiomaster.github.io/tags/i/o/">I/O</a>
+    <a href="https://axiomaster.gitee.io/tags/i/o/">I/O</a>
     
-    <a href="https://axiomaster.github.io/tags/idea%E6%8F%92%E4%BB%B6/">IDEA插件</a>
+    <a href="https://axiomaster.gitee.io/tags/idea%E6%8F%92%E4%BB%B6/">IDEA插件</a>
     
-    <a href="https://axiomaster.github.io/tags/java/">java</a>
+    <a href="https://axiomaster.gitee.io/tags/java/">java</a>
     
-    <a href="https://axiomaster.github.io/tags/linux/">linux</a>
+    <a href="https://axiomaster.gitee.io/tags/linux/">linux</a>
     
-    <a href="https://axiomaster.github.io/tags/ml/">ML</a>
+    <a href="https://axiomaster.gitee.io/tags/ml/">ML</a>
     
-    <a href="https://axiomaster.github.io/tags/net/">net</a>
+    <a href="https://axiomaster.gitee.io/tags/net/">net</a>
     
-    <a href="https://axiomaster.github.io/tags/nginx/">nginx</a>
+    <a href="https://axiomaster.gitee.io/tags/nginx/">nginx</a>
     
-    <a href="https://axiomaster.github.io/tags/os/">OS</a>
+    <a href="https://axiomaster.gitee.io/tags/os/">OS</a>
     
-    <a href="https://axiomaster.github.io/tags/tensorflow/">Tensorflow</a>
+    <a href="https://axiomaster.gitee.io/tags/tensorflow/">Tensorflow</a>
     
-    <a href="https://axiomaster.github.io/tags/tool/">tool</a>
+    <a href="https://axiomaster.gitee.io/tags/tool/">tool</a>
     
-    <a href="https://axiomaster.github.io/tags/view/">view</a>
+    <a href="https://axiomaster.gitee.io/tags/view/">view</a>
     
-    <a href="https://axiomaster.github.io/tags/window/">window</a>
+    <a href="https://axiomaster.gitee.io/tags/window/">window</a>
     
-    <a href="https://axiomaster.github.io/tags/zookeeper/">zookeeper</a>
+    <a href="https://axiomaster.gitee.io/tags/zookeeper/">zookeeper</a>
     
-    <a href="https://axiomaster.github.io/tags/zygote/">zygote</a>
+    <a href="https://axiomaster.gitee.io/tags/zygote/">zygote</a>
     
-    <a href="https://axiomaster.github.io/tags/%E5%86%85%E5%AD%98/">内存</a>
+    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98/">内存</a>
     
-    <a href="https://axiomaster.github.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
+    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
     
-    <a href="https://axiomaster.github.io/tags/%E5%90%90%E6%A7%BD/">吐槽</a>
+    <a href="https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/">吐槽</a>
     
-    <a href="https://axiomaster.github.io/tags/%E5%B7%A5%E5%85%B7/">工具</a>
+    <a href="https://axiomaster.gitee.io/tags/%E5%B7%A5%E5%85%B7/">工具</a>
     
-    <a href="https://axiomaster.github.io/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    <a href="https://axiomaster.gitee.io/tags/%E5%B9%B6%E5%8F%91/">并发</a>
     
-    <a href="https://axiomaster.github.io/tags/%E6%89%8B%E5%B7%A5/">手工</a>
+    <a href="https://axiomaster.gitee.io/tags/%E6%89%8B%E5%B7%A5/">手工</a>
     
-    <a href="https://axiomaster.github.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
+    <a href="https://axiomaster.gitee.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
     
-    <a href="https://axiomaster.github.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
+    <a href="https://axiomaster.gitee.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
     
-    <a href="https://axiomaster.github.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
+    <a href="https://axiomaster.gitee.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
     
-    <a href="https://axiomaster.github.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/">神奇的bug</a>
+    <a href="https://axiomaster.gitee.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/">神奇的bug</a>
     
-    <a href="https://axiomaster.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+    <a href="https://axiomaster.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
     
-    <a href="https://axiomaster.github.io/tags/%E8%AF%81%E4%B9%A6/">证书</a>
+    <a href="https://axiomaster.gitee.io/tags/%E8%AF%81%E4%B9%A6/">证书</a>
     
-    <a href="https://axiomaster.github.io/tags/%E9%93%BE%E6%8E%A5/">链接</a>
+    <a href="https://axiomaster.gitee.io/tags/%E9%93%BE%E6%8E%A5/">链接</a>
     
 </div>
     </section>
@@ -541,7 +555,7 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
     <section class="widget">
         <h3 class="widget-title">其它</h3>
         <ul class="widget-list">
-            <li><a href="https://axiomaster.github.io/index.xml">文章 RSS</a></li>
+            <li><a href="https://axiomaster.gitee.io/index.xml">文章 RSS</a></li>
         </ul>
     </section>
 </div>

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>扯淡 on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.github.io/tags/%E6%89%AF%E6%B7%A1/</link>
+    <link>https://axiomaster.gitee.io/tags/%E6%89%AF%E6%B7%A1/</link>
     <description>Recent content in 扯淡 on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 17 Mar 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://axiomaster.github.io/tags/%E6%89%AF%E6%B7%A1/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://axiomaster.gitee.io/tags/%E6%89%AF%E6%B7%A1/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>一道数学题</title>
-      <link>https://axiomaster.github.io/post/2019-03-22-simple/</link>
+      <link>https://axiomaster.gitee.io/post/2019-03-22-simple/</link>
       <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2019-03-22-simple/</guid>
+      <guid>https://axiomaster.gitee.io/post/2019-03-22-simple/</guid>
       <description>我女朋友从中学时数学就不咋样，高中时理科太差就只能读文科，读了文科数学依然最差。大学数学还需要补考才能毕业，考研时因为不考数学才读的现在的专业。我略好一些，高中时借着给她补习数学才走到一起。
 这是背景。
 前一阵子和女朋友去买鞋，商场满减，400减100，700减200，900减300。我们选中了一双700多一点儿的鞋，刚好凑够满减。付钱的时候，收银台有个大姐，选了一条裤子200多，要和我们一起凑单。
@@ -27,10 +27,10 @@
     
     <item>
       <title>程序员的浪漫</title>
-      <link>https://axiomaster.github.io/post/2019-02-27-programer-romantic/</link>
+      <link>https://axiomaster.gitee.io/post/2019-02-27-programer-romantic/</link>
       <pubDate>Wed, 27 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2019-02-27-programer-romantic/</guid>
+      <guid>https://axiomaster.gitee.io/post/2019-02-27-programer-romantic/</guid>
       <description>程序员的浪漫 之前学习TLS时向一个做安全的朋友请教，过程中他给我讲了下面一个故事。听完后甚是感动，分享给大家。
 为了方便描述，以我朋友的视角进行描述。
 背景 公司开发的产品涉及安全时都要求使用TLS通信，TLS通信时需要使用证书。申请证书时需要预先制作好私钥，私钥与证书里的公钥形成密钥对。非对称加密可以粗略的理解为，通信前将你的证书发给对端，对端使用你证书中的公钥进行加密。加密后的密文只有对应的私钥才可以解密。只要私钥不泄密，就可以保证安全。

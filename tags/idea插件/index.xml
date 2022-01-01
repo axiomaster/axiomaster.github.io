@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>IDEA插件 on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.github.io/tags/idea%E6%8F%92%E4%BB%B6/</link>
+    <link>https://axiomaster.gitee.io/tags/idea%E6%8F%92%E4%BB%B6/</link>
     <description>Recent content in IDEA插件 on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 17 Mar 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://axiomaster.github.io/tags/idea%E6%8F%92%E4%BB%B6/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://axiomaster.gitee.io/tags/idea%E6%8F%92%E4%BB%B6/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>使用Gradle开发IDEA插件</title>
-      <link>https://axiomaster.github.io/post/2019-04-21-gradle-proxy/</link>
+      <link>https://axiomaster.gitee.io/post/2019-04-21-gradle-proxy/</link>
       <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.github.io/post/2019-04-21-gradle-proxy/</guid>
+      <guid>https://axiomaster.gitee.io/post/2019-04-21-gradle-proxy/</guid>
       <description>最近想试着开发一个IDEA的插件，官方指导 中有两种方式:
  使用Gradle 使用DevKit  而且官方推荐Gradle的方式，称DevKit的工作流已经过时了。但百度出来的全都是DevKit的方式。而且Android Studio也是gradle，那就试试gradle的方式开发一个插件。
 Gradle配置 使用gradle创建工程之后，需要下载一些文件，因为GWF的原因这一步会特别慢，不使用VPN基本都失败了。网上找了使用aliyun源的方式，搞定了这一步。
