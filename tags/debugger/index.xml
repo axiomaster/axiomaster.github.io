@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>debugger on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.gitee.io/tags/debugger/</link>
+    <link>https://axiomaster.github.io/tags/debugger/</link>
     <description>Recent content in debugger on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 11 Aug 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://axiomaster.gitee.io/tags/debugger/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://axiomaster.github.io/tags/debugger/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Making debugger for Golang</title>
-      <link>https://axiomaster.gitee.io/post/2019-08-11-debugger-golang/</link>
+      <link>https://axiomaster.github.io/post/2019-08-11-debugger-golang/</link>
       <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2019-08-11-debugger-golang/</guid>
+      <guid>https://axiomaster.github.io/post/2019-08-11-debugger-golang/</guid>
       <description>转载自 Making debugger for Golang (part I)
  The goal of this series is not to write full-featured debugger for Go programming language. If you’re looking for some then please take a look at Delve. We’ll try to understand here how debuggers work in general and how to implement basic one on Linux which takes into account Golang’s features like goroutines.
 Creating debugger isn’t easy though. We won’t even strive to cover this topic within a single story.</description>
@@ -24,10 +24,10 @@ Creating debugger isn’t easy though. We won’t even strive to cover this topi
     
     <item>
       <title>Making debugger for Golang</title>
-      <link>https://axiomaster.gitee.io/post/2019-08-11-debugger-golang2/</link>
+      <link>https://axiomaster.github.io/post/2019-08-11-debugger-golang2/</link>
       <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2019-08-11-debugger-golang2/</guid>
+      <guid>https://axiomaster.github.io/post/2019-08-11-debugger-golang2/</guid>
       <description>转载自 Making debugger for Golang (part II)
  During the first part we’ve bootstrapped development environment and made a simple program (tracer) which stops child process (tracee) at the very beginning and then continues it execution together with showing its standard output. Now it’s time to extend its basic capabilities.
 Usually debuggers allow to single-step through debugged program. It can be done using ptrace PTRACE_SINGLESTEP request which tells tracee to stop after execution of single instruction:</description>
@@ -35,10 +35,10 @@ Usually debuggers allow to single-step through debugged program. It can be done 
     
     <item>
       <title>Making debugger for Golang</title>
-      <link>https://axiomaster.gitee.io/post/2019-08-11-debugger-golang3/</link>
+      <link>https://axiomaster.github.io/post/2019-08-11-debugger-golang3/</link>
       <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2019-08-11-debugger-golang3/</guid>
+      <guid>https://axiomaster.github.io/post/2019-08-11-debugger-golang3/</guid>
       <description>转载自 Making debugger for Golang (part III)
  So far we’ve learned how to single-step ptraced process (tracee) and get some debugging info out of binary (read it here if you haven’t done it yet). Now it’s time to set a breakpoint at desired place, wait until reached and then investigate process state.
 Let’s start with assembly code used before:

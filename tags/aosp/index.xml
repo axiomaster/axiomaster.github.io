@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>aosp on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.gitee.io/tags/aosp/</link>
+    <link>https://axiomaster.github.io/tags/aosp/</link>
     <description>Recent content in aosp on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 07 Jan 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://axiomaster.gitee.io/tags/aosp/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://axiomaster.github.io/tags/aosp/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>aosp源码编译与阅读</title>
-      <link>https://axiomaster.gitee.io/post/2020-01-07-aosp/</link>
+      <link>https://axiomaster.github.io/post/2020-01-07-aosp/</link>
       <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2020-01-07-aosp/</guid>
+      <guid>https://axiomaster.github.io/post/2020-01-07-aosp/</guid>
       <description>下载源码 国内从google下载aosp源码需要翻墙，很不方便。可以使用清华大学开源软件镜像站提供的镜像地址进行下载,同步代码.
 下载,检出代码按照清华镜像站的地址说明一步步操作就可以了.
 可能的错误  初始化包比较大,下载后记得进行md5校验. 使用迅雷中断后续传,发现md5值不匹配,推荐使用uget之类的工具在晚上下载,一次成功.  aosp编译 官方指导

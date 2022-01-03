@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>I/O on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.gitee.io/tags/i/o/</link>
+    <link>https://axiomaster.github.io/tags/i/o/</link>
     <description>Recent content in I/O on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="https://axiomaster.gitee.io/tags/i/o/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://axiomaster.github.io/tags/i/o/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>I/O模型</title>
-      <link>https://axiomaster.gitee.io/post/2020-01-05-io/</link>
+      <link>https://axiomaster.github.io/post/2020-01-05-io/</link>
       <pubDate>Sun, 05 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2020-01-05-io/</guid>
+      <guid>https://axiomaster.github.io/post/2020-01-05-io/</guid>
       <description>I/O处理过程 系统调用 操作系统出于安全的考虑，将进程的内存空间划分为用户空间(0~3G)和内核空间(3-4G)。进程在执行用户自己的代码时处于用户态(ring3); 当用户代码需要操作系统资源时, 可以通过调用操作系统提供的标准接口(POSIX)进行访问, 此时进程从用户态切换到内核态. 操作系统提供的这些接口称为系统调用.
 使用top命令时, Cpu后面的us就对应用户态使用的cpu, sy就对应内核态使用的cpu.
 %Cpu(s): 1.2 us, 0.7 sy, 0.0 ni, 98.0 id, 0.1 wa, 0.0 hi, 0.0 si, 0.0 st 硬盘, 网卡等等这些设备, 用户代码都是无法直接访问的, 需要通过操作系统提供的标准系统调用进行访问. 对于linux系统, 将所有的设备都抽象成文件, 因此, 对于这些设备的访问都可以归类为IO操作.

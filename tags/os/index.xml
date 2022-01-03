@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>OS on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.gitee.io/tags/os/</link>
+    <link>https://axiomaster.github.io/tags/os/</link>
     <description>Recent content in OS on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 01 Jan 2022 22:56:29 +0800</lastBuildDate>
     
-	<atom:link href="https://axiomaster.gitee.io/tags/os/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://axiomaster.github.io/tags/os/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>引入c语言</title>
-      <link>https://axiomaster.gitee.io/post/2022-01-01-c-language/</link>
+      <link>https://axiomaster.github.io/post/2022-01-01-c-language/</link>
       <pubDate>Sat, 01 Jan 2022 22:56:29 +0800</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2022-01-01-c-language/</guid>
+      <guid>https://axiomaster.github.io/post/2022-01-01-c-language/</guid>
       <description> 1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 分页 3-3 保护模式补充  编译过程 前面我们都是使用汇编进行编程，从这节开始引入c语言进行编写。我们知道C语言相对汇编语言，属于高级语言(^_^)。高级语言是需要编译成机器语言才可以执行的。为了让编译器编译得到的结果能够方便的在操作系统上执行，操作系统定义了二进制可执行文件的格式。linux上使用的就是ELF文件格式。
 我们这次只是开发操作系统，没有做自己的C编译器，还是要使用gcc等编译器。所以我们的操作系统就要去兼容gcc编译得到的ELF文件结果。历史上，gcc也是在linux操作系统之前被开发出来的。
  ELF文件格式 </description>
@@ -24,11 +24,11 @@
     
     <item>
       <title>保护模式补充</title>
-      <link>https://axiomaster.gitee.io/post/2021-12-26-protected_mode-addition/</link>
+      <link>https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/</link>
       <pubDate>Sun, 26 Dec 2021 14:15:29 +0800</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2021-12-26-protected_mode-addition/</guid>
-      <description>1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 分页  保护 前面讲过，保护模式的保护，是指CPU在进行内存跳转、访问时，增加了很多检查，确保内存访问安全。在分段和分页机制中，我们也看到了，段选择子，段描述符等都有很多的权限相关的标记位，CPU就是根据这些标记位及一系列访问规则判断是否有权限访问的，即进行内存保护。
+      <guid>https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/</guid>
+      <description>1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 内存分页  保护 前面讲过，保护模式的保护，是指CPU在进行内存跳转、访问时，增加了很多检查，确保内存访问安全。在分段和分页机制中，我们也看到了，段选择子，段描述符等都有很多的权限相关的标记位，CPU就是根据这些标记位及一系列访问规则判断是否有权限访问的，即进行内存保护。
 数据段&amp;amp;代码段 段描述符中的S位（44位），表明段描述符的类型：
  S=0, 系统段/门描述符 S=1, 数据段/代码段  段描述符中的TYPE位（40~43位），表明段描述符的类型。一个段可能为：
    TYPE值 数据段/代码段 系统段/门描述符     0 只读 未定义   1 只读,已访问 可用286 TSS   2 读/写 LDT   3 读/写，已访问 忙的286 TSS   4 只读，向下扩展 286 调用门   5 只读，向下扩展，已访问 任务门   6 读/写，向下扩展 286 中断门   7 读/写，向下扩展，已访问 286 陷阱门   8 只执行 未定义   9 只执行、已访问 可用386 TSS   A 执行/读 未定义   B 执行/读、已访问 忙的386 TSS   C 只执行、一致代码 386 调用门   D 只执行、一致代码、已访问 未定义   E 执行/读、一致代码 286 中断门   F 执行/读、一致代码、已访问 386 陷阱门    从这么多种类型定义中，可以预期整个检查规则很复杂（@_@）。其中门描述符（gate）用于中断发生时的检查，CPU确认特权级等设定符合约束后，才能进入相应的处理程序。</description>
@@ -36,10 +36,10 @@
     
     <item>
       <title>内存分页</title>
-      <link>https://axiomaster.gitee.io/post/2021-12-19-page/</link>
+      <link>https://axiomaster.github.io/post/2021-12-19-page/</link>
       <pubDate>Sun, 19 Dec 2021 15:00:29 +0800</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2021-12-19-page/</guid>
+      <guid>https://axiomaster.github.io/post/2021-12-19-page/</guid>
       <description>1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式  逻辑地址，线性地址，物理地址 程序编译后，程序内部使用的地址是段内偏移量，这个地址是逻辑地址。
 程序加载运行时，操作系统负责多个程序的调度。程序使用的段内偏移量（逻辑地址），加上段内偏移量，就是线性地址。
 如果没有分页机制，那线性地址=物理地址。启用分页机制之后，线性地址通过转换，才能对应为物理地址。
@@ -59,10 +59,10 @@
     
     <item>
       <title>保护模式</title>
-      <link>https://axiomaster.gitee.io/post/2021-12-18-protected_mode/</link>
+      <link>https://axiomaster.github.io/post/2021-12-18-protected_mode/</link>
       <pubDate>Sat, 18 Dec 2021 09:45:29 +0800</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2021-12-18-protected_mode/</guid>
+      <guid>https://axiomaster.github.io/post/2021-12-18-protected_mode/</guid>
       <description>1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行  CPU保护模式 我们知道，操作系统是对计算机各种硬件资源进行管理的，通过提供各种API，方便各种应用使用计算机硬件完成各自功能。因此，开发操作系统需要受硬件实现限制，也可以理解为按照硬件接口约定调用硬件能力。比如启动扇区的最后两个字节必须是0xAA 0x55，这就是一种约定，不这样做就没法正常启动。对于386指令集的CPU，这样的硬件接口约定和指导汇总就是《Intel 80386 程序员参考手册》。
 随着CPU功能的日益强大，这种硬件上的约定越来越多，其中很多还是特定历史原因造成的，或为了保持兼容性而设计的。这就导致我们需要了解的细节很多，而且不会很直观。保护模式就是实现操作系统过程中将会遇到的第一座大山，因为我们要借助CPU硬件能力实现。
 实模式&amp;amp;保护模式 我们前面访问内存是采用的[CS:IP]=CS&amp;lt;&amp;lt;4+IP的方式就是实模式下的内存寻址方式。Intel 8086 CPU只有16位，到了80386时代（286存在时间很短），CPU进入了32位，这时再也不能采用之前8086 16位CPU的寻址方式了。同时，Intel在硬件设计中加入了很多内存访问检查等保护机制。为了与之前的CPU特性区分，Intel将8086对应的16位运行模式称为实模式，将386及之后的x86CPU对应的32位运行模式称为保护模式。
@@ -83,10 +83,10 @@
     
     <item>
       <title>确认软盘内容执行</title>
-      <link>https://axiomaster.gitee.io/post/2021-12-04-os-loader-addition/</link>
+      <link>https://axiomaster.github.io/post/2021-12-04-os-loader-addition/</link>
       <pubDate>Sat, 04 Dec 2021 09:17:29 +0800</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2021-12-04-os-loader-addition/</guid>
+      <guid>https://axiomaster.github.io/post/2021-12-04-os-loader-addition/</guid>
       <description>1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容  上一节我们根据内存地址推算，确定0xc400位置保存着我们存储在软盘中的sys.bin内容，并跳转到这个地址位置开始执行。但我们如何确认代码正确执行了呢？
 hlt指令 CPU负载 当前在sys.bin中只有一个死循环，如果程序中出现一个死循环，那会将所有空闲CPU资源占满，即运行死循环的CPU负载会飙到100%。在真实机器上这点可能不好确认，但如果在虚拟机中运行操作系统，我们可以很容易的在宿主机上观察到这点。
  hlt指令 当前我们的OS还没有任何实质性业务，就这样空跑CPU比较浪费。hlt指令就是为了解决这个问题的，它可以使CPU进入暂停状态，不执行任何操作。
@@ -103,10 +103,10 @@ mov ax, 0xb800 mov gs, ax mov byte [gs:0xa0],&#39;s&#39; mov byte [gs:0xa2],&#39
     
     <item>
       <title>读取并执行软盘内容</title>
-      <link>https://axiomaster.gitee.io/post/2021-11-22-os-loader/</link>
+      <link>https://axiomaster.github.io/post/2021-11-22-os-loader/</link>
       <pubDate>Mon, 22 Nov 2021 23:17:29 +0800</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2021-11-22-os-loader/</guid>
+      <guid>https://axiomaster.github.io/post/2021-11-22-os-loader/</guid>
       <description>1-1 从上电到引导扇区 1-2 启动补充说明  根据前面的内容我们知道，上电之后，根据CPU硬件电路设计，会自动将软盘第1扇区加载并执行。如果我们实现的OS只需要使用512个字节的代码，那就不需要主动读取软盘，只依靠CPU的硬件设计自动读取第1扇区就可以了。但这显然不可能。
 所以接下来，我们就依靠第1扇区这512个字节的代码量，读取更多的软盘内容。
 读取软盘内容至内存 我们将自己写的操作系统的代码编译成二进制文件后，存储在软盘上。然后利用第1个扇区的代码（开机后被BIOS自动加载至0x7c00处并开始执行），将软盘上的内容拷贝到内存中。拷贝完成后，再跳转到我们拷贝的目的内存地址，开始执行。
@@ -118,10 +118,10 @@ MOV AX, 0x0820 ; 内存目的地址 0x08200  MOV ES, AX MOV CH, 0 ; 柱面0  MOV
     
     <item>
       <title>启动补充说明</title>
-      <link>https://axiomaster.gitee.io/post/2021-11-21-os-boot-addition/</link>
+      <link>https://axiomaster.github.io/post/2021-11-21-os-boot-addition/</link>
       <pubDate>Sun, 21 Nov 2021 23:06:29 +0800</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2021-11-21-os-boot-addition/</guid>
+      <guid>https://axiomaster.github.io/post/2021-11-21-os-boot-addition/</guid>
       <description>1-1 从上电到引导扇区 1-2 启动补充说明  清理屏幕 上一节我们通过在显存地址直接写入字符，打印除了“hello”。但因为显存内存储着BIOS启动过程中的一些显示信息，所以屏幕看着很乱。这一节我们在打印字符之前，先讲显存内的内容清空，再进行打印，这样看着清爽些。
 清空显存，当然有个笨办法，就是像打印“hello”一样，从0xb8000开始，向显存写入空白或不可见字符。但这个比较累。还有一个办法就是调用bios提供的int 10中断。
 int10中断 org 07c00h ; 告诉编译器程序加载到7c00处  ;----中断10h，卷屏，实现清屏 mov ax, 0x0600 mov bx, 0x0700 mov cx, 0 mov dx, 0x184f int 0x10 ;----直接往显存中写数据 mov ax, 0xb800 mov gs, ax mov byte [gs:0x00],&amp;#39;h&amp;#39; mov byte [gs:0x02],&amp;#39;e&amp;#39; mov byte [gs:0x04],&amp;#39;l&amp;#39; mov byte [gs:0x06],&amp;#39;l&amp;#39; mov byte [gs:0x08],&amp;#39;o&amp;#39; times 510-($-$$) db 0 ; 填充剩下的空间，使生成的二进制代码恰好为512字节 dw 0xaa55 ; 结束标志 以上代码中，我们先设置好参数，然后调用int 10中断，实现了清屏操作。效果如下：
@@ -130,10 +130,10 @@ int10中断 org 07c00h ; 告诉编译器程序加载到7c00处  ;----中断10h�
     
     <item>
       <title>从上电到引导扇区</title>
-      <link>https://axiomaster.gitee.io/post/2021-11-17-os-boot/</link>
+      <link>https://axiomaster.github.io/post/2021-11-17-os-boot/</link>
       <pubDate>Wed, 17 Nov 2021 21:05:29 +0800</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2021-11-17-os-boot/</guid>
+      <guid>https://axiomaster.github.io/post/2021-11-17-os-boot/</guid>
       <description>1-1 从上电到引导扇区 1-2 启动补充说明  上电 我们知道，现在使用的计算机都是存储程序计算机（冯·诺依曼计算机）。计算机运行时一边从内存中读取指令，一边执行指令。进一步，可能也知道对于8086 CPU，段寄存器 CS、指令寄存器 IP共同构成的地址[CS:IP]指向当前执行的指令。
 但计算机上电开机之后，CS与IP中内容均为空，其它寄存器、内存的内容也为空。类似牛顿力学体系中的第一推动力一样，计算机上电后第一步该如何开始呢？牛顿给的答案是上帝提供了第一推动力。类似的，计算机启动第一步也只能通过体系外的某种方式解决。
 上电后执行软件前只能靠硬件。CPU的硬件设计为上电后默认将CS置为0xF000, IP置为0xFFF0，即上电后默认执行的第一条指令位于[CS:IP]=0xFFFF0处的。而这个地址处存储的是BIOS。
@@ -151,10 +151,10 @@ org 07c00h ; 告诉编译器程序加载到7c00处 ;----直接往显存中写数
     
     <item>
       <title>I/O模型</title>
-      <link>https://axiomaster.gitee.io/post/2020-01-05-io/</link>
+      <link>https://axiomaster.github.io/post/2020-01-05-io/</link>
       <pubDate>Sun, 05 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2020-01-05-io/</guid>
+      <guid>https://axiomaster.github.io/post/2020-01-05-io/</guid>
       <description>I/O处理过程 系统调用 操作系统出于安全的考虑，将进程的内存空间划分为用户空间(0~3G)和内核空间(3-4G)。进程在执行用户自己的代码时处于用户态(ring3); 当用户代码需要操作系统资源时, 可以通过调用操作系统提供的标准接口(POSIX)进行访问, 此时进程从用户态切换到内核态. 操作系统提供的这些接口称为系统调用.
 使用top命令时, Cpu后面的us就对应用户态使用的cpu, sy就对应内核态使用的cpu.
 %Cpu(s): 1.2 us, 0.7 sy, 0.0 ni, 98.0 id, 0.1 wa, 0.0 hi, 0.0 si, 0.0 st 硬盘, 网卡等等这些设备, 用户代码都是无法直接访问的, 需要通过操作系统提供的标准系统调用进行访问. 对于linux系统, 将所有的设备都抽象成文件, 因此, 对于这些设备的访问都可以归类为IO操作.
@@ -170,28 +170,28 @@ org 07c00h ; 告诉编译器程序加载到7c00处 ;----直接往显存中写数
     
     <item>
       <title>Java内存泄漏分析</title>
-      <link>https://axiomaster.gitee.io/post/2018-03-04-java-oom/</link>
+      <link>https://axiomaster.github.io/post/2018-03-04-java-oom/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2018-03-04-java-oom/</guid>
+      <guid>https://axiomaster.github.io/post/2018-03-04-java-oom/</guid>
       <description>Java内存泄漏分析 Java内存泄漏分析</description>
     </item>
     
     <item>
       <title>linux perf tool</title>
-      <link>https://axiomaster.gitee.io/post/2018-08-14-linux-perf-tool/</link>
+      <link>https://axiomaster.github.io/post/2018-08-14-linux-perf-tool/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2018-08-14-linux-perf-tool/</guid>
+      <guid>https://axiomaster.github.io/post/2018-08-14-linux-perf-tool/</guid>
       <description>linux perf tool  </description>
     </item>
     
     <item>
       <title>linux-cpu</title>
-      <link>https://axiomaster.gitee.io/post/2018-07-01-linux-cpu/</link>
+      <link>https://axiomaster.github.io/post/2018-07-01-linux-cpu/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2018-07-01-linux-cpu/</guid>
+      <guid>https://axiomaster.github.io/post/2018-07-01-linux-cpu/</guid>
       <description>linux-cpu Linux CPU使用率</description>
     </item>
     

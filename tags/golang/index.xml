@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>golang on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.gitee.io/tags/golang/</link>
+    <link>https://axiomaster.github.io/tags/golang/</link>
     <description>Recent content in golang on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 17 Mar 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://axiomaster.gitee.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://axiomaster.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Golang defer导致内存溢出</title>
-      <link>https://axiomaster.gitee.io/post/2019-04-14-defer/</link>
+      <link>https://axiomaster.github.io/post/2019-04-14-defer/</link>
       <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2019-04-14-defer/</guid>
+      <guid>https://axiomaster.github.io/post/2019-04-14-defer/</guid>
       <description>Golang中提供了defer关键字，以前可能需要在函数内进行多次判断之后释放资源，现在使用defer一次就搞定了，习惯之后会觉得这个特性非常好用。
 问题代码 有一句话是软件设计没有银弹，放在这里依然成立。defer这么好用，但也需要注意一些坑。代码逻辑大致如下：
 for { defer 释放资源 // http request  // 错误码判断  // sleep 5s重试 或 break退出 } 业务是心跳这样的守护进程，所以直接就用了死循环，请求失败之后进行重试，或满足一定条件时退出循环。使用defer在最后释放资源。

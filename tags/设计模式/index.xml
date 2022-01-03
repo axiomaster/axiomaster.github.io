@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>设计模式 on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link>
+    <link>https://axiomaster.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link>
     <description>Recent content in 设计模式 on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 17 Mar 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://axiomaster.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://axiomaster.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>工厂模式 Factory Pattern</title>
-      <link>https://axiomaster.gitee.io/post/2019-03-31-factory-pattern/</link>
+      <link>https://axiomaster.github.io/post/2019-03-31-factory-pattern/</link>
       <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2019-03-31-factory-pattern/</guid>
+      <guid>https://axiomaster.github.io/post/2019-03-31-factory-pattern/</guid>
       <description>工厂模式定义了一个创建对象的接口，但由子类决定要实例化的类时哪一个。工厂方法让类把实例化推迟到子类。
  简单工厂 简单工厂的思路也确实非常简单，就像将创建类的代码进行了简单的抽离。《设计模式》也说这不应该算一种模式，更像一种编程习惯。就好比撸完代码之后自己回头看看，发现这一块独立的逻辑可以抽离出来独立一下。
  工厂模式 工厂模式中，创建者与产品为平行类层级，只是创建者的创建方法产生产品。要创建哪种产品，由具体的创建者子类决定；产品的实际创建，也由产品的具体实现类完成。
@@ -25,10 +25,10 @@
     
     <item>
       <title>状态模式 State Pattern</title>
-      <link>https://axiomaster.gitee.io/post/2019-03-17-state-pattern/</link>
+      <link>https://axiomaster.github.io/post/2019-03-17-state-pattern/</link>
       <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2019-03-17-state-pattern/</guid>
+      <guid>https://axiomaster.github.io/post/2019-03-17-state-pattern/</guid>
       <description>状态模式允许对象在内部状态改变时改变它的行为，对象看起来好像修改了它的类。
  工作中经常会遇到各种状态机，使用流程控制的方式虽然也可以实现，但后续的维护变动就变得很困难。在实际中我们现在就遇到了一个这样子的问题，整个状态机的代码有一千多行，代码完成的还算工整，但要看懂现在就只能对比状态图了，因为状态实在太多了。我曾经增改过两次，每次改动都伴随着一大堆的问题单。
 这时候就真真切切体会到状态模式的好处了。
@@ -41,10 +41,10 @@
     
     <item>
       <title>工具篇</title>
-      <link>https://axiomaster.gitee.io/post/2019-03-03-plantuml/</link>
+      <link>https://axiomaster.github.io/post/2019-03-03-plantuml/</link>
       <pubDate>Sun, 03 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2019-03-03-plantuml/</guid>
+      <guid>https://axiomaster.github.io/post/2019-03-03-plantuml/</guid>
       <description>曾经信心满满的立过很多flag，要学习并掌握某一领域或坚持某件事儿，最终都无疾而终，只剩下零星概念和一堆遗憾，原因大都类似：
  计划被其它事情打断，中止了 进行到一半，发现意义不大 进行中遇到了困难，放弃了 当时掌握了，但没有及时总结，后续没有练习，忘记了  包括不限于协议栈、数据库、JVM、正则表达式、音律、写总结&amp;hellip;&amp;hellip;也包括设计模式。结果一回头，猛然发现时间已经过去了这么久，却什么都没有留下来。
 在此再立一个flag，每周写一篇总结。周积跬步，以致千里。
@@ -62,10 +62,10 @@ GRAPHVIZ_DOT=D:\Program Files (x86)\Graphviz2.38\bin\dot.exe PlantUML基本语�
     
     <item>
       <title>策略模式 Strategy Pattern</title>
-      <link>https://axiomaster.gitee.io/post/2019-03-05-strategy-pattern/</link>
+      <link>https://axiomaster.github.io/post/2019-03-05-strategy-pattern/</link>
       <pubDate>Sun, 03 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2019-03-05-strategy-pattern/</guid>
+      <guid>https://axiomaster.github.io/post/2019-03-05-strategy-pattern/</guid>
       <description>策略模式定义了算法族，分别封装起来，让它们之间可以相互替换，此模式让算法的变化独立于使用算法的客户。
  类图  继承 vs 组合 上面的描述有些抽象。策略模式想要表达的是，如果一个类需要某种行为，不要通过继承来实现（is-a），可以使用组合（has-a）来实现。这样做更加灵活，当业务类（duck）的行为（fly）需要改变时，只需要注入不同的算法实现类即可。
 这也就是 鸭子继承， 如果一个类通过组合获取了鸭子的行为，那它就可以当作鸭子使用，不需要关注它是否继承自鸭子基类，是否真正的是一只鸭子。

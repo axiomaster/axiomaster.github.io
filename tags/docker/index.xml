@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>docker on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.gitee.io/tags/docker/</link>
+    <link>https://axiomaster.github.io/tags/docker/</link>
     <description>Recent content in docker on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 30 Jul 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://axiomaster.gitee.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://axiomaster.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>神奇的bug</title>
-      <link>https://axiomaster.gitee.io/post/2019-07-30-bug/</link>
+      <link>https://axiomaster.github.io/post/2019-07-30-bug/</link>
       <pubDate>Tue, 30 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2019-07-30-bug/</guid>
+      <guid>https://axiomaster.github.io/post/2019-07-30-bug/</guid>
       <description>最近在编译一个node相关的工程，配置好编译环境，设置好代理，昨天一切都进展的挺顺利，很快就得到了结果。但后来发现编译的版本稍微有点儿差异，校验不通过。就把源码切到特定的tag上重来一次。然后就发现了一个神奇的bug。
 使用yarn编译，中间一步依赖的一个包在编译时需要去api.github.com上下载特定版本的软件包。但是目标版本使用的软件包版本号类似于v1.2.3-2，在小版本号之后还有-2进行区分，然后这个软件包总是下载失败，导致编译失败。
 验证了好久之后确认，代理设置没有问题，其它依赖包可以下载成功，但这个就是不行。后来在issue列表中确认，在特定proxy环境下，这个包会下载失败。失败原因是node中下载使用的request包在经过部分proxy时，对-这样的字符无法正确处理，url错误导致下载失败。
@@ -25,10 +25,10 @@
     
     <item>
       <title>docker私有镜像仓库</title>
-      <link>https://axiomaster.gitee.io/post/2019-06-24-docker-registry/</link>
+      <link>https://axiomaster.github.io/post/2019-06-24-docker-registry/</link>
       <pubDate>Mon, 24 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2019-06-24-docker-registry/</guid>
+      <guid>https://axiomaster.github.io/post/2019-06-24-docker-registry/</guid>
       <description>上一篇VS code remote提到国内访问docker官方镜像特别慢，可以使用加速器。但对于企业等，都会自建私有镜像地址，也可以解决这个问题。
 docker registry  Registry是一个无状态的，高可扩展的服务端应用，主要用于存储和分发Docker镜像。
 Docker Registry文档
@@ -51,10 +51,10 @@ docker run -d -p 5000:5000 --name registry registry:2 2 保存registry.tar并运
     
     <item>
       <title>docker 常用命令</title>
-      <link>https://axiomaster.gitee.io/post/2018-05-27-docker-command/</link>
+      <link>https://axiomaster.github.io/post/2018-05-27-docker-command/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2018-05-27-docker-command/</guid>
+      <guid>https://axiomaster.github.io/post/2018-05-27-docker-command/</guid>
       <description>docker 常用命令 重命名image </description>
     </item>
     

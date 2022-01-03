@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>java on Axiomaster&#39;s Site</title>
-    <link>https://axiomaster.gitee.io/tags/java/</link>
+    <link>https://axiomaster.github.io/tags/java/</link>
     <description>Recent content in java on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 27 Apr 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://axiomaster.gitee.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://axiomaster.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Java并发编程</title>
-      <link>https://axiomaster.gitee.io/post/2019-04-27-java-concurrent/</link>
+      <link>https://axiomaster.github.io/post/2019-04-27-java-concurrent/</link>
       <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2019-04-27-java-concurrent/</guid>
+      <guid>https://axiomaster.github.io/post/2019-04-27-java-concurrent/</guid>
       <description>缓存一致性与并发问题 我们今天使用的计算机体系结构都属于存储程序型（冯·诺伊曼结构），运行时所有的数据都存储在内存中；指令执行时，数据从内存读入寄存器，运算结束后再写回内存。
 // i == 0 i = i + 1 // i == 1 以上面代码为例，计算机先将i加载到寄存器中，再寄存器中+1后再将i写回内存。
 可以认为运算中，寄存器中的数据是内存的一份缓存。但是，有缓存，就有缓存不一致的问题。
@@ -39,10 +39,10 @@ public class Puzzle { static boolean answerReady = false; static int answer = 0;
     
     <item>
       <title>Java内存泄漏分析</title>
-      <link>https://axiomaster.gitee.io/post/2018-03-04-java-oom/</link>
+      <link>https://axiomaster.github.io/post/2018-03-04-java-oom/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://axiomaster.gitee.io/post/2018-03-04-java-oom/</guid>
+      <guid>https://axiomaster.github.io/post/2018-03-04-java-oom/</guid>
       <description>Java内存泄漏分析 Java内存泄漏分析</description>
     </item>
     

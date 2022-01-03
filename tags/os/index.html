@@ -16,12 +16,12 @@
     <meta name="description" content="OS">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://axiomaster.gitee.io/tags/os/">
+    <meta property="og:url" content="https://axiomaster.github.io/tags/os/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="https://axiomaster.gitee.io/tags/os/index.xml" title="Axiomaster's Site" />
+    <link rel="alternate" type="application/rss+xml" href="https://axiomaster.github.io/tags/os/index.xml" title="Axiomaster's Site" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -39,7 +39,7 @@
         <div class="col-group">
             <div class="site-name ">
                 
-                    <a id="logo" href="https://axiomaster.gitee.io/">
+                    <a id="logo" href="https://axiomaster.github.io/">
                         Axiomaster&#39;s Site
                     </a>
                 
@@ -47,7 +47,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://axiomaster.gitee.io/">首页</a>
+                    <a class="" href="https://axiomaster.github.io/">首页</a>
                     
                 </nav>
             </div>
@@ -74,7 +74,7 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2022-01-01-c-language/">引入c语言</a>
+                <a href="https://axiomaster.github.io/post/2022-01-01-c-language/">引入c语言</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -85,14 +85,14 @@
              1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 分页 3-3 保护模式补充  编译过程 前面我们都是使用汇编进行编程，从这节开始引入c语言进行编写。我们知道C语言相对汇编语言，属于高级语言(^_^)。高级语言是需要编译成机器语言才可以执行的。为了让编译器编译得到的结果能够方便的在操作系统上执行，操作系统定义了二进制可执行文件的格式。linux上使用的就是ELF文件格式。
 我们这次只是开发操作系统，没有做自己的C编译器，还是要使用gcc等编译器。所以我们的操作系统就要去兼容gcc编译得到的ELF文件结果。历史上，gcc也是在linux操作系统之前被开发出来的。
  ELF文件格式 ……
-            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2022-01-01-c-language/">阅读全文</a></p>
+            <p class="readmore"><a href="https://axiomaster.github.io/post/2022-01-01-c-language/">阅读全文</a></p>
         </div>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2021-12-26-protected_mode-addition/">保护模式补充</a>
+                <a href="https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/">保护模式补充</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -100,18 +100,18 @@
         </date>
         
         <div class="post-content">
-            1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 分页  保护 前面讲过，保护模式的保护，是指CPU在进行内存跳转、访问时，增加了很多检查，确保内存访问安全。在分段和分页机制中，我们也看到了，段选择子，段描述符等都有很多的权限相关的标记位，CPU就是根据这些标记位及一系列访问规则判断是否有权限访问的，即进行内存保护。
+            1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 内存分页  保护 前面讲过，保护模式的保护，是指CPU在进行内存跳转、访问时，增加了很多检查，确保内存访问安全。在分段和分页机制中，我们也看到了，段选择子，段描述符等都有很多的权限相关的标记位，CPU就是根据这些标记位及一系列访问规则判断是否有权限访问的，即进行内存保护。
 数据段&amp;代码段 段描述符中的S位（44位），表明段描述符的类型：
  S=0, 系统段/门描述符 S=1, 数据段/代码段  段描述符中的TYPE位（40~43位），表明段描述符的类型。一个段可能为：
    TYPE值 数据段/代码段 系统段/门描述符     0 只读 未定义   1 只读,已访问 可用286 TSS   2 读/写 LDT   3 读/写，已访问 忙的286 TSS   4 只读，向下扩展 286 调用门   5 只读，向下扩展，已访问 任务门   6 读/写，向下扩展 286 中断门   7 读/写，向下扩展，已访问 286 陷阱门   8 只执行 未定义   9 只执行、已访问 可用386 TSS   A 执行/读 未定义   B 执行/读、已访问 忙的386 TSS   C 只执行、一致代码 386 调用门   D 只执行、一致代码、已访问 未定义   E 执行/读、一致代码 286 中断门   F 执行/读、一致代码、已访问 386 陷阱门    从这么多种类型定义中，可以预期整个检查规则很复杂（@_@）。其中门描述符（gate）用于中断发生时的检查，CPU确认特权级等设定符合约束后，才能进入相应的处理程序。……
-            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-12-26-protected_mode-addition/">阅读全文</a></p>
+            <p class="readmore"><a href="https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/">阅读全文</a></p>
         </div>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2021-12-19-page/">内存分页</a>
+                <a href="https://axiomaster.github.io/post/2021-12-19-page/">内存分页</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -134,14 +134,14 @@
  页目录表中的第0项及第768项，均对应第1页表。 页目录表中第1023项（即最后一项），对应页目录表本身。 第1页表，只填写了0~255项，对应1M（4K*256）物理内存。  页目录表第0项表示线性地址最开端的4M地址，页目录表第768项对应线性地址3G开始的4M内存。均对应第1页表。当前我们在第1页表只填充了1M内存。所以线性地址开始的1M内存（0~1M）与3G开始的1M内存（3G~3G+1M），对应同一块物理内存。
 这样划分，是因为之前所有的代码都是在线性地址的开始（0~1M）内存实现的。但我们会将4G内存空间划分为用户空间（0~3G）和内核空间（3G~4G）。通过将页目录表第0项与第768项指向同一块内存，则可以在使用线性地址3G以上的内核空间地址继续访问之前的1M内存。
 测试 测试方法和以前相同，通过在屏幕打日志的方式判断是否执行成功。……
-            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-12-19-page/">阅读全文</a></p>
+            <p class="readmore"><a href="https://axiomaster.github.io/post/2021-12-19-page/">阅读全文</a></p>
         </div>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2021-12-18-protected_mode/">保护模式</a>
+                <a href="https://axiomaster.github.io/post/2021-12-18-protected_mode/">保护模式</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -165,14 +165,14 @@
 到了保护模式，我们需要访问大于1M的内存，需要关闭wrap-around机制。而这个机制，因为历史原因，被键盘控制器上的第21根地址线（A20 Gate）控制。当打开A20 Gate时，才能突破1M的内存限制。
 创建并记载GDT 我们将内存空间划分为3个段。根据规定，第1个段必须为空。因为GDT中4项如下：
 ;0描述符  dd 0x00000000 dd 0x00000000 ;1描述符(4GB代码段描述符)  dd 0x0000ffff dd 0x00cf9800 ;2描述符(4GB数据段描述符)  dd 0x0000ffff dd 0x00cf9200 ;3描述符(28Kb的视频段描述符)  dd 0x80000007 dd 0x00c0920b lgdt_value: dw $-gdt-1 ;高16位表示表的最后一个字节的偏移（表的大小-1）  dd gdt ;低32位表示起始位置（GDT的物理地址） 跳转至32位模式 protect_mode: ;进入32位 lgdt [lgdt_value] in al, 0x92 or al, 0000_0010b out 0x92, al cli mov eax, cr0 or eax, 1 mov cr0, eax jmp dword SELECTOR_CODE:main [bits 32] ;正式进入32位 main: 测试 64位视频段描述符，我们展开后如下图：……
-            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-12-18-protected_mode/">阅读全文</a></p>
+            <p class="readmore"><a href="https://axiomaster.github.io/post/2021-12-18-protected_mode/">阅读全文</a></p>
         </div>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2021-12-04-os-loader-addition/">确认软盘内容执行</a>
+                <a href="https://axiomaster.github.io/post/2021-12-04-os-loader-addition/">确认软盘内容执行</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -192,14 +192,14 @@ bochs Debug 我们使用bochs虚拟机来运行我们写的OS，bochs提供了�
  跳转指令不完全一致，但可以猜到是给予当前行$-3位置处。
 添加打印 我们也可以通过在sys.asm调用BIOS的打印中断int 10h来往屏幕写内容，确认代码是否执行成功。
 mov ax, 0xb800 mov gs, ax mov byte [gs:0xa0],'s' mov byte [gs:0xa2],'y' mov byte [gs:0xa4],'s'  可以看到，sys.asm中的打印代码成功输出了，因此可以确认sys.asm已经被正确执行了。……
-            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-12-04-os-loader-addition/">阅读全文</a></p>
+            <p class="readmore"><a href="https://axiomaster.github.io/post/2021-12-04-os-loader-addition/">阅读全文</a></p>
         </div>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2021-11-22-os-loader/">读取并执行软盘内容</a>
+                <a href="https://axiomaster.github.io/post/2021-11-22-os-loader/">读取并执行软盘内容</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -214,14 +214,14 @@ mov ax, 0xb800 mov gs, ax mov byte [gs:0xa0],'s' mov byte [gs:0xa2],'y' mov byte
 从上图中，我们可以看到，软盘有一圈有18个扇区Sector，从外向内分为80个柱面Cylinder，正反两面分别对应不同的磁头Heads来读写，这称之为CHS寻址模式，对应三部分的首字母。前面提到每个扇区可以存储512个字节，所以整个软盘共可以存储512*80*18*2=1440KB
 读取1个扇区 通过调用BIOS int 13中断，可以读取软盘数据，调用代码如下：
 MOV AX, 0x0820 ; 内存目的地址 0x08200  MOV ES, AX MOV CH, 0 ; 柱面0  MOV DH, 0 ; 磁头0  MOV CL, 2 ; 扇区2  MOV AH, 0x02 ; AH=0x02 : 读盘  MOV AL, 1 ; 1个扇区  MOV BX, 0 MOV DL, 0x00 ; A驱动器  INT 0x13 ; 调用BIOS int 13中断 读取10个柱面 如果上面的代码封装为一个函数，那读取整个软盘的逻辑用c语言描述大约如下：……
-            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-11-22-os-loader/">阅读全文</a></p>
+            <p class="readmore"><a href="https://axiomaster.github.io/post/2021-11-22-os-loader/">阅读全文</a></p>
         </div>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2021-11-21-os-boot-addition/">启动补充说明</a>
+                <a href="https://axiomaster.github.io/post/2021-11-21-os-boot-addition/">启动补充说明</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -233,14 +233,14 @@ MOV AX, 0x0820 ; 内存目的地址 0x08200  MOV ES, AX MOV CH, 0 ; 柱面0  MOV
 清空显存，当然有个笨办法，就是像打印“hello”一样，从0xb8000开始，向显存写入空白或不可见字符。但这个比较累。还有一个办法就是调用bios提供的int 10中断。
 int10中断 org 07c00h ; 告诉编译器程序加载到7c00处  ;----中断10h，卷屏，实现清屏 mov ax, 0x0600 mov bx, 0x0700 mov cx, 0 mov dx, 0x184f int 0x10 ;----直接往显存中写数据 mov ax, 0xb800 mov gs, ax mov byte [gs:0x00],&#39;h&#39; mov byte [gs:0x02],&#39;e&#39; mov byte [gs:0x04],&#39;l&#39; mov byte [gs:0x06],&#39;l&#39; mov byte [gs:0x08],&#39;o&#39; times 510-($-$$) db 0 ; 填充剩下的空间，使生成的二进制代码恰好为512字节 dw 0xaa55 ; 结束标志 以上代码中，我们先设置好参数，然后调用int 10中断，实现了清屏操作。效果如下：
  关于INT 10h的更多细节，可以看这里 wikipedia INT 10h。……
-            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-11-21-os-boot-addition/">阅读全文</a></p>
+            <p class="readmore"><a href="https://axiomaster.github.io/post/2021-11-21-os-boot-addition/">阅读全文</a></p>
         </div>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2021-11-17-os-boot/">从上电到引导扇区</a>
+                <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/">从上电到引导扇区</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -261,14 +261,14 @@ BIOS提供的中断服务可以查阅网上资料，参考资料中也提供了�
 bootsec之后的事情我们也可以大致设想一下：依靠bootsec这512个字节的代码，我们会继续读取软盘上更多的代码，然后依赖读入的代码完成更多的工作，直至整个系统运行起来。
 一个简单的bootsec样例 CPU硬件设计师，BIOS系统开发等费了九牛二虎之力，终于在上电之后把OS自身最开始的512个字节的bootsec给运行起来了。作为“全村的希望”，当然是希望我们再接再励把OS运行起来的。但这里，我们不管这么多，先写一个hello world再说吧。
 org 07c00h ; 告诉编译器程序加载到7c00处 ;----直接往显存中写数据 mov ax, 0xb800 mov gs, ax mov byte [gs:0x00],&#39;h&#39; mov byte [gs:0x02],&#39;e&#39; mov byte [gs:0x04],&#39;l&#39; mov byte [gs:0x06],&#39;l&#39; mov byte [gs:0x08],&#39;o&#39; times 510-($-$$) db 0 ; 填充剩下的空间，使生成的二进制代码恰好为512字节 dw 0xaa55 ; 结束标志  上图中，0xb800是显存开始的地址。显存中，每2个字节对应显示字符，第1个字节为字符对应ASCII码，第2个字节为字符对应的颜色。屏幕每行有80个字符，共24行。这里，我们我们只修改了屏幕左上角开始的前5个字符对应的ASCII码，所以在左上角显示出了hello5个字符。……
-            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-11-17-os-boot/">阅读全文</a></p>
+            <p class="readmore"><a href="https://axiomaster.github.io/post/2021-11-17-os-boot/">阅读全文</a></p>
         </div>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-01-05-io/">I/O模型</a>
+                <a href="https://axiomaster.github.io/post/2020-01-05-io/">I/O模型</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -287,14 +287,14 @@ org 07c00h ; 告诉编译器程序加载到7c00处 ;----直接往显存中写数
 用户缓冲区 操作系统进行系统调用是有一定开销的, 而且相对开销很大. 回想读取文件时, 我们都会先申请一个buffer数组, 然后循环每次read len大小的数据, 之后代码对buffer内容进行处理.
 这么做的原因是为了避免频繁的进行系统调用. 关于len为什么取1024或4096, &laquo;UNIX环境高级编程&raquo;中专门有讨论, 这个取值是基于统计分析出来的最佳大小.
 因此, 用户缓冲区是为了减少系统调用次数.……
-            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-01-05-io/">阅读全文</a></p>
+            <p class="readmore"><a href="https://axiomaster.github.io/post/2020-01-05-io/">阅读全文</a></p>
         </div>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2018-03-04-java-oom/">Java内存泄漏分析</a>
+                <a href="https://axiomaster.github.io/post/2018-03-04-java-oom/">Java内存泄漏分析</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -303,7 +303,7 @@ org 07c00h ; 告诉编译器程序加载到7c00处 ;----直接往显存中写数
         
         <div class="post-content">
             Java内存泄漏分析 Java内存泄漏分析……
-            <p class="readmore"><a href="https://axiomaster.gitee.io/post/2018-03-04-java-oom/">阅读全文</a></p>
+            <p class="readmore"><a href="https://axiomaster.github.io/post/2018-03-04-java-oom/">阅读全文</a></p>
         </div>
     </article>
     
@@ -317,17 +317,17 @@ org 07c00h ; 告诉编译器程序加载到7c00处 ;----直接往显存中写数
 
     
     <li  class="current">
-        <a href="https://axiomaster.gitee.io/tags/os/">1</a>
+        <a href="https://axiomaster.github.io/tags/os/">1</a>
     </li>
     
     <li >
-        <a href="https://axiomaster.gitee.io/tags/os/page/2/">2</a>
+        <a href="https://axiomaster.github.io/tags/os/page/2/">2</a>
     </li>
     
 
     
     <li class="next">
-        <a href="https://axiomaster.gitee.io/tags/os/page/2/">下一页</a>
+        <a href="https://axiomaster.github.io/tags/os/page/2/">下一页</a>
     </li>
     
 </ol>
@@ -338,7 +338,7 @@ org 07c00h ; 告诉编译器程序加载到7c00处 ;----直接往显存中写数
 
                     <footer id="footer">
     <div>
-        &copy; 2022 <a href="https://axiomaster.gitee.io/">Axiomaster&#39;s Site By </a>
+        &copy; 2022 <a href="https://axiomaster.github.io/">Axiomaster&#39;s Site By </a>
         
     </div>
     <br />
@@ -372,7 +372,7 @@ org 07c00h ; 告诉编译器程序加载到7c00处 ;----直接往显存中写数
         <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://axiomaster.gitee.io/">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io/">
       <button type="submit" class="submit icon-search"></button>
 </form>
     </section>
@@ -382,43 +382,43 @@ org 07c00h ; 告诉编译器程序加载到7c00处 ;----直接往显存中写数
 <ul class="widget-list">
     
     <li>
-        <a href="https://axiomaster.gitee.io/post/2022-01-01-c-language/" title="引入c语言">引入c语言</a>
+        <a href="https://axiomaster.github.io/post/2022-01-01-c-language/" title="引入c语言">引入c语言</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.gitee.io/post/2021-12-26-protected_mode-addition/" title="保护模式补充">保护模式补充</a>
+        <a href="https://axiomaster.github.io/post/2021-12-26-protected_mode-addition/" title="保护模式补充">保护模式补充</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.gitee.io/post/2021-12-19-page/" title="内存分页">内存分页</a>
+        <a href="https://axiomaster.github.io/post/2021-12-19-page/" title="内存分页">内存分页</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.gitee.io/post/2021-12-18-protected_mode/" title="保护模式">保护模式</a>
+        <a href="https://axiomaster.github.io/post/2021-12-18-protected_mode/" title="保护模式">保护模式</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.gitee.io/post/2021-12-04-os-loader-addition/" title="确认软盘内容执行">确认软盘内容执行</a>
+        <a href="https://axiomaster.github.io/post/2021-12-04-os-loader-addition/" title="确认软盘内容执行">确认软盘内容执行</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.gitee.io/post/2021-11-22-os-loader/" title="读取并执行软盘内容">读取并执行软盘内容</a>
+        <a href="https://axiomaster.github.io/post/2021-11-22-os-loader/" title="读取并执行软盘内容">读取并执行软盘内容</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.gitee.io/post/2021-11-21-os-boot-addition/" title="启动补充说明">启动补充说明</a>
+        <a href="https://axiomaster.github.io/post/2021-11-21-os-boot-addition/" title="启动补充说明">启动补充说明</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.gitee.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
+        <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
+        <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
     </li>
     
     <li>
-        <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
+        <a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
     </li>
     
 </ul>
@@ -437,79 +437,79 @@ org 07c00h ; 告诉编译器程序加载到7c00处 ;----直接往显存中写数
         <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
     
-    <a href="https://axiomaster.gitee.io/tags/activity/">activity</a>
+    <a href="https://axiomaster.github.io/tags/activity/">activity</a>
     
-    <a href="https://axiomaster.gitee.io/tags/algorithm/">algorithm</a>
+    <a href="https://axiomaster.github.io/tags/algorithm/">algorithm</a>
     
-    <a href="https://axiomaster.gitee.io/tags/android/">android</a>
+    <a href="https://axiomaster.github.io/tags/android/">android</a>
     
-    <a href="https://axiomaster.gitee.io/tags/aosp/">aosp</a>
+    <a href="https://axiomaster.github.io/tags/aosp/">aosp</a>
     
-    <a href="https://axiomaster.gitee.io/tags/bazel/">bazel</a>
+    <a href="https://axiomaster.github.io/tags/bazel/">bazel</a>
     
-    <a href="https://axiomaster.gitee.io/tags/bug/">bug</a>
+    <a href="https://axiomaster.github.io/tags/bug/">bug</a>
     
-    <a href="https://axiomaster.gitee.io/tags/debug/">debug</a>
+    <a href="https://axiomaster.github.io/tags/debug/">debug</a>
     
-    <a href="https://axiomaster.gitee.io/tags/debugger/">debugger</a>
+    <a href="https://axiomaster.github.io/tags/debugger/">debugger</a>
     
-    <a href="https://axiomaster.gitee.io/tags/docker/">docker</a>
+    <a href="https://axiomaster.github.io/tags/docker/">docker</a>
     
-    <a href="https://axiomaster.gitee.io/tags/golang/">golang</a>
+    <a href="https://axiomaster.github.io/tags/golang/">golang</a>
     
-    <a href="https://axiomaster.gitee.io/tags/gradle/">Gradle</a>
+    <a href="https://axiomaster.github.io/tags/gradle/">Gradle</a>
     
-    <a href="https://axiomaster.gitee.io/tags/i/o/">I/O</a>
+    <a href="https://axiomaster.github.io/tags/i/o/">I/O</a>
     
-    <a href="https://axiomaster.gitee.io/tags/idea%E6%8F%92%E4%BB%B6/">IDEA插件</a>
+    <a href="https://axiomaster.github.io/tags/idea%E6%8F%92%E4%BB%B6/">IDEA插件</a>
     
-    <a href="https://axiomaster.gitee.io/tags/java/">java</a>
+    <a href="https://axiomaster.github.io/tags/java/">java</a>
     
-    <a href="https://axiomaster.gitee.io/tags/linux/">linux</a>
+    <a href="https://axiomaster.github.io/tags/linux/">linux</a>
     
-    <a href="https://axiomaster.gitee.io/tags/ml/">ML</a>
+    <a href="https://axiomaster.github.io/tags/ml/">ML</a>
     
-    <a href="https://axiomaster.gitee.io/tags/net/">net</a>
+    <a href="https://axiomaster.github.io/tags/net/">net</a>
     
-    <a href="https://axiomaster.gitee.io/tags/nginx/">nginx</a>
+    <a href="https://axiomaster.github.io/tags/nginx/">nginx</a>
     
-    <a href="https://axiomaster.gitee.io/tags/os/">OS</a>
+    <a href="https://axiomaster.github.io/tags/os/">OS</a>
     
-    <a href="https://axiomaster.gitee.io/tags/tensorflow/">Tensorflow</a>
+    <a href="https://axiomaster.github.io/tags/tensorflow/">Tensorflow</a>
     
-    <a href="https://axiomaster.gitee.io/tags/tool/">tool</a>
+    <a href="https://axiomaster.github.io/tags/tool/">tool</a>
     
-    <a href="https://axiomaster.gitee.io/tags/view/">view</a>
+    <a href="https://axiomaster.github.io/tags/view/">view</a>
     
-    <a href="https://axiomaster.gitee.io/tags/window/">window</a>
+    <a href="https://axiomaster.github.io/tags/window/">window</a>
     
-    <a href="https://axiomaster.gitee.io/tags/zookeeper/">zookeeper</a>
+    <a href="https://axiomaster.github.io/tags/zookeeper/">zookeeper</a>
     
-    <a href="https://axiomaster.gitee.io/tags/zygote/">zygote</a>
+    <a href="https://axiomaster.github.io/tags/zygote/">zygote</a>
     
-    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98/">内存</a>
+    <a href="https://axiomaster.github.io/tags/%E5%86%85%E5%AD%98/">内存</a>
     
-    <a href="https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/">吐槽</a>
+    <a href="https://axiomaster.github.io/tags/%E5%90%90%E6%A7%BD/">吐槽</a>
     
-    <a href="https://axiomaster.gitee.io/tags/%E5%B7%A5%E5%85%B7/">工具</a>
+    <a href="https://axiomaster.github.io/tags/%E5%B7%A5%E5%85%B7/">工具</a>
     
-    <a href="https://axiomaster.gitee.io/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    <a href="https://axiomaster.github.io/tags/%E5%B9%B6%E5%8F%91/">并发</a>
     
-    <a href="https://axiomaster.gitee.io/tags/%E6%89%8B%E5%B7%A5/">手工</a>
+    <a href="https://axiomaster.github.io/tags/%E6%89%8B%E5%B7%A5/">手工</a>
     
-    <a href="https://axiomaster.gitee.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
+    <a href="https://axiomaster.github.io/tags/%E6%89%AF%E6%B7%A1/">扯淡</a>
     
-    <a href="https://axiomaster.gitee.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
+    <a href="https://axiomaster.github.io/tags/%E6%97%A5%E5%B8%B8/">日常</a>
     
-    <a href="https://axiomaster.gitee.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
+    <a href="https://axiomaster.github.io/tags/%E7%94%9F%E6%B4%BB/">生活</a>
     
-    <a href="https://axiomaster.gitee.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/">神奇的bug</a>
+    <a href="https://axiomaster.github.io/tags/%E7%A5%9E%E5%A5%87%E7%9A%84bug/">神奇的bug</a>
     
-    <a href="https://axiomaster.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+    <a href="https://axiomaster.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
     
-    <a href="https://axiomaster.gitee.io/tags/%E8%AF%81%E4%B9%A6/">证书</a>
+    <a href="https://axiomaster.github.io/tags/%E8%AF%81%E4%B9%A6/">证书</a>
     
-    <a href="https://axiomaster.gitee.io/tags/%E9%93%BE%E6%8E%A5/">链接</a>
+    <a href="https://axiomaster.github.io/tags/%E9%93%BE%E6%8E%A5/">链接</a>
     
 </div>
     </section>
@@ -519,7 +519,7 @@ org 07c00h ; 告诉编译器程序加载到7c00处 ;----直接往显存中写数
     <section class="widget">
         <h3 class="widget-title">其它</h3>
         <ul class="widget-list">
-            <li><a href="https://axiomaster.gitee.io/index.xml">文章 RSS</a></li>
+            <li><a href="https://axiomaster.github.io/index.xml">文章 RSS</a></li>
         </ul>
     </section>
 </div>
