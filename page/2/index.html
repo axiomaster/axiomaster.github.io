@@ -65,6 +65,24 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年9月3日
+        </date>
+        
+        <div class="post-content">
+            CNN  输入特征图的深度（channel数），决定了当前层卷积核的深度； 当前层卷积核的个数，决定了当前层输出特征图的深度；  tf.keras.layers.Conv2D(kernel_size=卷积核尺寸,strides=滑动补偿,padding=&#34;same&#34; or &#34;valid&#34;,activation=&#34;relu&#34; or &#34;sigmoid&#34; or &#34;tanh&#34; or &#34;softmax&#34;,input_shape=(高, 宽, 通道数))批标准化（Batch Normalization, BN） 池化 池化用于减少特征数据量，最大值池化可提取图片纹理，均值池化可保留背景特征。
+舍弃 Dropout 训练时，一定概率随机舍弃神经元。网络使用时，恢复神经元。
+卷积神经网络结构 卷积：特征提取器，CBAPD(Convolutinoal, BN, Activation, Pooling, Dropout)……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://axiomaster.gitee.io/post/2020-03-01-weakreference/" title="Weak Reference">Weak Reference</a>
             </h1>
         </header>
@@ -233,28 +251,6 @@
         <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-01-07-zygote/">阅读全文</a></p>
     </article>
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-01-07-aosp/" title="aosp源码编译与阅读">aosp源码编译与阅读</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年1月7日
-        </date>
-        
-        <div class="post-content">
-            下载源码 国内从google下载aosp源码需要翻墙，很不方便。可以使用清华大学开源软件镜像站提供的镜像地址进行下载,同步代码.
-下载,检出代码按照清华镜像站的地址说明一步步操作就可以了.
-可能的错误  初始化包比较大,下载后记得进行md5校验. 使用迅雷中断后续传,发现md5值不匹配,推荐使用uget之类的工具在晚上下载,一次成功.  aosp编译 官方指导
- 建立编译环境 编译 Android  编译很简单, aosp源码中prebuilts目录下集成了所有编译会用到的工具,包括clang, jdk等,不需要额外下载. 编译脚本只支持python2,环境上安装一下python2就可以了.
-在Ubuntu 18.04上使用如下步骤进行编译:
-设置环境变量等 source build/envsetup.sh 设置编译目标版本 lism@lism-u18:~/android/aosp$ lunch aosp_x86_64-eng ============================================ PLATFORM_VERSION_CODENAME=R PLATFORM_VERSION=R TARGET_PRODUCT=aosp_x86_64 TARGET_BUILD_VARIANT=eng TARGET_BUILD_TYPE=release TARGET_ARCH=x86_64 TARGET_ARCH_VARIANT=x86_64 TARGET_2ND_ARCH=x86 TARGET_2ND_ARCH_VARIANT=x86_64 HOST_ARCH=x86_64 HOST_2ND_ARCH=x86 HOST_OS=linux HOST_OS_EXTRA=Linux-5.0.0-37-generic-x86_64-Ubuntu-18.04.3-LTS HOST_CROSS_OS=windows HOST_CROSS_ARCH=x86 HOST_CROSS_2ND_ARCH=x86_64 HOST_BUILD_TYPE=release BUILD_ID=QD1A.190821.011 OUT_DIR=out ============================================ 如果不清楚需要输入什么版本, 输入lunch后会自动列出支持的版本信息.
-lism@lism-u18:~/android/aosp$ lunch You&#39;re building on Linux Lunch menu... pick a combo: 1. aosp_arm-eng 2. aosp_arm64-eng 3. aosp_blueline-userdebug 4. aosp_bonito-userdebug 5.……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-01-07-aosp/">阅读全文</a></p>
-    </article>
-    
     
 
 
@@ -293,10 +289,6 @@ lism@lism-u18:~/android/aosp$ lunch You&#39;re building on Linux Lunch menu... p
     
     <li >
         <a href="https://axiomaster.gitee.io/page/7/">7</a>
-    </li>
-    
-    <li >
-        <a href="https://axiomaster.gitee.io/page/8/">8</a>
     </li>
     
 
@@ -357,6 +349,10 @@ lism@lism-u18:~/android/aosp$ lunch You&#39;re building on Linux Lunch menu... p
 <ul class="widget-list">
     
     <li>
+        <a href="https://axiomaster.gitee.io/post/2022-01-01-c-language/" title="引入c语言">引入c语言</a>
+    </li>
+    
+    <li>
         <a href="https://axiomaster.gitee.io/post/2021-12-26-protected_mode-addition/" title="保护模式补充">保护模式补充</a>
     </li>
     
@@ -390,10 +386,6 @@ lism@lism-u18:~/android/aosp$ lunch You&#39;re building on Linux Lunch menu... p
     
     <li>
         <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
     </li>
     
 </ul>
@@ -463,8 +455,6 @@ lism@lism-u18:~/android/aosp$ lunch You&#39;re building on Linux Lunch menu... p
     <a href="https://axiomaster.gitee.io/tags/zygote/">zygote</a>
     
     <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98/">内存</a>
-    
-    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
     
     <a href="https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/">吐槽</a>
     

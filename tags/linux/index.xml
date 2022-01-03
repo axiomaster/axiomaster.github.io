@@ -82,23 +82,5 @@
       <description>好玩的linux小应用 收集一些linux下好玩的应用 </description>
     </item>
     
-    <item>
-      <title>线性地址 -&gt; 物理地址 PAGE</title>
-      <link>https://axiomaster.gitee.io/post/2018-09-08-page/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://axiomaster.gitee.io/post/2018-09-08-page/</guid>
-      <description>线性地址 -  </description>
-    </item>
-    
-    <item>
-      <title>逻辑地址-&gt;线性地址 GDT/LDT</title>
-      <link>https://axiomaster.gitee.io/post/2018-09-08-gdt-ldt/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://axiomaster.gitee.io/post/2018-09-08-gdt-ldt/</guid>
-      <description>逻辑地址-  </description>
-    </item>
-    
   </channel>
 </rss>

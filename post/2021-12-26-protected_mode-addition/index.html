@@ -85,9 +85,143 @@
 <li><a href="https://axiomaster.gitee.io/post/2021-12-18-protected_mode/">3-1 保护模式</a></li>
 <li><a href="https://axiomaster.gitee.io/post/2021-12-19-page/">3-2 分页</a></li>
 </ul>
-<p>根据Intel CPU的设计，理论上我们可以将内存划分出很多个段。但Linux基于可移植性等因素考虑，并没有充分利用CPU分段机制，而是将整个4GB的线性地址空间都对应为同一个段。</p>
+<h2 id="保护">保护</h2>
+<p>前面讲过，保护模式的保护，是指CPU在进行内存跳转、访问时，增加了很多检查，确保内存访问安全。在分段和分页机制中，我们也看到了，段选择子，段描述符等都有很多的权限相关的标记位，CPU就是根据这些标记位及一系列访问规则判断是否有权限访问的，即进行内存保护。</p>
+<h3 id="数据段代码段">数据段&amp;代码段</h3>
+<p>段描述符中的S位（44位），表明段描述符的类型：</p>
+<ul>
+<li>S=0, 系统段/门描述符</li>
+<li>S=1, 数据段/代码段</li>
+</ul>
+<p>段描述符中的TYPE位（40~43位），表明段描述符的类型。一个段可能为：</p>
+<table>
+<thead>
+<tr>
+<th>TYPE值</th>
+<th>数据段/代码段</th>
+<th>系统段/门描述符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>只读</td>
+<td>未定义</td>
+</tr>
+<tr>
+<td>1</td>
+<td>只读,已访问</td>
+<td>可用286 TSS</td>
+</tr>
+<tr>
+<td>2</td>
+<td>读/写</td>
+<td>LDT</td>
+</tr>
+<tr>
+<td>3</td>
+<td>读/写，已访问</td>
+<td>忙的286 TSS</td>
+</tr>
+<tr>
+<td>4</td>
+<td>只读，向下扩展</td>
+<td>286 调用门</td>
+</tr>
+<tr>
+<td>5</td>
+<td>只读，向下扩展，已访问</td>
+<td>任务门</td>
+</tr>
+<tr>
+<td>6</td>
+<td>读/写，向下扩展</td>
+<td>286 中断门</td>
+</tr>
+<tr>
+<td>7</td>
+<td>读/写，向下扩展，已访问</td>
+<td>286 陷阱门</td>
+</tr>
+<tr>
+<td>8</td>
+<td>只执行</td>
+<td>未定义</td>
+</tr>
+<tr>
+<td>9</td>
+<td>只执行、已访问</td>
+<td>可用386 TSS</td>
+</tr>
+<tr>
+<td>A</td>
+<td>执行/读</td>
+<td>未定义</td>
+</tr>
+<tr>
+<td>B</td>
+<td>执行/读、已访问</td>
+<td>忙的386 TSS</td>
+</tr>
+<tr>
+<td>C</td>
+<td>只执行、一致代码</td>
+<td>386 调用门</td>
+</tr>
+<tr>
+<td>D</td>
+<td>只执行、一致代码、已访问</td>
+<td>未定义</td>
+</tr>
+<tr>
+<td>E</td>
+<td>执行/读、一致代码</td>
+<td>286 中断门</td>
+</tr>
+<tr>
+<td>F</td>
+<td>执行/读、一致代码、已访问</td>
+<td>386 陷阱门</td>
+</tr>
+</tbody>
+</table>
+<p>从这么多种类型定义中，可以预期整个检查规则很复杂（@_@）。其中门描述符（gate）用于中断发生时的检查，CPU确认特权级等设定符合约束后，才能进入相应的处理程序。</p>
+<h3 id="特权级">特权级</h3>
+<p>x86 CPU定义了4种特权级，越靠近中心，级别越高。</p>
 <p>
-        <img class="mx-auto" alt="" src="https://gitee.com/axiomaster/pages-imgs/raw/master/linux_logcal_linear.gif" />   
+        <img class="mx-auto" alt="" src="https://gitee.com/axiomaster/pages-imgs/raw/master/chap3_ring.png" />   
+    </p>
+<p>实际中，linux只使用了ring0和ring3：ring0对应内核态，ring3对应用户态。</p>
+<h3 id="特权检查">特权检查</h3>
+<ul>
+<li>CPL: 处理器当前特权级</li>
+<li>DPL: 段或<strong>门</strong>的特权级，段描述符或门描述符的（45~46位）DPL字段</li>
+<li>RPL: 请求特权级，选择子的（0~1位）RPL字段</li>
+</ul>
+<p>特权检查时对这3个特权级，依据规则检查。检查通过则访问成功。</p>
+<h4 id="数据段检查规则">数据段检查规则</h4>
+<p><strong>(CPL &lt;= 目标数据段DPL) &amp;&amp; (RPL &lt;= 目标数据段DPL)</strong></p>
+<p>即: 高特权级指令访问低特权级数据</p>
+<h4 id="代码段检查规则">代码段检查规则</h4>
+<ul>
+<li>无门结构且目标为非一致代码段：<strong>CPL = RPL = 目标代码段DPL</strong></li>
+<li>无门结构且目标为一致代码段：<strong>(CPL &gt;= 目标数据段DPL) &amp;&amp; (RPL &gt;= 目标数据段DPL)</strong></li>
+<li>有门结构：<strong>(DPL_GATE &gt;= CPL &gt;= DPL_CODE) &amp;&amp; (RPL &lt;= DPL_GATE)</strong>（从低特权级跳到高特权级需要通过门）</li>
+</ul>
+<p>总结：数据只能高访问低；代码只能低跳转到高；从高访问低只有返回指令可以;</p>
+<p><em>整个保护模式的规则很复杂，又会涉及到很多概念和细节，放弃吧~</em></p>
+<h2 id="地址转换">地址转换</h2>
+<p>逻辑地址-&gt;线性地址-&gt;物理地址的转换，通过CPU约定的分段规则及分页规则完成。可以想象，所有的操作都会涉及内存寻址，这些转换必然非常频繁的进行。CPU为了高效处理，设计了专门的硬件模块（MMU，内存管理单元）来完成内存地址转换。</p>
+<h2 id="linux的分段">linux的分段</h2>
+<p>根据Intel CPU的设计，理论上我们可以将内存划分出很多个段。但Linux基于可移植性等因素考虑（一些RISC CPU不支持分段），并没有充分利用x86 CPU提供的分段机制，而是将整个4GB的线性地址空间都对应为同一个段。这样，事实上逻辑地址（段内偏移量）与线性地址相同。</p>
+<p>
+        <img class="mx-auto" alt="" src="https://gitee.com/axiomaster/pages-imgs/raw/master/chap3_linux_local_linear.png" />   
+    </p>
+<p>由于x86 CPU段机制规定，代码段与数据段不同；而且linux内核态对应ring0，用户态对应ring3。所有linux需要分别创建内核数据段，内核代码段；用户数据段，用户代码段。</p>
+<h2 id="linux的分页">linux的分页</h2>
+<p>现在的linux内核中，为了同时支持32位与64位系统，linux分页也不是采用2级页表，而是4级页表。</p>
+<p>
+        <img class="mx-auto" alt="" src="https://gitee.com/axiomaster/pages-imgs/raw/master/chap3_linux_page.png" />   
     </p>
 
         </div>
@@ -188,6 +322,10 @@
 <ul class="widget-list">
     
     <li>
+        <a href="https://axiomaster.gitee.io/post/2022-01-01-c-language/" title="引入c语言">引入c语言</a>
+    </li>
+    
+    <li>
         <a href="https://axiomaster.gitee.io/post/2021-12-26-protected_mode-addition/" title="保护模式补充">保护模式补充</a>
     </li>
     
@@ -221,10 +359,6 @@
     
     <li>
         <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
     </li>
     
 </ul>
@@ -294,8 +428,6 @@
     <a href="https://axiomaster.gitee.io/tags/zygote/">zygote</a>
     
     <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98/">内存</a>
-    
-    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
     
     <a href="https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/">吐槽</a>
     

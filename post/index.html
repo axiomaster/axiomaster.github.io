@@ -67,6 +67,26 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2022-01-01-c-language/" title="引入c语言">引入c语言</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2022年1月1日
+        </date>
+        
+        <div class="post-content">
+             1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 分页 3-3 保护模式补充  编译过程 前面我们都是使用汇编进行编程，从这节开始引入c语言进行编写。我们知道C语言相对汇编语言，属于高级语言(^_^)。高级语言是需要编译成机器语言才可以执行的。为了让编译器编译得到的结果能够方便的在操作系统上执行，操作系统定义了二进制可执行文件的格式。linux上使用的就是ELF文件格式。
+我们这次只是开发操作系统，没有做自己的C编译器，还是要使用gcc等编译器。所以我们的操作系统就要去兼容gcc编译得到的ELF文件结果。历史上，gcc也是在linux操作系统之前被开发出来的。
+ ELF文件格式 ……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2022-01-01-c-language/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://axiomaster.gitee.io/post/2021-12-26-protected_mode-addition/" title="保护模式补充">保护模式补充</a>
             </h1>
         </header>
@@ -75,8 +95,10 @@
         </date>
         
         <div class="post-content">
-             1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 分页  根据Intel CPU的设计，理论上我们可以将内存划分出很多个段。但Linux基于可移植性等因素考虑，并没有充分利用CPU分段机制，而是将整个4GB的线性地址空间都对应为同一个段。
- ……
+            1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 分页  保护 前面讲过，保护模式的保护，是指CPU在进行内存跳转、访问时，增加了很多检查，确保内存访问安全。在分段和分页机制中，我们也看到了，段选择子，段描述符等都有很多的权限相关的标记位，CPU就是根据这些标记位及一系列访问规则判断是否有权限访问的，即进行内存保护。
+数据段&amp;代码段 段描述符中的S位（44位），表明段描述符的类型：
+ S=0, 系统段/门描述符 S=1, 数据段/代码段  段描述符中的TYPE位（40~43位），表明段描述符的类型。一个段可能为：
+   TYPE值 数据段/代码段 系统段/门描述符     0 只读 未定义   1 只读,已访问 可用286 TSS   2 读/写 LDT   3 读/写，已访问 忙的286 TSS   4 只读，向下扩展 286 调用门   5 只读，向下扩展，已访问 任务门   6 读/写，向下扩展 286 中断门   7 读/写，向下扩展，已访问 286 陷阱门   8 只执行 未定义   9 只执行、已访问 可用386 TSS   A 执行/读 未定义   B 执行/读、已访问 忙的386 TSS   C 只执行、一致代码 386 调用门   D 只执行、一致代码、已访问 未定义   E 执行/读、一致代码 286 中断门   F 执行/读、一致代码、已访问 386 陷阱门    从这么多种类型定义中，可以预期整个检查规则很复杂（@_@）。其中门描述符（gate）用于中断发生时的检查，CPU确认特权级等设定符合约束后，才能进入相应的处理程序。……
         </div>
         <p class="readmore"><a href="https://axiomaster.gitee.io/post/2021-12-26-protected_mode-addition/">阅读全文</a></p>
     </article>
@@ -299,26 +321,6 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
     
     
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年9月3日
-        </date>
-        
-        <div class="post-content">
-            六步法  import train, test 网络结构  model=tf.keras.models.Sequential # 搭建网络结构 class MyModel(Model) model = MyModel   model.compile # 配置训练优化器，损失函数 model.fit # 输入特征，batch, epoch model.summary  网络结构 拉直层 tf.keras.layers.Flatten()
-全连接层 tf.keras.layers.Dense(神经元个数, activation=&#34;激活函数&#34;, kernel_regularizer=&#34;正则化&#34;)卷积层 tf.keras.layers.Conv2D(filters=卷积核个数, kernel_size=卷积核尺寸, strides=卷积步长, padding=&#34;valid&#34; or &#34;same&#34;)LSTM层 tf.keras.layers.LSTM()
-训练方法 model.compile(optimizer=优化器, loss=损失函数, metrics=[&#34;准确率&#34;])Optimizer  sgd adagrad adadelta adam  loss Metrics 训练过程 model.fit(训练集的输入特征, 训练集的标签, batch_size=, epochs=, validation_data=(测试集的输入特征, 测试集的标签), validation_split=从训练集划分多少比例分给测试集, validation_freq=多少次epoch测试一次)……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/">阅读全文</a></p>
-    </article>
-    
-    
-    
 
 
 
@@ -352,10 +354,6 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
     
     <li >
         <a href="https://axiomaster.gitee.io/post/page/7/">7</a>
-    </li>
-    
-    <li >
-        <a href="https://axiomaster.gitee.io/post/page/8/">8</a>
     </li>
     
 
@@ -416,6 +414,10 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
 <ul class="widget-list">
     
     <li>
+        <a href="https://axiomaster.gitee.io/post/2022-01-01-c-language/" title="引入c语言">引入c语言</a>
+    </li>
+    
+    <li>
         <a href="https://axiomaster.gitee.io/post/2021-12-26-protected_mode-addition/" title="保护模式补充">保护模式补充</a>
     </li>
     
@@ -449,10 +451,6 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
     
     <li>
         <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
     </li>
     
 </ul>
@@ -522,8 +520,6 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
     <a href="https://axiomaster.gitee.io/tags/zygote/">zygote</a>
     
     <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98/">内存</a>
-    
-    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
     
     <a href="https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/">吐槽</a>
     

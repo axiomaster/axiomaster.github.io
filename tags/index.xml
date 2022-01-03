@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 26 Dec 2021 14:15:29 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 01 Jan 2022 22:56:29 +0800</lastBuildDate>
     
 	<atom:link href="https://axiomaster.gitee.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>OS</title>
       <link>https://axiomaster.gitee.io/tags/os/</link>
-      <pubDate>Sun, 26 Dec 2021 14:15:29 +0800</pubDate>
+      <pubDate>Sat, 01 Jan 2022 22:56:29 +0800</pubDate>
       
       <guid>https://axiomaster.gitee.io/tags/os/</guid>
       <description></description>
@@ -323,15 +323,6 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>内存管理</title>
-      <link>https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</guid>
       <description></description>
     </item>
     

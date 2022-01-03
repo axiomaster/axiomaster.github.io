@@ -67,6 +67,36 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2019-03-03-plantuml/" title="工具篇">工具篇</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年3月3日
+        </date>
+        
+        <div class="post-content">
+            曾经信心满满的立过很多flag，要学习并掌握某一领域或坚持某件事儿，最终都无疾而终，只剩下零星概念和一堆遗憾，原因大都类似：
+ 计划被其它事情打断，中止了 进行到一半，发现意义不大 进行中遇到了困难，放弃了 当时掌握了，但没有及时总结，后续没有练习，忘记了  包括不限于协议栈、数据库、JVM、正则表达式、音律、写总结&hellip;&hellip;也包括设计模式。结果一回头，猛然发现时间已经过去了这么久，却什么都没有留下来。
+在此再立一个flag，每周写一篇总结。周积跬步，以致千里。
+UML  统一建模语言 (Unified Modeling Language, UML)
+ 所有介绍设计模式的资料都会用到uml图。之前总以为UML图就是类图，每次都是被继承，实现里面的实线、虚线、箭头等给整懵了。然后就放弃看图，只看代码实现。
+现在才知道，类图只是UML中的一小部分。UML图还包括用例图，时序图等。和SE等大佬交流时，设计文档里全是各种UML图。
+PlantUML 各种工具都可以画UML图，包括visio，Visual Paradigm等。我们使用PlantUML, 像Markdown一样，通过简单的语句写UML图，使用方便。当然，这一套工具也都是免费的。
+windows安装  PlantUML  PlantUML有IntelliJ IDEA的插件版，可以直接在IDEA的plugins中下载安装。我们也使用这个版本。
+ 插件装好之后，新建puml文件，直接打开就可以看到对应的编辑器了。
+  Graphviz  安装插件之后，也可能无法看到右边的预览图，而是提示报错，这是因为缺少Graphviz环境变量。Graphviz是一个开源的绘图软件，很多开源软件生成可视化图时都使用Graphviz。
+下载Graphviz并安装后，配置如下环境变量之后就好了。
+GRAPHVIZ_DOT=D:\Program Files (x86)\Graphviz2.38\bin\dot.exe PlantUML基本语法  PlantUML类图
+  泛化，Generalization 关联，Association 组合，Composition 聚合，Aggregation 实现，Realization 依赖，Dependency  @startuml Class01 &lt;|-- Class02:泛化 Class03 &lt;-- Class04:关联 Class05 *-- Class06:组合 Class07 o-- Class08:聚合 Class09 &lt;|.. Class10:实现 Class11 &lt;.. Class12:依赖 @enduml   ……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-03-03-plantuml/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://axiomaster.gitee.io/post/2019-02-27-programer-romantic/" title="程序员的浪漫">程序员的浪漫</a>
             </h1>
         </header>
@@ -129,42 +159,6 @@
 致谢 本博客使用了柏荧(BY)的模板，在此向他致谢。……
         </div>
         <p class="readmore"><a href="https://axiomaster.gitee.io/post/2019-01-05-hello-world/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2018-09-08-gdt-ldt/" title="逻辑地址-&gt;线性地址 GDT/LDT">逻辑地址-&gt;线性地址 GDT/LDT</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            1年1月1日
-        </date>
-        
-        <div class="post-content">
-            逻辑地址-  ……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2018-09-08-gdt-ldt/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.gitee.io/post/2018-09-08-page/" title="线性地址 -&gt; 物理地址 PAGE">线性地址 -&gt; 物理地址 PAGE</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            1年1月1日
-        </date>
-        
-        <div class="post-content">
-            线性地址 -  ……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2018-09-08-page/">阅读全文</a></p>
     </article>
     
     
@@ -260,6 +254,24 @@ Comments axiomaster_lism: https://www.cnblogs.com/mYunYu/p/8892833.html……
     
     
     
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.gitee.io/post/2018-03-10-funny-linux-app/" title="好玩的linux小应用">好玩的linux小应用</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            1年1月1日
+        </date>
+        
+        <div class="post-content">
+            好玩的linux小应用 收集一些linux下好玩的应用 ……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.gitee.io/post/2018-03-10-funny-linux-app/">阅读全文</a></p>
+    </article>
+    
+    
+    
 
 
 
@@ -297,10 +309,6 @@ Comments axiomaster_lism: https://www.cnblogs.com/mYunYu/p/8892833.html……
     
     <li >
         <a href="https://axiomaster.gitee.io/post/page/7/">7</a>
-    </li>
-    
-    <li >
-        <a href="https://axiomaster.gitee.io/post/page/8/">8</a>
     </li>
     
 
@@ -361,6 +369,10 @@ Comments axiomaster_lism: https://www.cnblogs.com/mYunYu/p/8892833.html……
 <ul class="widget-list">
     
     <li>
+        <a href="https://axiomaster.gitee.io/post/2022-01-01-c-language/" title="引入c语言">引入c语言</a>
+    </li>
+    
+    <li>
         <a href="https://axiomaster.gitee.io/post/2021-12-26-protected_mode-addition/" title="保护模式补充">保护模式补充</a>
     </li>
     
@@ -394,10 +406,6 @@ Comments axiomaster_lism: https://www.cnblogs.com/mYunYu/p/8892833.html……
     
     <li>
         <a href="https://axiomaster.gitee.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.gitee.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
     </li>
     
 </ul>
@@ -467,8 +475,6 @@ Comments axiomaster_lism: https://www.cnblogs.com/mYunYu/p/8892833.html……
     <a href="https://axiomaster.gitee.io/tags/zygote/">zygote</a>
     
     <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98/">内存</a>
-    
-    <a href="https://axiomaster.gitee.io/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
     
     <a href="https://axiomaster.gitee.io/tags/%E5%90%90%E6%A7%BD/">吐槽</a>
     
