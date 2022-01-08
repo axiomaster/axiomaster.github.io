@@ -92,7 +92,44 @@
 <p>
         <img class="mx-auto" alt="" src="https://gitee.com/axiomaster/pages-imgs/raw/master/chap4_gcc.png" />   
     </p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+{
+  printf(<span style="color:#e6db74">&#34;hello world</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p>我们用<code>hello world</code>走一遍这个流程。</p>
+<p><em>我的环境是64位的，我们要编译32位的结果，所以中间会有一些特殊的编译选项。为了省事儿，也可以搭建32位的开发编译环境。</em></p>
+<p>
+        <img class="mx-auto" alt="" src="https://gitee.com/axiomaster/pages-imgs/raw/master/chap4_compile.png" />   
+    </p>
+<h3 id="预处理">预处理</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gcc -E hello.c -o hello.i
+</code></pre></div><p>我们可以看到，7行的<code>hello.c</code>源文件经过预处理后，得到了733行的<code>hello.i</code>的文本文件。</p>
+<h3 id="编译器">编译器</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gcc -S hello.i -o hello.s -m32
+</code></pre></div><p>编译后得到了<code>hello.s</code>的汇编代码。这里，<code>-m32</code>是为了指定得到32位的结果，否则一些寄存器长度会错误。</p>
+<h3 id="汇编器">汇编器</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gcc -c hello.s -o hello.o -m32
+</code></pre></div><p>经汇编之后，得到的是<code>ELF 32-bit LSB relocatable </code>文件。</p>
+<h3 id="链接">链接</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ld -m elf_i386 hello.o -lc -e main
+</code></pre></div><p>链接之后，得到的就是<code>ELF 32-bit LSB executable</code>可执行文件。</p>
+<ul>
+<li>因为我们使用标准库printf函数，所以需要链接标准库<code>-lc</code></li>
+<li>程序入口是main函数,<code>-e main</code>用来指定入口</li>
+</ul>
+<p><em>链接器ld的历史比gcc更古老。因为越早期，程序开发越接近二进制。伴随着自底向上的这些工具被发明，程序开发一步步从二进制-&gt;汇编-&gt;高级语言进行抽象简化</em>。</p>
 <h2 id="elf文件格式">ELF文件格式</h2>
+<p>ELF文件的具体细节就不展开了。使用readelf命令可以解析ELF文件，我们可以先看一下<code>hello world</code>的解析结果。可以看到，<code>Entry point address</code>为<code>0x8049020</code>。这个地址是gcc编译程序后线性地址对应的入口地址。</p>
+<p>
+        <img class="mx-auto" alt="hello" src="https://gitee.com/axiomaster/pages-imgs/raw/master/chap_hello.png" />   
+    </p>
+<p><em>默认初始地址应该为804800，但实测发现现在使用gcc编译的默认地址发生了变化</em></p>
+<p>我们知道c语言的入口是main函数。实际上，gcc编译后ELF文件的默认入口是<code>_start</code>，对应的地址是<code>0x8049020</code>。这个地址可以通过修改连接器参数进行修改，我们将入口地址修改为<code>0xc0001500</code>：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ld -m elf_i386 -Ttext 0xc0001500
+</code></pre></div><p>这样，我们将编译得到的ELF文件，按照ELF文件的格式依次拷贝到对应的线性地址处，然后跳转到我们指定的地址<code>0xc0001500</code>，就可以执行c语言写的代码了。</p>
 
         </div>
 
