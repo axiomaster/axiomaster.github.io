@@ -39,7 +39,7 @@
         <div class="col-group">
             <div class="site-name ">
                 
-                    <a id="logo" href="https://axiomaster.github.io/">
+                    <a id="logo" href="https://axiomaster.github.io">
                         Axiomaster&#39;s Site
                     </a>
                 
@@ -47,7 +47,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://axiomaster.github.io/">首页</a>
+                    <a class="" href="https://axiomaster.github.io">首页</a>
                     
                 </nav>
             </div>
@@ -70,6 +70,48 @@
     </h3>
     
 
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2020-01-05-io/">I/O模型</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年1月5日
+        </date>
+        
+        <div class="post-content">
+            I/O处理过程 系统调用 操作系统出于安全的考虑，将进程的内存空间划分为用户空间(0~3G)和内核空间(3-4G)。进程在执行用户自己的代码时处于用户态(ring3); 当用户代码需要操作系统资源时, 可以通过调用操作系统提供的标准接口(POSIX)进行访问, 此时进程从用户态切换到内核态. 操作系统提供的这些接口称为系统调用.
+使用top命令时, Cpu后面的us就对应用户态使用的cpu, sy就对应内核态使用的cpu.
+%Cpu(s): 1.2 us, 0.7 sy, 0.0 ni, 98.0 id, 0.1 wa, 0.0 hi, 0.0 si, 0.0 st 硬盘, 网卡等等这些设备, 用户代码都是无法直接访问的, 需要通过操作系统提供的标准系统调用进行访问. 对于linux系统, 将所有的设备都抽象成文件, 因此, 对于这些设备的访问都可以归类为IO操作.
+文件读取过程 用户程序读取磁盘或网卡上的数据, 执行read系统调用时可以分为2个过程:
+  操作系统需要将磁盘或网卡上的数据先拷贝到内核缓冲区
+  操作系统再将内核缓冲区的数据拷贝到用户缓冲区
+  内核缓冲区 我们知道, 硬盘等外设因为硬件原因, 读写相对内存来说是要慢几个数量级的. 如果内核一有数据就立即写入磁盘, 就需要频繁的调用驱动的硬件.操作系统为了提高与硬件交互的效率, 并不会一有数据就立即写入, 而是等攒够一些数据之后再批量写入.
+因此, 内核缓冲区时为了减少内核与外部硬件交互的次数.
+用户缓冲区 操作系统进行系统调用是有一定开销的, 而且相对开销很大. 回想读取文件时, 我们都会先申请一个buffer数组, 然后循环每次read len大小的数据, 之后代码对buffer内容进行处理.
+这么做的原因是为了避免频繁的进行系统调用. 关于len为什么取1024或4096, &laquo;UNIX环境高级编程&raquo;中专门有讨论, 这个取值是基于统计分析出来的最佳大小.
+因此, 用户缓冲区是为了减少系统调用次数.……
+            <p class="readmore"><a href="https://axiomaster.github.io/post/2020-01-05-io/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2018-03-04-java-oom/">Java内存泄漏分析</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            1年1月1日
+        </date>
+        
+        <div class="post-content">
+            Java内存泄漏分析 Java内存泄漏分析……
+            <p class="readmore"><a href="https://axiomaster.github.io/post/2018-03-04-java-oom/">阅读全文</a></p>
+        </div>
+    </article>
     
     <article class="post">
         <header>
@@ -134,7 +176,7 @@
 
                     <footer id="footer">
     <div>
-        &copy; 2022 <a href="https://axiomaster.github.io/">Axiomaster&#39;s Site By </a>
+        &copy; 2022 <a href="https://axiomaster.github.io">Axiomaster&#39;s Site By </a>
         
     </div>
     <br />
@@ -168,7 +210,7 @@
         <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io/">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io">
       <button type="submit" class="submit icon-search"></button>
 </form>
     </section>
@@ -176,6 +218,14 @@
     <section class="widget">
         <h3 class="widget-title">最近文章</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2022-01-08-c-language-addition/" title="c语言补充说明">c语言补充说明</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2022-01-08-interrupt/" title="中断">中断</a>
+    </li>
     
     <li>
         <a href="https://axiomaster.github.io/post/2022-01-01-c-language/" title="引入c语言">引入c语言</a>
@@ -207,14 +257,6 @@
     
     <li>
         <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
     </li>
     
 </ul>

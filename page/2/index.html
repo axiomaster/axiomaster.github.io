@@ -37,7 +37,7 @@
             <div class="site-name ">
                 
                     <h1>
-                        <a id="logo" href="https://axiomaster.github.io/">
+                        <a id="logo" href="https://axiomaster.github.io">
                             Axiomaster&#39;s Site
                         </a>
                     </h1>
@@ -46,7 +46,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="https://axiomaster.github.io/">首页</a>
+                    <a class="current" href="https://axiomaster.github.io">首页</a>
                     
                 </nav>
             </div>
@@ -61,6 +61,49 @@
                 <div class="col-8" id="main">
                     
 <div class="res-cons">
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2021年10月31日
+        </date>
+        
+        <div class="post-content">
+            GCC 支持在C/C++代码中嵌入汇编代码，这些汇编代码被称作GCC Inline ASM——GCC内联汇编。这是一个非常有用的功能，有利于我们将一些C/C++语法无法表达指令直接潜入C/C++代码中，另外也允许我们直接写 C/C++代码中使用汇编编写简洁高效的代码。
+1.基本内联汇编 GCC中基本的内联汇编非常易懂，我们先来看两个简单的例子：
+__asm__(&#34;movl %esp,%eax&#34;); // 看起来很熟悉吧！ 或者是
+__asm__(&#34;movl $1,%eax // SYS_exitxor %ebx,%ebxint $0x80&#34;); 或
+__asm__(&#34;movl $1,%eax/r/t&#34; /&#34;xor %ebx,%ebx/r/t&#34; /&#34;int $0x80&#34; /); 2.基本内联汇编的格式 __asm__ __volatile__(&#34;Instruction List&#34;); 1、asm __asm__是GCC关键字asm的宏定义：
+#define __asm__ asm __asm__或asm用来声明一个内联汇编表达式，所以任何一个内联汇编表达式都是以它开头的，是必不可少的。
+2、Instruction List Instruction List是汇编指令序列。它可以是空的，比如：__asm__ __volatile__(&quot;&quot;); 或 __asm__ (&quot;&quot;); 都是完全合法的内联汇编表达式，只不过这两条语句没有什么意义。
+但并非所有Instruction List为空的内联汇编表达式都是没有意义的，比如： __asm__ (&quot;&quot;:::&quot;memory&quot;); 就非常有意义，它向GCC声明：“我对内存作了改动”，GCC在编译的时候，会将此因素考虑进去。
+我们看一看下面这个例子：
+$ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc; (*__p) = 9999; //__asm__(&#34;&#34;:::&#34;memory&#34;); if ((*__p) == 9999) { return 5; } return (*__p); } 在这段代码中，那条内联汇编是被注释掉的。在这条内联汇编之前，内存指针__p所指向的内存被赋值为9999，随即在内联汇编之后，一条if语句判断__p 所指向的内存与9999是否相等。很明显，它们是相等的。GCC在优化编译的时候能够很聪明的发现这一点。我们使用下面的命令行对其进行编译：……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年9月3日
+        </date>
+        
+        <div class="post-content">
+            六步法  import train, test 网络结构  model=tf.keras.models.Sequential # 搭建网络结构 class MyModel(Model) model = MyModel   model.compile # 配置训练优化器，损失函数 model.fit # 输入特征，batch, epoch model.summary  网络结构 拉直层 tf.keras.layers.Flatten()
+全连接层 tf.keras.layers.Dense(神经元个数, activation=&#34;激活函数&#34;, kernel_regularizer=&#34;正则化&#34;)卷积层 tf.keras.layers.Conv2D(filters=卷积核个数, kernel_size=卷积核尺寸, strides=卷积步长, padding=&#34;valid&#34; or &#34;same&#34;)LSTM层 tf.keras.layers.LSTM()
+训练方法 model.compile(optimizer=优化器, loss=损失函数, metrics=[&#34;准确率&#34;])Optimizer  sgd adagrad adadelta adam  loss Metrics 训练过程 model.fit(训练集的输入特征, 训练集的标签, batch_size=, epochs=, validation_data=(测试集的输入特征, 测试集的标签), validation_split=从训练集划分多少比例分给测试集, validation_freq=多少次epoch测试一次)……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/">阅读全文</a></p>
+    </article>
     
     <article class="post">
         <header>
@@ -219,38 +262,6 @@
         <p class="readmore"><a href="https://axiomaster.github.io/post/2020-01-10-android-debug/">阅读全文</a></p>
     </article>
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2020-01-09-activity/" title="activity、window、view和surface">activity、window、view和surface</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年1月7日
-        </date>
-        
-        <div class="post-content">
-            ……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2020-01-09-activity/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2020-01-07-zygote/" title="Android启动分析">Android启动分析</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年1月7日
-        </date>
-        
-        <div class="post-content">
-            ……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2020-01-07-zygote/">阅读全文</a></p>
-    </article>
-    
     
 
 
@@ -291,6 +302,10 @@
         <a href="https://axiomaster.github.io/page/7/">7</a>
     </li>
     
+    <li >
+        <a href="https://axiomaster.github.io/page/8/">8</a>
+    </li>
+    
 
     
     <li class="next">
@@ -305,7 +320,7 @@
 
                     <footer id="footer">
     <div>
-        &copy; 2022 <a href="https://axiomaster.github.io/">Axiomaster&#39;s Site By </a>
+        &copy; 2022 <a href="https://axiomaster.github.io">Axiomaster&#39;s Site By </a>
         
     </div>
     <br />
@@ -339,7 +354,7 @@
         <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io/">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io">
       <button type="submit" class="submit icon-search"></button>
 </form>
     </section>
@@ -347,6 +362,14 @@
     <section class="widget">
         <h3 class="widget-title">最近文章</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2022-01-08-c-language-addition/" title="c语言补充说明">c语言补充说明</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2022-01-08-interrupt/" title="中断">中断</a>
+    </li>
     
     <li>
         <a href="https://axiomaster.github.io/post/2022-01-01-c-language/" title="引入c语言">引入c语言</a>
@@ -378,14 +401,6 @@
     
     <li>
         <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
     </li>
     
 </ul>

@@ -39,7 +39,7 @@
         <div class="col-group">
             <div class="site-name ">
                 
-                    <a id="logo" href="https://axiomaster.github.io/">
+                    <a id="logo" href="https://axiomaster.github.io">
                         Axiomaster&#39;s Site
                     </a>
                 
@@ -47,7 +47,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="https://axiomaster.github.io/">首页</a>
+                    <a class="current" href="https://axiomaster.github.io">首页</a>
                     
                 </nav>
             </div>
@@ -62,6 +62,53 @@
                 <div class="col-8" id="main">
                     
 <div class="res-cons">
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2021年10月31日
+        </date>
+        
+        <div class="post-content">
+            GCC 支持在C/C++代码中嵌入汇编代码，这些汇编代码被称作GCC Inline ASM——GCC内联汇编。这是一个非常有用的功能，有利于我们将一些C/C++语法无法表达指令直接潜入C/C++代码中，另外也允许我们直接写 C/C++代码中使用汇编编写简洁高效的代码。
+1.基本内联汇编 GCC中基本的内联汇编非常易懂，我们先来看两个简单的例子：
+__asm__(&#34;movl %esp,%eax&#34;); // 看起来很熟悉吧！ 或者是
+__asm__(&#34;movl $1,%eax // SYS_exitxor %ebx,%ebxint $0x80&#34;); 或
+__asm__(&#34;movl $1,%eax/r/t&#34; /&#34;xor %ebx,%ebx/r/t&#34; /&#34;int $0x80&#34; /); 2.基本内联汇编的格式 __asm__ __volatile__(&#34;Instruction List&#34;); 1、asm __asm__是GCC关键字asm的宏定义：
+#define __asm__ asm __asm__或asm用来声明一个内联汇编表达式，所以任何一个内联汇编表达式都是以它开头的，是必不可少的。
+2、Instruction List Instruction List是汇编指令序列。它可以是空的，比如：__asm__ __volatile__(&quot;&quot;); 或 __asm__ (&quot;&quot;); 都是完全合法的内联汇编表达式，只不过这两条语句没有什么意义。
+但并非所有Instruction List为空的内联汇编表达式都是没有意义的，比如： __asm__ (&quot;&quot;:::&quot;memory&quot;); 就非常有意义，它向GCC声明：“我对内存作了改动”，GCC在编译的时候，会将此因素考虑进去。
+我们看一看下面这个例子：
+$ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc; (*__p) = 9999; //__asm__(&#34;&#34;:::&#34;memory&#34;); if ((*__p) == 9999) { return 5; } return (*__p); } 在这段代码中，那条内联汇编是被注释掉的。在这条内联汇编之前，内存指针__p所指向的内存被赋值为9999，随即在内联汇编之后，一条if语句判断__p 所指向的内存与9999是否相等。很明显，它们是相等的。GCC在优化编译的时候能够很聪明的发现这一点。我们使用下面的命令行对其进行编译：……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2020-09-07-tensorflow2_3/" title="Tensorflow2.0 笔记（3）">Tensorflow2.0 笔记（3）</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年9月3日
+        </date>
+        
+        <div class="post-content">
+            CNN  输入特征图的深度（channel数），决定了当前层卷积核的深度； 当前层卷积核的个数，决定了当前层输出特征图的深度；  tf.keras.layers.Conv2D(kernel_size=卷积核尺寸,strides=滑动补偿,padding=&#34;same&#34; or &#34;valid&#34;,activation=&#34;relu&#34; or &#34;sigmoid&#34; or &#34;tanh&#34; or &#34;softmax&#34;,input_shape=(高, 宽, 通道数))批标准化（Batch Normalization, BN） 池化 池化用于减少特征数据量，最大值池化可提取图片纹理，均值池化可保留背景特征。
+舍弃 Dropout 训练时，一定概率随机舍弃神经元。网络使用时，恢复神经元。
+卷积神经网络结构 卷积：特征提取器，CBAPD(Convolutinoal, BN, Activation, Pooling, Dropout)……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.github.io/post/2020-09-07-tensorflow2_3/">阅读全文</a></p>
+    </article>
+    
     
     
     <article class="post">
@@ -237,48 +284,6 @@
     
     
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2020-01-07-aosp/" title="aosp源码编译与阅读">aosp源码编译与阅读</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年1月7日
-        </date>
-        
-        <div class="post-content">
-            下载源码 国内从google下载aosp源码需要翻墙，很不方便。可以使用清华大学开源软件镜像站提供的镜像地址进行下载,同步代码.
-下载,检出代码按照清华镜像站的地址说明一步步操作就可以了.
-可能的错误  初始化包比较大,下载后记得进行md5校验. 使用迅雷中断后续传,发现md5值不匹配,推荐使用uget之类的工具在晚上下载,一次成功.  aosp编译 官方指导
- 建立编译环境 编译 Android  编译很简单, aosp源码中prebuilts目录下集成了所有编译会用到的工具,包括clang, jdk等,不需要额外下载. 编译脚本只支持python2,环境上安装一下python2就可以了.
-在Ubuntu 18.04上使用如下步骤进行编译:
-设置环境变量等 source build/envsetup.sh 设置编译目标版本 lism@lism-u18:~/android/aosp$ lunch aosp_x86_64-eng ============================================ PLATFORM_VERSION_CODENAME=R PLATFORM_VERSION=R TARGET_PRODUCT=aosp_x86_64 TARGET_BUILD_VARIANT=eng TARGET_BUILD_TYPE=release TARGET_ARCH=x86_64 TARGET_ARCH_VARIANT=x86_64 TARGET_2ND_ARCH=x86 TARGET_2ND_ARCH_VARIANT=x86_64 HOST_ARCH=x86_64 HOST_2ND_ARCH=x86 HOST_OS=linux HOST_OS_EXTRA=Linux-5.0.0-37-generic-x86_64-Ubuntu-18.04.3-LTS HOST_CROSS_OS=windows HOST_CROSS_ARCH=x86 HOST_CROSS_2ND_ARCH=x86_64 HOST_BUILD_TYPE=release BUILD_ID=QD1A.190821.011 OUT_DIR=out ============================================ 如果不清楚需要输入什么版本, 输入lunch后会自动列出支持的版本信息.
-lism@lism-u18:~/android/aosp$ lunch You&#39;re building on Linux Lunch menu... pick a combo: 1. aosp_arm-eng 2. aosp_arm64-eng 3. aosp_blueline-userdebug 4. aosp_bonito-userdebug 5.……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2020-01-07-aosp/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2020-01-07-zygote/" title="Android启动分析">Android启动分析</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年1月7日
-        </date>
-        
-        <div class="post-content">
-            ……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2020-01-07-zygote/">阅读全文</a></p>
-    </article>
-    
-    
-    
 
 
 
@@ -318,6 +323,10 @@ lism@lism-u18:~/android/aosp$ lunch You&#39;re building on Linux Lunch menu... p
         <a href="https://axiomaster.github.io/post/page/7/">7</a>
     </li>
     
+    <li >
+        <a href="https://axiomaster.github.io/post/page/8/">8</a>
+    </li>
+    
 
     
     <li class="next">
@@ -332,7 +341,7 @@ lism@lism-u18:~/android/aosp$ lunch You&#39;re building on Linux Lunch menu... p
 
                     <footer id="footer">
     <div>
-        &copy; 2022 <a href="https://axiomaster.github.io/">Axiomaster&#39;s Site By </a>
+        &copy; 2022 <a href="https://axiomaster.github.io">Axiomaster&#39;s Site By </a>
         
     </div>
     <br />
@@ -366,7 +375,7 @@ lism@lism-u18:~/android/aosp$ lunch You&#39;re building on Linux Lunch menu... p
         <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io/">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io">
       <button type="submit" class="submit icon-search"></button>
 </form>
     </section>
@@ -374,6 +383,14 @@ lism@lism-u18:~/android/aosp$ lunch You&#39;re building on Linux Lunch menu... p
     <section class="widget">
         <h3 class="widget-title">最近文章</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2022-01-08-c-language-addition/" title="c语言补充说明">c语言补充说明</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2022-01-08-interrupt/" title="中断">中断</a>
+    </li>
     
     <li>
         <a href="https://axiomaster.github.io/post/2022-01-01-c-language/" title="引入c语言">引入c语言</a>
@@ -405,14 +422,6 @@ lism@lism-u18:~/android/aosp$ lunch You&#39;re building on Linux Lunch menu... p
     
     <li>
         <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
     </li>
     
 </ul>

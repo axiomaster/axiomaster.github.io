@@ -6,10 +6,35 @@
     <description>Recent content in Posts on Axiomaster&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 01 Jan 2022 22:56:29 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 08 Jan 2022 18:18:29 +0800</lastBuildDate>
     
 	<atom:link href="https://axiomaster.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>c语言补充说明</title>
+      <link>https://axiomaster.github.io/post/2022-01-08-c-language-addition/</link>
+      <pubDate>Sat, 08 Jan 2022 18:18:29 +0800</pubDate>
+      
+      <guid>https://axiomaster.github.io/post/2022-01-08-c-language-addition/</guid>
+      <description>1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 内存分页 3-3 保护模式补充 4-1 引入c语言  稍有经验的同学肯定知道，编译得到的二进制文件中有text, bss, data, rodata等段。我们今天试着剖析一下这些概念。
+segment &amp;amp; section segment和section在中文某些场景下都被翻译成段，很容易搞混。我们今天这里不再翻译，直接使用这两个词。
+代码经编译器编译链接后得到ELF文件，操作系统将ELF文件加载至内存中并运行。这里涉及到2个过程，链接与装载。
+ 代码编译得到可重定位文件(.o)后，链接器(ld)对可重定位文件中的符号进行地址重定位，并最终得到可执行文件。 操作系统将可执行文件通过分页机制加载至内存之后执行。加载时，不同的页对应的属性（访问权限）不同，比如代码部分是只读可执行的，其它段是可写的等。  ELF文件作为2个过程的桥梁，就存在链接视图（Linking View）和执行视图（Execution View）两种视图。其中，section对应链接过程，segment对应装载（运行）过程。
+链接时，根据不同的功能，ELF文件会划分位多个section。装载时，操作系统以页（4K）为单位进行，如果不足一个页，也要进行对齐。这时如果有多个section，每个section占用1个页，几乎每个section都会在对齐时导致一部分内存空间浪费。而对于操作系统来说，只关注每个page的读写等属性。所以操作系统就将相同读写书写的section对应为一个segment进行加载。
+readelf -l可以查看section与segment对应关系：
+ ELF文件格式  ELF header ELF header格式是固定的，在/usr/include/elf.h中有定义：
+/* The ELF file header. This appears at the start of every ELF file. */ #define EI_NIDENT (16)  typedef struct { unsigned char	e_ident[EI_NIDENT];	/* Magic number and other info */ Elf32_Half	e_type;	/* Object file type */ Elf32_Half	e_machine;	/* Architecture */ Elf32_Word	e_version;	/* Object file version */ Elf32_Addr	e_entry;	/* Entry point virtual address */ Elf32_Off	e_phoff;	/* Program header table file offset */ Elf32_Off	e_shoff;	/* Section header table file offset */ Elf32_Word	e_flags;	/* Processor-specific flags */ Elf32_Half	e_ehsize;	/* ELF header size in bytes */ Elf32_Half	e_phentsize;	/* Program header table entry size */ Elf32_Half	e_phnum;	/* Program header table entry count */ Elf32_Half	e_shentsize;	/* Section header table entry size */ Elf32_Half	e_shnum;	/* Section header table entry count */ Elf32_Half	e_shstrndx;	/* Section header string table index */ } Elf32_Ehdr;  e_entry就是程序总入口地址 e_phoff对应程序头表（Program header table）在文件中的偏移量 e_phentsize程序头表中每个条目（entry）的大小 e_phnum程序头表中条目数量，对应segment个数  Program header table 程序头表（Program header table）保存运行视图中的segment信息。</description>
+    </item>
+    
+    <item>
+      <title>中断</title>
+      <link>https://axiomaster.github.io/post/2022-01-08-interrupt/</link>
+      <pubDate>Sat, 08 Jan 2022 18:18:29 +0800</pubDate>
+      
+      <guid>https://axiomaster.github.io/post/2022-01-08-interrupt/</guid>
+      <description> 1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 分页 3-3 保护模式补充 4-1 c语言 4-2 c语言补充  </description>
+    </item>
     
     <item>
       <title>引入c语言</title>
@@ -17,7 +42,7 @@
       <pubDate>Sat, 01 Jan 2022 22:56:29 +0800</pubDate>
       
       <guid>https://axiomaster.github.io/post/2022-01-01-c-language/</guid>
-      <description>1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 分页 3-3 保护模式补充  编译过程 前面我们都是使用汇编进行编程，从这节开始引入c语言进行编写。我们知道C语言相对汇编语言，属于高级语言(^_^)。高级语言是需要编译成机器语言才可以执行的。为了让编译器编译得到的结果能够方便的在操作系统上执行，操作系统定义了二进制可执行文件的格式。linux上使用的就是ELF文件格式。
+      <description>1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 内存分页 3-3 保护模式补充  编译过程 前面我们都是使用汇编进行编程，从这节开始引入c语言进行编写。我们知道C语言相对汇编语言，属于高级语言(^_^)。高级语言是需要编译成机器语言才可以执行的。为了让编译器编译得到的结果能够方便的在操作系统上执行，操作系统定义了二进制可执行文件的格式。linux上使用的就是ELF文件格式。
 我们这次只是开发操作系统，没有做自己的C编译器，还是要使用gcc等编译器。所以我们的操作系统就要去兼容gcc编译得到的ELF文件结果。历史上，gcc也是在linux操作系统之前被开发出来的。
  #include &amp;lt;stdio.h&amp;gt; int main() { printf(&amp;#34;hello world\n&amp;#34;); return 0; } 我们用hello world走一遍这个流程。
 我的环境是64位的，我们要编译32位的结果，所以中间会有一些特殊的编译选项。为了省事儿，也可以搭建32位的开发编译环境。

@@ -39,7 +39,7 @@
         <div class="col-group">
             <div class="site-name ">
                 
-                    <a id="logo" href="https://axiomaster.github.io/">
+                    <a id="logo" href="https://axiomaster.github.io">
                         Axiomaster&#39;s Site
                     </a>
                 
@@ -47,7 +47,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="https://axiomaster.github.io/">首页</a>
+                    <a class="current" href="https://axiomaster.github.io">首页</a>
                     
                 </nav>
             </div>
@@ -62,6 +62,62 @@
                 <div class="col-8" id="main">
                     
 <div class="res-cons">
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2019-07-30-bug/" title="神奇的bug">神奇的bug</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年7月30日
+        </date>
+        
+        <div class="post-content">
+            最近在编译一个node相关的工程，配置好编译环境，设置好代理，昨天一切都进展的挺顺利，很快就得到了结果。但后来发现编译的版本稍微有点儿差异，校验不通过。就把源码切到特定的tag上重来一次。然后就发现了一个神奇的bug。
+使用yarn编译，中间一步依赖的一个包在编译时需要去api.github.com上下载特定版本的软件包。但是目标版本使用的软件包版本号类似于v1.2.3-2，在小版本号之后还有-2进行区分，然后这个软件包总是下载失败，导致编译失败。
+验证了好久之后确认，代理设置没有问题，其它依赖包可以下载成功，但这个就是不行。后来在issue列表中确认，在特定proxy环境下，这个包会下载失败。失败原因是node中下载使用的request包在经过部分proxy时，对-这样的字符无法正确处理，url错误导致下载失败。
+而且搜索后发现这个问题很普遍，不只是vscode的issue列表中报过多，其他很多使用node的开源软件都报过。而且因为是request的问题，一般的解决方法就是回退或更新第3方依赖的软件包，确保软件包的url中不包含-这样的版本号。……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.github.io/post/2019-07-30-bug/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2019-06-24-docker-registry/" title="docker私有镜像仓库">docker私有镜像仓库</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年6月24日
+        </date>
+        
+        <div class="post-content">
+            上一篇VS code remote提到国内访问docker官方镜像特别慢，可以使用加速器。但对于企业等，都会自建私有镜像地址，也可以解决这个问题。
+docker registry  Registry是一个无状态的，高可扩展的服务端应用，主要用于存储和分发Docker镜像。
+Docker Registry文档
+ 下载registry镜像 1 直接运行registry
+这种方式需要机器能够访问docker.io
+docker run -d -p 5000:5000 --name registry registry:2 2 保存registry.tar并运行
+  通过可以访问外网的机器先 docker pull registry放入本地镜像仓库
+  使用docker save保存为tar包
+  将registry.tar拷贝到无法访问外网的机器上
+  使用docker load -i将tar包加载到本地镜像仓库
+  最后docker run运行registry服务
+  配置私有镜像地址 1 将镜像docker push至私有镜像仓库
+和使用registry.tar运行registry服务类似，思路如下：
+  将镜像tar包拷贝到机器上
+  使用docker load -i加载到本地镜像
+  使用docker tag为镜像打上私有镜像地址的标签，比如192.168.1.11:5000/ubuntu:least
+  使用docker push将镜像推到镜像仓库
+  使用私有镜像地址 修改daemon.……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.github.io/post/2019-06-24-docker-registry/">阅读全文</a></p>
+    </article>
+    
     
     
     <article class="post">
@@ -281,53 +337,6 @@ allprojects { repositories { maven { url &#39;https://maven.aliyun.com/repositor
     
     
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2019-04-14-defer/" title="Golang defer导致内存溢出">Golang defer导致内存溢出</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年3月17日
-        </date>
-        
-        <div class="post-content">
-            Golang中提供了defer关键字，以前可能需要在函数内进行多次判断之后释放资源，现在使用defer一次就搞定了，习惯之后会觉得这个特性非常好用。
-问题代码 有一句话是软件设计没有银弹，放在这里依然成立。defer这么好用，但也需要注意一些坑。代码逻辑大致如下：
-for { defer 释放资源 // http request  // 错误码判断  // sleep 5s重试 或 break退出 } 业务是心跳这样的守护进程，所以直接就用了死循环，请求失败之后进行重试，或满足一定条件时退出循环。使用defer在最后释放资源。
-测试时异常场景也进行了覆盖，功能上没有发现问题。但在一个实例上发现运行一段时间之后内存爆了。
-问题分析 defer的实现机制是在调用函数栈上再压入defer函数，调用return前调用defer函数。所以调用defer会有一次压栈操作。
-上面的示例中将defer在for循环中，环境恰好没有返回对应的错误码让for循环退出，导致defer一直被执行，重复的压栈导致StackOverflow。
-小结 从这里看，将defer放入循环中就是一个不好的习惯；另外，死循环代码也有一丝丝坏味道，看到这样的代码时就应该警惕了。……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2019-04-14-defer/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2019-03-05-strategy-pattern/" title="策略模式 Strategy Pattern">策略模式 Strategy Pattern</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年3月3日
-        </date>
-        
-        <div class="post-content">
-            策略模式定义了算法族，分别封装起来，让它们之间可以相互替换，此模式让算法的变化独立于使用算法的客户。
- 类图  继承 vs 组合 上面的描述有些抽象。策略模式想要表达的是，如果一个类需要某种行为，不要通过继承来实现（is-a），可以使用组合（has-a）来实现。这样做更加灵活，当业务类（duck）的行为（fly）需要改变时，只需要注入不同的算法实现类即可。
-这也就是 鸭子继承， 如果一个类通过组合获取了鸭子的行为，那它就可以当作鸭子使用，不需要关注它是否继承自鸭子基类，是否真正的是一只鸭子。
-Java中Spring的依赖注入（DI）也是这种思路。Golang中甚至取消了继承，从语法层面避免继承所带来的耦合。这里甚至可以推测，OOP在提出之初，只是基于对真实世界中对象建模的思路，提出了继承，实现等概念。但后续工程实践发现继承并没有组合好用。
-很多协议设计也是这样，基于最初的构想设计了很多特性，结果后续使用中发现一部分设计很鸡肋或很容易出错。于是又通过各种约定，最佳实践，框架等来解决这些问题。
-代码 public interface FlyBehavior { void fly(); } class FlyWithWings implements FlyBehavior { @Override public void fly() { // todo  } } class FlyNoWay implements FlyBehavior { @Override public void fly() { // do nothing  } } public interface QuackBehavior { void quack(); } class Quack implements QuackBehavior { @Override public void quack() { // todo  } } class Squeak implements QuackBehavior { @Override public void quack() { // todo  } } class MuteQuack implements QuackBehavior { @Override public void quack() { // todo  } } public abstract class Duck { FlyBehavior flyBehavior; QuackBehavior quackBehavior; abstract void display(); void performFly() { flyBehavior.……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2019-03-05-strategy-pattern/">阅读全文</a></p>
-    </article>
-    
-    
-    
 
 
 
@@ -367,6 +376,10 @@ Java中Spring的依赖注入（DI）也是这种思路。Golang中甚至取消�
         <a href="https://axiomaster.github.io/post/page/7/">7</a>
     </li>
     
+    <li >
+        <a href="https://axiomaster.github.io/post/page/8/">8</a>
+    </li>
+    
 
     
     <li class="next">
@@ -381,7 +394,7 @@ Java中Spring的依赖注入（DI）也是这种思路。Golang中甚至取消�
 
                     <footer id="footer">
     <div>
-        &copy; 2022 <a href="https://axiomaster.github.io/">Axiomaster&#39;s Site By </a>
+        &copy; 2022 <a href="https://axiomaster.github.io">Axiomaster&#39;s Site By </a>
         
     </div>
     <br />
@@ -415,7 +428,7 @@ Java中Spring的依赖注入（DI）也是这种思路。Golang中甚至取消�
         <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io/">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io">
       <button type="submit" class="submit icon-search"></button>
 </form>
     </section>
@@ -423,6 +436,14 @@ Java中Spring的依赖注入（DI）也是这种思路。Golang中甚至取消�
     <section class="widget">
         <h3 class="widget-title">最近文章</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2022-01-08-c-language-addition/" title="c语言补充说明">c语言补充说明</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2022-01-08-interrupt/" title="中断">中断</a>
+    </li>
     
     <li>
         <a href="https://axiomaster.github.io/post/2022-01-01-c-language/" title="引入c语言">引入c语言</a>
@@ -454,14 +475,6 @@ Java中Spring的依赖注入（DI）也是这种思路。Golang中甚至取消�
     
     <li>
         <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
     </li>
     
 </ul>

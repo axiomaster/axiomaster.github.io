@@ -37,7 +37,7 @@
             <div class="site-name ">
                 
                     <h1>
-                        <a id="logo" href="https://axiomaster.github.io/">
+                        <a id="logo" href="https://axiomaster.github.io">
                             Axiomaster&#39;s Site
                         </a>
                     </h1>
@@ -46,7 +46,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="https://axiomaster.github.io/">首页</a>
+                    <a class="current" href="https://axiomaster.github.io">首页</a>
                     
                 </nav>
             </div>
@@ -65,6 +65,45 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2022-01-08-c-language-addition/" title="c语言补充说明">c语言补充说明</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2022年1月8日
+        </date>
+        
+        <div class="post-content">
+            1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 内存分页 3-3 保护模式补充 4-1 引入c语言  稍有经验的同学肯定知道，编译得到的二进制文件中有text, bss, data, rodata等段。我们今天试着剖析一下这些概念。
+segment &amp; section segment和section在中文某些场景下都被翻译成段，很容易搞混。我们今天这里不再翻译，直接使用这两个词。
+代码经编译器编译链接后得到ELF文件，操作系统将ELF文件加载至内存中并运行。这里涉及到2个过程，链接与装载。
+ 代码编译得到可重定位文件(.o)后，链接器(ld)对可重定位文件中的符号进行地址重定位，并最终得到可执行文件。 操作系统将可执行文件通过分页机制加载至内存之后执行。加载时，不同的页对应的属性（访问权限）不同，比如代码部分是只读可执行的，其它段是可写的等。  ELF文件作为2个过程的桥梁，就存在链接视图（Linking View）和执行视图（Execution View）两种视图。其中，section对应链接过程，segment对应装载（运行）过程。
+链接时，根据不同的功能，ELF文件会划分位多个section。装载时，操作系统以页（4K）为单位进行，如果不足一个页，也要进行对齐。这时如果有多个section，每个section占用1个页，几乎每个section都会在对齐时导致一部分内存空间浪费。而对于操作系统来说，只关注每个page的读写等属性。所以操作系统就将相同读写书写的section对应为一个segment进行加载。
+readelf -l可以查看section与segment对应关系：
+ ELF文件格式  ELF header ELF header格式是固定的，在/usr/include/elf.h中有定义：
+/* The ELF file header. This appears at the start of every ELF file. */ #define EI_NIDENT (16)  typedef struct { unsigned char	e_ident[EI_NIDENT];	/* Magic number and other info */ Elf32_Half	e_type;	/* Object file type */ Elf32_Half	e_machine;	/* Architecture */ Elf32_Word	e_version;	/* Object file version */ Elf32_Addr	e_entry;	/* Entry point virtual address */ Elf32_Off	e_phoff;	/* Program header table file offset */ Elf32_Off	e_shoff;	/* Section header table file offset */ Elf32_Word	e_flags;	/* Processor-specific flags */ Elf32_Half	e_ehsize;	/* ELF header size in bytes */ Elf32_Half	e_phentsize;	/* Program header table entry size */ Elf32_Half	e_phnum;	/* Program header table entry count */ Elf32_Half	e_shentsize;	/* Section header table entry size */ Elf32_Half	e_shnum;	/* Section header table entry count */ Elf32_Half	e_shstrndx;	/* Section header string table index */ } Elf32_Ehdr;  e_entry就是程序总入口地址 e_phoff对应程序头表（Program header table）在文件中的偏移量 e_phentsize程序头表中每个条目（entry）的大小 e_phnum程序头表中条目数量，对应segment个数  Program header table 程序头表（Program header table）保存运行视图中的segment信息。……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.github.io/post/2022-01-08-c-language-addition/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2022-01-08-interrupt/" title="中断">中断</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2022年1月8日
+        </date>
+        
+        <div class="post-content">
+             1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 分页 3-3 保护模式补充 4-1 c语言 4-2 c语言补充  ……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.github.io/post/2022-01-08-interrupt/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://axiomaster.github.io/post/2022-01-01-c-language/" title="引入c语言">引入c语言</a>
             </h1>
         </header>
@@ -73,7 +112,7 @@
         </date>
         
         <div class="post-content">
-            1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 分页 3-3 保护模式补充  编译过程 前面我们都是使用汇编进行编程，从这节开始引入c语言进行编写。我们知道C语言相对汇编语言，属于高级语言(^_^)。高级语言是需要编译成机器语言才可以执行的。为了让编译器编译得到的结果能够方便的在操作系统上执行，操作系统定义了二进制可执行文件的格式。linux上使用的就是ELF文件格式。
+            1-1 从上电到引导扇区 1-2 启动补充说明 2-1 读取并执行软盘内容 2-2 确认软盘内容执行 3-1 保护模式 3-2 内存分页 3-3 保护模式补充  编译过程 前面我们都是使用汇编进行编程，从这节开始引入c语言进行编写。我们知道C语言相对汇编语言，属于高级语言(^_^)。高级语言是需要编译成机器语言才可以执行的。为了让编译器编译得到的结果能够方便的在操作系统上执行，操作系统定义了二进制可执行文件的格式。linux上使用的就是ELF文件格式。
 我们这次只是开发操作系统，没有做自己的C编译器，还是要使用gcc等编译器。所以我们的操作系统就要去兼容gcc编译得到的ELF文件结果。历史上，gcc也是在linux操作系统之前被开发出来的。
  #include &lt;stdio.h&gt; int main() { printf(&#34;hello world\n&#34;); return 0; } 我们用hello world走一遍这个流程。
 我的环境是64位的，我们要编译32位的结果，所以中间会有一些特殊的编译选项。为了省事儿，也可以搭建32位的开发编译环境。
@@ -261,49 +300,6 @@ org 07c00h ; 告诉编译器程序加载到7c00处 ;----直接往显存中写数
         <p class="readmore"><a href="https://axiomaster.github.io/post/2021-11-17-os-boot/">阅读全文</a></p>
     </article>
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年10月31日
-        </date>
-        
-        <div class="post-content">
-            GCC 支持在C/C++代码中嵌入汇编代码，这些汇编代码被称作GCC Inline ASM——GCC内联汇编。这是一个非常有用的功能，有利于我们将一些C/C++语法无法表达指令直接潜入C/C++代码中，另外也允许我们直接写 C/C++代码中使用汇编编写简洁高效的代码。
-1.基本内联汇编 GCC中基本的内联汇编非常易懂，我们先来看两个简单的例子：
-__asm__(&#34;movl %esp,%eax&#34;); // 看起来很熟悉吧！ 或者是
-__asm__(&#34;movl $1,%eax // SYS_exitxor %ebx,%ebxint $0x80&#34;); 或
-__asm__(&#34;movl $1,%eax/r/t&#34; /&#34;xor %ebx,%ebx/r/t&#34; /&#34;int $0x80&#34; /); 2.基本内联汇编的格式 __asm__ __volatile__(&#34;Instruction List&#34;); 1、asm __asm__是GCC关键字asm的宏定义：
-#define __asm__ asm __asm__或asm用来声明一个内联汇编表达式，所以任何一个内联汇编表达式都是以它开头的，是必不可少的。
-2、Instruction List Instruction List是汇编指令序列。它可以是空的，比如：__asm__ __volatile__(&quot;&quot;); 或 __asm__ (&quot;&quot;); 都是完全合法的内联汇编表达式，只不过这两条语句没有什么意义。
-但并非所有Instruction List为空的内联汇编表达式都是没有意义的，比如： __asm__ (&quot;&quot;:::&quot;memory&quot;); 就非常有意义，它向GCC声明：“我对内存作了改动”，GCC在编译的时候，会将此因素考虑进去。
-我们看一看下面这个例子：
-$ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc; (*__p) = 9999; //__asm__(&#34;&#34;:::&#34;memory&#34;); if ((*__p) == 9999) { return 5; } return (*__p); } 在这段代码中，那条内联汇编是被注释掉的。在这条内联汇编之前，内存指针__p所指向的内存被赋值为9999，随即在内联汇编之后，一条if语句判断__p 所指向的内存与9999是否相等。很明显，它们是相等的。GCC在优化编译的时候能够很聪明的发现这一点。我们使用下面的命令行对其进行编译：……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年9月3日
-        </date>
-        
-        <div class="post-content">
-            六步法  import train, test 网络结构  model=tf.keras.models.Sequential # 搭建网络结构 class MyModel(Model) model = MyModel   model.compile # 配置训练优化器，损失函数 model.fit # 输入特征，batch, epoch model.summary  网络结构 拉直层 tf.keras.layers.Flatten()
-全连接层 tf.keras.layers.Dense(神经元个数, activation=&#34;激活函数&#34;, kernel_regularizer=&#34;正则化&#34;)卷积层 tf.keras.layers.Conv2D(filters=卷积核个数, kernel_size=卷积核尺寸, strides=卷积步长, padding=&#34;valid&#34; or &#34;same&#34;)LSTM层 tf.keras.layers.LSTM()
-训练方法 model.compile(optimizer=优化器, loss=损失函数, metrics=[&#34;准确率&#34;])Optimizer  sgd adagrad adadelta adam  loss Metrics 训练过程 model.fit(训练集的输入特征, 训练集的标签, batch_size=, epochs=, validation_data=(测试集的输入特征, 测试集的标签), validation_split=从训练集划分多少比例分给测试集, validation_freq=多少次epoch测试一次)……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/">阅读全文</a></p>
-    </article>
-    
     
 
 
@@ -340,6 +336,10 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
         <a href="https://axiomaster.github.io/page/7/">7</a>
     </li>
     
+    <li >
+        <a href="https://axiomaster.github.io/page/8/">8</a>
+    </li>
+    
 
     
     <li class="next">
@@ -354,7 +354,7 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
 
                     <footer id="footer">
     <div>
-        &copy; 2022 <a href="https://axiomaster.github.io/">Axiomaster&#39;s Site By </a>
+        &copy; 2022 <a href="https://axiomaster.github.io">Axiomaster&#39;s Site By </a>
         
     </div>
     <br />
@@ -388,7 +388,7 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
         <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io/">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io">
       <button type="submit" class="submit icon-search"></button>
 </form>
     </section>
@@ -396,6 +396,14 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
     <section class="widget">
         <h3 class="widget-title">最近文章</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2022-01-08-c-language-addition/" title="c语言补充说明">c语言补充说明</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2022-01-08-interrupt/" title="中断">中断</a>
+    </li>
     
     <li>
         <a href="https://axiomaster.github.io/post/2022-01-01-c-language/" title="引入c语言">引入c语言</a>
@@ -427,14 +435,6 @@ $ cat example1.c int main(int __argc, char* __argv[]) { int* __p = (int*)__argc;
     
     <li>
         <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
     </li>
     
 </ul>

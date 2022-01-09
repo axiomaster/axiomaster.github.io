@@ -39,7 +39,7 @@
         <div class="col-group">
             <div class="site-name ">
                 
-                    <a id="logo" href="https://axiomaster.github.io/">
+                    <a id="logo" href="https://axiomaster.github.io">
                         Axiomaster&#39;s Site
                     </a>
                 
@@ -47,7 +47,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="https://axiomaster.github.io/">首页</a>
+                    <a class="current" href="https://axiomaster.github.io">首页</a>
                     
                 </nav>
             </div>
@@ -62,6 +62,53 @@
                 <div class="col-8" id="main">
                     
 <div class="res-cons">
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2019-04-14-defer/" title="Golang defer导致内存溢出">Golang defer导致内存溢出</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年3月17日
+        </date>
+        
+        <div class="post-content">
+            Golang中提供了defer关键字，以前可能需要在函数内进行多次判断之后释放资源，现在使用defer一次就搞定了，习惯之后会觉得这个特性非常好用。
+问题代码 有一句话是软件设计没有银弹，放在这里依然成立。defer这么好用，但也需要注意一些坑。代码逻辑大致如下：
+for { defer 释放资源 // http request  // 错误码判断  // sleep 5s重试 或 break退出 } 业务是心跳这样的守护进程，所以直接就用了死循环，请求失败之后进行重试，或满足一定条件时退出循环。使用defer在最后释放资源。
+测试时异常场景也进行了覆盖，功能上没有发现问题。但在一个实例上发现运行一段时间之后内存爆了。
+问题分析 defer的实现机制是在调用函数栈上再压入defer函数，调用return前调用defer函数。所以调用defer会有一次压栈操作。
+上面的示例中将defer在for循环中，环境恰好没有返回对应的错误码让for循环退出，导致defer一直被执行，重复的压栈导致StackOverflow。
+小结 从这里看，将defer放入循环中就是一个不好的习惯；另外，死循环代码也有一丝丝坏味道，看到这样的代码时就应该警惕了。……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.github.io/post/2019-04-14-defer/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://axiomaster.github.io/post/2019-03-05-strategy-pattern/" title="策略模式 Strategy Pattern">策略模式 Strategy Pattern</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年3月3日
+        </date>
+        
+        <div class="post-content">
+            策略模式定义了算法族，分别封装起来，让它们之间可以相互替换，此模式让算法的变化独立于使用算法的客户。
+ 类图  继承 vs 组合 上面的描述有些抽象。策略模式想要表达的是，如果一个类需要某种行为，不要通过继承来实现（is-a），可以使用组合（has-a）来实现。这样做更加灵活，当业务类（duck）的行为（fly）需要改变时，只需要注入不同的算法实现类即可。
+这也就是 鸭子继承， 如果一个类通过组合获取了鸭子的行为，那它就可以当作鸭子使用，不需要关注它是否继承自鸭子基类，是否真正的是一只鸭子。
+Java中Spring的依赖注入（DI）也是这种思路。Golang中甚至取消了继承，从语法层面避免继承所带来的耦合。这里甚至可以推测，OOP在提出之初，只是基于对真实世界中对象建模的思路，提出了继承，实现等概念。但后续工程实践发现继承并没有组合好用。
+很多协议设计也是这样，基于最初的构想设计了很多特性，结果后续使用中发现一部分设计很鸡肋或很容易出错。于是又通过各种约定，最佳实践，框架等来解决这些问题。
+代码 public interface FlyBehavior { void fly(); } class FlyWithWings implements FlyBehavior { @Override public void fly() { // todo  } } class FlyNoWay implements FlyBehavior { @Override public void fly() { // do nothing  } } public interface QuackBehavior { void quack(); } class Quack implements QuackBehavior { @Override public void quack() { // todo  } } class Squeak implements QuackBehavior { @Override public void quack() { // todo  } } class MuteQuack implements QuackBehavior { @Override public void quack() { // todo  } } public abstract class Duck { FlyBehavior flyBehavior; QuackBehavior quackBehavior; abstract void display(); void performFly() { flyBehavior.……
+        </div>
+        <p class="readmore"><a href="https://axiomaster.github.io/post/2019-03-05-strategy-pattern/">阅读全文</a></p>
+    </article>
+    
     
     
     <article class="post">
@@ -236,42 +283,6 @@ Comments axiomaster_lism: https://www.cnblogs.com/mYunYu/p/8892833.html……
     
     
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2018-03-10-hehe/" title="每日一槽">每日一槽</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            1年1月1日
-        </date>
-        
-        <div class="post-content">
-            每日一槽  ……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2018-03-10-hehe/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://axiomaster.github.io/post/2018-03-10-funny-linux-app/" title="好玩的linux小应用">好玩的linux小应用</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            1年1月1日
-        </date>
-        
-        <div class="post-content">
-            好玩的linux小应用 收集一些linux下好玩的应用 ……
-        </div>
-        <p class="readmore"><a href="https://axiomaster.github.io/post/2018-03-10-funny-linux-app/">阅读全文</a></p>
-    </article>
-    
-    
-    
 
 
 
@@ -311,6 +322,10 @@ Comments axiomaster_lism: https://www.cnblogs.com/mYunYu/p/8892833.html……
         <a href="https://axiomaster.github.io/post/page/7/">7</a>
     </li>
     
+    <li >
+        <a href="https://axiomaster.github.io/post/page/8/">8</a>
+    </li>
+    
 
     
     <li class="next">
@@ -325,7 +340,7 @@ Comments axiomaster_lism: https://www.cnblogs.com/mYunYu/p/8892833.html……
 
                     <footer id="footer">
     <div>
-        &copy; 2022 <a href="https://axiomaster.github.io/">Axiomaster&#39;s Site By </a>
+        &copy; 2022 <a href="https://axiomaster.github.io">Axiomaster&#39;s Site By </a>
         
     </div>
     <br />
@@ -359,7 +374,7 @@ Comments axiomaster_lism: https://www.cnblogs.com/mYunYu/p/8892833.html……
         <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io/">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io">
       <button type="submit" class="submit icon-search"></button>
 </form>
     </section>
@@ -367,6 +382,14 @@ Comments axiomaster_lism: https://www.cnblogs.com/mYunYu/p/8892833.html……
     <section class="widget">
         <h3 class="widget-title">最近文章</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2022-01-08-c-language-addition/" title="c语言补充说明">c语言补充说明</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2022-01-08-interrupt/" title="中断">中断</a>
+    </li>
     
     <li>
         <a href="https://axiomaster.github.io/post/2022-01-01-c-language/" title="引入c语言">引入c语言</a>
@@ -398,14 +421,6 @@ Comments axiomaster_lism: https://www.cnblogs.com/mYunYu/p/8892833.html……
     
     <li>
         <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
     </li>
     
 </ul>

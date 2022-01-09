@@ -42,7 +42,7 @@
         <div class="col-group">
             <div class="site-name ">
                 
-                    <a id="logo" href="https://axiomaster.github.io/">
+                    <a id="logo" href="https://axiomaster.github.io">
                         Axiomaster&#39;s Site
                     </a>
                 
@@ -50,7 +50,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="https://axiomaster.github.io/">首页</a>
+                    <a class="current" href="https://axiomaster.github.io">首页</a>
                     
                 </nav>
             </div>
@@ -83,7 +83,7 @@
 <li><a href="https://axiomaster.gitee.io/post/2021-11-22-os-loader/">2-1 读取并执行软盘内容</a></li>
 <li><a href="https://axiomaster.gitee.io/post/2021-12-04-os-loader-addition/">2-2 确认软盘内容执行</a></li>
 <li><a href="https://axiomaster.gitee.io/post/2021-12-18-protected_mode/">3-1 保护模式</a></li>
-<li><a href="https://axiomaster.gitee.io/post/2021-12-19-page/">3-2 分页</a></li>
+<li><a href="https://axiomaster.gitee.io/post/2021-12-19-page/">3-2 内存分页</a></li>
 <li><a href="https://axiomaster.gitee.io/post/2021-12-26-protected_mode-addition/">3-3 保护模式补充</a></li>
 </ul>
 <h2 id="编译过程">编译过程</h2>
@@ -130,6 +130,34 @@
 <p>我们知道c语言的入口是main函数。实际上，gcc编译后ELF文件的默认入口是<code>_start</code>，对应的地址是<code>0x8049020</code>。这个地址可以通过修改连接器参数进行修改，我们将入口地址修改为<code>0xc0001500</code>：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ld -m elf_i386 -Ttext 0xc0001500
 </code></pre></div><p>这样，我们将编译得到的ELF文件，按照ELF文件的格式依次拷贝到对应的线性地址处，然后跳转到我们指定的地址<code>0xc0001500</code>，就可以执行c语言写的代码了。</p>
+<h2 id="c调用汇编函数">c调用汇编函数</h2>
+<p><a href="https://axiomaster.gitee.io/post/2021-10-31-gcc-inline-asm/">gcc支持内联汇编</a>，是可以在c语言中直接编写汇编指令的。但这个语法还是比较复杂的。我们使用最原始的方式。</p>
+<p>如下是<code>io_hlt</code>函数的汇编实现。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">bits</span> <span style="color:#ae81ff">32</span>]
+<span style="color:#a6e22e">section</span> <span style="color:#66d9ef">.text</span>
+
+<span style="color:#a6e22e">global</span> <span style="color:#66d9ef">io_hlt</span>
+
+io_hlt:
+    <span style="color:#a6e22e">hlt</span>
+    <span style="color:#a6e22e">ret</span>
+</code></pre></div><p>我们在c中声明<code>io_hlt()</code>函数，并调用。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">io_hlt</span>(<span style="color:#66d9ef">void</span>);
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">void</span>)
+{
+fin:
+    io_hlt();
+    <span style="color:#66d9ef">goto</span> fin;
+}
+</code></pre></div><p>在链接阶段，将汇编代码与c代码编译得到的可重定位文件(relocatable).o链接在一起，得到最终结果。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nasm -f elf -o func.o func.asm
+gcc -m32 -c -o main.o main.c
+ld -m elf_i386 -Ttext 0xc0001500 -e main -o kernel.bin main.o func.o
+</code></pre></div><h2 id="测试">测试</h2>
+<p>
+        <img class="mx-auto" alt="" src="https://gitee.com/axiomaster/pages-imgs/raw/master/chap4_run_c.png" />   
+    </p>
 
         </div>
 
@@ -175,7 +203,7 @@
 
                     <footer id="footer">
     <div>
-        &copy; 2022 <a href="https://axiomaster.github.io/">Axiomaster&#39;s Site By </a>
+        &copy; 2022 <a href="https://axiomaster.github.io">Axiomaster&#39;s Site By </a>
         
     </div>
     <br />
@@ -219,7 +247,7 @@
         <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io/">
+      <input type="hidden" name="sitesearch" value="https://axiomaster.github.io">
       <button type="submit" class="submit icon-search"></button>
 </form>
     </section>
@@ -227,6 +255,14 @@
     <section class="widget">
         <h3 class="widget-title">最近文章</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2022-01-08-c-language-addition/" title="c语言补充说明">c语言补充说明</a>
+    </li>
+    
+    <li>
+        <a href="https://axiomaster.github.io/post/2022-01-08-interrupt/" title="中断">中断</a>
+    </li>
     
     <li>
         <a href="https://axiomaster.github.io/post/2022-01-01-c-language/" title="引入c语言">引入c语言</a>
@@ -258,14 +294,6 @@
     
     <li>
         <a href="https://axiomaster.github.io/post/2021-11-17-os-boot/" title="从上电到引导扇区">从上电到引导扇区</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2021-10-31-gcc-inline-asm/" title="GCC Inline ASM">GCC Inline ASM</a>
-    </li>
-    
-    <li>
-        <a href="https://axiomaster.github.io/post/2020-09-03-tensorflow2_2/" title="Tensorflow2.0 笔记（2）">Tensorflow2.0 笔记（2）</a>
     </li>
     
 </ul>
